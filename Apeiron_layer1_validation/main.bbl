@@ -1,0 +1,238 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{beniers2026apeiron}{unpublished}{}{}
+      \name{author}{1}{}{%
+        {{hash=b521285e59ac7d064a3ac9344c920862}{%
+           family={Beniers},
+           familyi={B\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{b521285e59ac7d064a3ac9344c920862}
+      \strng{fullhash}{b521285e59ac7d064a3ac9344c920862}
+      \strng{fullhashraw}{b521285e59ac7d064a3ac9344c920862}
+      \strng{bibnamehash}{b521285e59ac7d064a3ac9344c920862}
+      \strng{authorbibnamehash}{b521285e59ac7d064a3ac9344c920862}
+      \strng{authornamehash}{b521285e59ac7d064a3ac9344c920862}
+      \strng{authorfullhash}{b521285e59ac7d064a3ac9344c920862}
+      \strng{authorfullhashraw}{b521285e59ac7d064a3ac9344c920862}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Preprint}
+      \field{title}{{Apeiron}: Autonomous Knowledge Genesis from First Principles -- A Seventeen-Layer Architecture for Non-Anthropocentric Artificial Intelligence}
+      \field{year}{2026}
+    \endentry
+    \entry{blondel2008fast}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=7c4ebd50451e5b718eb3d5ad6cfbad71}{%
+           family={Blondel},
+           familyi={B\bibinitperiod},
+           given={Vincent\bibnamedelima D},
+           giveni={V\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=6b6e1859f5b4504b6f852c6112880f18}{%
+           family={Guillaume},
+           familyi={G\bibinitperiod},
+           given={Jean-Loup},
+           giveni={J\bibinithyphendelim L\bibinitperiod}}}%
+        {{hash=a0bc3d83c54bda6a078936b2d87d6c9f}{%
+           family={Lambiotte},
+           familyi={L\bibinitperiod},
+           given={Renaud},
+           giveni={R\bibinitperiod}}}%
+        {{hash=78c7291a964edd655c49fdec8099ab3e}{%
+           family={Lefebvre},
+           familyi={L\bibinitperiod},
+           given={Etienne},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IOP Publishing}%
+      }
+      \strng{namehash}{9f3235a1f0c5640347922a746d86f9f3}
+      \strng{fullhash}{6ef1b75c96dd583dc19da75ac0cb7d23}
+      \strng{fullhashraw}{6ef1b75c96dd583dc19da75ac0cb7d23}
+      \strng{bibnamehash}{6ef1b75c96dd583dc19da75ac0cb7d23}
+      \strng{authorbibnamehash}{6ef1b75c96dd583dc19da75ac0cb7d23}
+      \strng{authornamehash}{9f3235a1f0c5640347922a746d86f9f3}
+      \strng{authorfullhash}{6ef1b75c96dd583dc19da75ac0cb7d23}
+      \strng{authorfullhashraw}{6ef1b75c96dd583dc19da75ac0cb7d23}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Statistical Mechanics: Theory and Experiment}
+      \field{number}{10}
+      \field{title}{Fast unfolding of communities in large networks}
+      \field{volume}{2008}
+      \field{year}{2008}
+      \field{pages}{P10008}
+      \range{pages}{-1}
+    \endentry
+    \entry{shang2024analysis}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=35fae3198e9a2bc41a2735679bbd4d1c}{%
+           family={Shang},
+           familyi={S\bibinitperiod},
+           given={Shuo},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{fullhash}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{fullhashraw}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{bibnamehash}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{authorbibnamehash}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{authornamehash}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{authorfullhash}{bd1e2de773962e7386ce7b0ae22249a6}
+      \strng{authorfullhashraw}{bd1e2de773962e7386ce7b0ae22249a6}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications Physics}
+      \field{title}{Analysis of Network Clustering Algorithms and Cluster Quality Metrics at Scale}
+      \field{volume}{7}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.1038/s42005-024-01635-4
+      \endverb
+    \endentry
+    \entry{xiao2017fashion}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=1af11a48cd2fa4be0cc93269e719b54c}{%
+           family={Xiao},
+           familyi={X\bibinitperiod},
+           given={Han},
+           giveni={H\bibinitperiod}}}%
+        {{hash=3c17107e356e9e329a5b82ae2f7cd441}{%
+           family={Rasul},
+           familyi={R\bibinitperiod},
+           given={Kashif},
+           giveni={K\bibinitperiod}}}%
+        {{hash=626b3b250f5889797be5d59aab9e0ac5}{%
+           family={Vollgraf},
+           familyi={V\bibinitperiod},
+           given={Roland},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{baf27447d7d65975cdce75ac5efbf71b}
+      \strng{fullhash}{5290b4700ff446de9ce062ea732ebd9a}
+      \strng{fullhashraw}{5290b4700ff446de9ce062ea732ebd9a}
+      \strng{bibnamehash}{5290b4700ff446de9ce062ea732ebd9a}
+      \strng{authorbibnamehash}{5290b4700ff446de9ce062ea732ebd9a}
+      \strng{authornamehash}{baf27447d7d65975cdce75ac5efbf71b}
+      \strng{authorfullhash}{5290b4700ff446de9ce062ea732ebd9a}
+      \strng{authorfullhashraw}{5290b4700ff446de9ce062ea732ebd9a}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1708.07747}
+      \field{title}{Fashion-MNIST: a novel image dataset for benchmarking machine learning algorithms}
+      \field{year}{2017}
+    \endentry
+    \entry{shiran2019multimodal}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=7b12b10ad2ab175a40debba9b75c0336}{%
+           family={Shiran},
+           familyi={S\bibinitperiod},
+           given={Guy},
+           giveni={G\bibinitperiod}}}%
+        {{hash=04aecdca91e6f4b942298cca8eb38245}{%
+           family={Weinshall},
+           familyi={W\bibinitperiod},
+           given={Daphna},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{8aea76717714f75d22f7e059c515b0df}
+      \strng{fullhash}{8aea76717714f75d22f7e059c515b0df}
+      \strng{fullhashraw}{8aea76717714f75d22f7e059c515b0df}
+      \strng{bibnamehash}{8aea76717714f75d22f7e059c515b0df}
+      \strng{authorbibnamehash}{8aea76717714f75d22f7e059c515b0df}
+      \strng{authornamehash}{8aea76717714f75d22f7e059c515b0df}
+      \strng{authorfullhash}{8aea76717714f75d22f7e059c515b0df}
+      \strng{authorfullhashraw}{8aea76717714f75d22f7e059c515b0df}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1912.02678}
+      \field{title}{Multi-Modal Deep Clustering: Unsupervised Partitioning of Images}
+      \field{year}{2019}
+    \endentry
+    \entry{vaidya2024neuro}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=23077f493951762066a5c56d1c7e90a7}{%
+           family={Vaidya},
+           familyi={V\bibinitperiod},
+           given={Hitesh},
+           giveni={H\bibinitperiod}}}%
+        {{hash=1f3d6e27fab7dc9415e7dd0e60efc260}{%
+           family={Desell},
+           familyi={D\bibinitperiod},
+           given={Travis},
+           giveni={T\bibinitperiod}}}%
+        {{hash=80161e06f52cab6dc946fbff5dbd8171}{%
+           family={Mali},
+           familyi={M\bibinitperiod},
+           given={Ankur},
+           giveni={A\bibinitperiod}}}%
+        {{hash=39e2181378d4d29d62efdf9c5bb44d0d}{%
+           family={Ororbia},
+           familyi={O\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{174f294fea39666c0e4c2d8a61b88acb}
+      \strng{fullhash}{1c150d9accb6aafaee8dda15fc02f1e8}
+      \strng{fullhashraw}{1c150d9accb6aafaee8dda15fc02f1e8}
+      \strng{bibnamehash}{1c150d9accb6aafaee8dda15fc02f1e8}
+      \strng{authorbibnamehash}{1c150d9accb6aafaee8dda15fc02f1e8}
+      \strng{authornamehash}{174f294fea39666c0e4c2d8a61b88acb}
+      \strng{authorfullhash}{1c150d9accb6aafaee8dda15fc02f1e8}
+      \strng{authorfullhashraw}{1c150d9accb6aafaee8dda15fc02f1e8}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2402.12465}
+      \field{title}{Neuro-mimetic Task-free Unsupervised Online Learning with Continual Self-Organizing Maps}
+      \field{year}{2024}
+    \endentry
+    \entry{grapix2025}{incollection}{}{}
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Pattern Recognition}
+      \field{title}{GraPix: Exploring Graph Modularity Optimization for Unsupervised Pixel Clustering}
+      \field{year}{2025}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

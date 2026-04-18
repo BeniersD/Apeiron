@@ -1,0 +1,34 @@
+\section{Implementation}
+\label{sec:implementation}
+
+The reference implementation of Layer~1 is written in Python~3.10+ and consists of eight core modules:
+
+\begin{itemize}
+    \item \texttt{irreducible\_unit.py}: The \texttt{UltimateObservable} class and its atomicity computation logic.
+    \item \texttt{meta\_spec.py}: \texttt{MetaSpecification}, \texttt{DecompositionPrinciple}, and the atomicity framework registry.
+    \item \texttt{decomposition.py}: The four primary decomposition operators plus geometric, qualitative, and symmetry-based operators.
+    \item \texttt{qualitative\_dimensions.py}: Classes for intensity, density, colour, texture, and multi-resolution dimensions.
+    \item \texttt{observables.py}: The \texttt{Layer1\_Observables} manager, which creates, stores, and indexes observables.
+    \item \texttt{density\_field.py}: Relational influence computation and perspective switching.
+    \item \texttt{discovery.py}: Heuristic discovery of new decomposition principles and evolutionary feedback loops.
+    \item \texttt{self\_proving.py}: Integration with SymPy and Z3 for formal theorem proving of atomicity claims.
+\end{itemize}
+
+The codebase is fully type-hinted and includes comprehensive unit tests (\texttt{test\_layer1.py}) covering over 150 test cases. Performance benchmarks confirm that the system scales to at least $10^4$ observables on commodity hardware.
+
+\subsection{Key Optimizations}
+
+\begin{itemize}
+    \item \textbf{Caching:} Atomicity scores are cached with a dirty-flag invalidation pattern (\texttt{\_atomicity\_stale}), avoiding redundant recomputation.
+    \item \textbf{Lazy evaluation:} Heavy substructures (geometry, topology, quantum) are instantiated only when explicitly requested.
+    \item \textbf{Sampling:} The measure-theoretic operator uses random sampling for large sets, bounding complexity at $\mathcal{O}(\text{max\_subsets})$.
+    \item \textbf{Thread safety:} All shared state is protected by reentrant locks (\texttt{threading.RLock}), enabling concurrent access in multi-threaded environments.
+\end{itemize}
+
+\subsection{Autonomous Discovery and Evolution}
+
+The \texttt{discovery} module implements a heuristic discovery pipeline that analyzes data streams to propose new decomposition principles. Validated proposals are automatically registered into the \texttt{MetaSpecification} and the operator registry. The \texttt{EvolutionaryFeedbackLoop} adjusts principle weights based on empirical success rates using an exponential moving average (EMA), allowing the system to refine its own atomicity criteria over time.
+
+\subsection{Formal Theorem Proving}
+
+The \texttt{self\_proving} module integrates with SymPy (logical simplification) and Z3 (SMT solving) to generate machine-checkable proofs of atomicity. For critical observables, the system can produce a JSON certificate that can be independently verified, providing a level of assurance beyond heuristic scoring.

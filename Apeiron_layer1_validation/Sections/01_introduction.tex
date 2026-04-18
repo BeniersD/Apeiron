@@ -1,0 +1,22 @@
+\section{Introduction}
+\label{sec:introduction}
+
+The \Apeiron{} Framework introduced a seventeen-layer architecture for non-anthropocentric knowledge genesis, positing that autonomous intelligence must construct its own categories, temporalities, and causal structures from elementary observables \cite{beniers2026apeiron}. The foundational layer---Layer~1, termed the \emph{Epistemic Singularity}---defines the irreducible atoms of observation from which all higher structure emerges. Without a principled notion of minimal granularity, any representational system succumbs to infinite regress or arbitrary stipulation.
+
+In the original research programme paper, Layer~1 was specified with full mathematical rigor, and a reference implementation was described. However, the empirical validation was limited to trivial canonical observables (e.g., the integer $1$ and repetitive strings). The higher layers of Cluster~I (Layers~2--4) were architecturally specified but not tested on real-world data. This left open the central question: \emph{Does the \Apeiron{} framework actually work when confronted with raw, unlabeled data?}
+
+This paper provides the first comprehensive empirical implementation and validation of Layer~1. We present the complete Python implementation of the \texttt{UltimateObservable} class, the four primary decomposition operators (Boolean, measure-theoretic, categorical, and information-theoretic), the \texttt{MetaSpecification} system for observer-relative atomicity, the qualitative dimensions framework, the relational \texttt{DensityField}, and the autonomous discovery mechanisms. The codebase consists of approximately 6,000 lines of Python, with full unit test coverage and performance benchmarks.
+
+We validate the implementation through a systematic empirical evaluation:
+
+\begin{enumerate}
+    \item \textbf{Canonical convergence:} We verify that the multi-axial atomicity frameworks converge on fundamental irreducible units (e.g., the integer $1$) as required by Axioms~1 and~2 of the \Apeiron{} Framework.
+    
+    \item \textbf{Cross-dataset relational emergence:} We evaluate the full Layer~1--3 pipeline on five diverse datasets: Digits, MNIST, Fashion-MNIST, Kuzushiji-MNIST, and CIFAR-10 (grayscale). We compare Apeiron against two standard unsupervised baselines ($k$-means and spectral clustering), reporting both modularity $Q$ and the functional impact of discovered clusters via counterfactual ablation.
+    
+    \item \textbf{Synthetic validation:} We confirm that the pipeline correctly recovers known cluster structure on a synthetic dataset with controlled pixel groupings.
+\end{enumerate}
+
+This paper provides an initial---but now substantially broadened---empirical probe of Layer~1. We do not claim to validate the full philosophical vision of the \Apeiron{} Framework; rather, we demonstrate that its core computational primitives---multi-axial atomicity and relational hypergraphs---consistently yield non-trivial, functionally relevant structure across a range of visual domains. The results establish a robust baseline for future, more ambitious validations and delineate the current scope of the pixel-level co-activation approach.
+
+The remainder of this paper is organized as follows. Section~\ref{sec:background} summarizes the \Apeiron{} Framework and the role of Layer~1. Section~\ref{sec:atomicity} details the multi-axial atomicity framework and the decomposition operators. Section~\ref{sec:implementation} describes the software architecture and key implementation details. Section~\ref{sec:experiments} presents the experimental setup and results across all five datasets. Section~\ref{sec:discussion} reflects on the implications, positions our findings in the context of prior work, and discusses limitations and future directions. Section~\ref{sec:conclusion} concludes.

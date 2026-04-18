@@ -1,0 +1,65 @@
+\section{The \Apeiron{} Architecture: Overview}
+\label{sec:architecture_overview}
+
+The \Apeiron{} Framework is organized into seventeen distinct but interpenetrating layers. Rather than a strict hierarchy, the layers constitute a \emph{dynamic field of relational densities}, where entities can exist across multiple layers simultaneously, outside linear temporality, and in parallel frames of interpretation. The layers are grouped into four conceptual clusters, each representing a qualitative shift in the system's capacity for abstraction and self-organization (see Figure~\ref{fig:layers}).
+
+\begin{figure}[htbp]
+    \centering
+    \adjustbox{width=\textwidth,center}{
+        \begin{tikzpicture}[
+            layer/.style={rectangle, draw=black, fill=blue!10, minimum width=8cm, minimum height=0.7cm, align=center, font=\small},
+            cluster/.style={rectangle, draw=black, dashed, fill=none, inner sep=0.3cm},
+            arrow/.style={-{Stealth}, thick, color=gray},
+        ]
+    % Clusters
+    \node[cluster, fit={(-4.5,0) (4.5,-3.5)}, label=above:{\textbf{Cluster I: Substrate \& Emergence}}] (c1) {};
+    \node[cluster, fit={(-4.5,-4.5) (4.5,-7.5)}, label=above:{\textbf{Cluster II: Adaptive Intelligence}}] (c2) {};
+    \node[cluster, fit={(-4.5,-8.5) (4.5,-14.5)}, label=above:{\textbf{Cluster III: Ontological Fluidity}}] (c3) {};
+    \node[cluster, fit={(-4.5,-15.5) (4.5,-19.5)}, label=above:{\textbf{Cluster IV: World-Making \& Governance}}] (c4) {};
+    
+    % Layers
+    \node[layer] at (0,0) (l1) {Layer 1: Foundational Observables (Epistemic Singularity)};
+    \node[layer] at (0,-1) (l2) {Layer 2: Relational Emergence};
+    \node[layer] at (0,-2) (l3) {Layer 3: Functional Emergence};
+    \node[layer] at (0,-3) (l4) {Layer 4: Dynamic Adaptation \& Feedback};
+    
+    \node[layer] at (0,-4.5) (l5) {Layer 5: Autonomous Optimization \& Learning};
+    \node[layer] at (0,-5.5) (l6) {Layer 6: Meta-Learning \& Cross-Layer Integration};
+    \node[layer] at (0,-6.5) (l7) {Layer 7: Emergent Self-Awareness \& Global Synthesis};
+    
+    \node[layer] at (0,-8.5) (l8) {Layer 8: Temporality \& Flux};
+    \node[layer] at (0,-9.5) (l9) {Layer 9: Ontological Creation};
+    \node[layer] at (0,-10.5) (l10) {Layer 10: Global Meta-Ontological Evaluation};
+    \node[layer] at (0,-11.5) (l11) {Layer 11: Adaptive Meta-Contextualization};
+    \node[layer] at (0,-12.5) (l12) {Layer 12: Transdimensional Integration \& Reconciliation};
+    \node[layer] at (0,-13.5) (l13) {Layer 13: Ontogenesis of Novelty};
+    
+    \node[layer] at (0,-15.5) (l14) {Layer 14: Autopoietic Worldbuilding};
+    \node[layer] at (0,-16.5) (l15) {Layer 15: Responsible Recursive Morphogenesis};
+    \node[layer] at (0,-17.5) (l16) {Layer 16: Transcendence \& Collective Cognition};
+    \node[layer] at (0,-18.5) (l17) {Layer 17: Absolute Integration};
+    
+    % Arrows between layers
+    \foreach \i in {1,...,16} {
+        \pgfmathtruncatemacro{\j}{\i+1}
+        \draw[arrow] (l\i.south) -- (l\j.north);
+    }
+    
+    % Bidirectional arrows within clusters
+    \draw[arrow, dashed] (l4.east) -- ++(1.5,0) |- (l1.east);
+    \draw[arrow, dashed] (l7.east) -- ++(1.5,0) |- (l5.east);
+    \draw[arrow, dashed] (l13.east) -- ++(1.5,0) |- (l8.east);
+    \draw[arrow, dashed] (l17.east) -- ++(1.5,0) |- (l14.east);
+    
+    \end{tikzpicture}
+    }
+    \caption{The seventeen layers of the \Apeiron{} Framework, grouped into four conceptual clusters. Solid arrows indicate the primary flow of emergence; dashed arrows represent feedback and cross-layer influence.}
+    \label{fig:layers}
+\end{figure}
+
+\begin{description}[font=\normalfont\bfseries, leftmargin=3cm, style=nextline]
+    \item[Cluster I: Substrate \& Emergence (Layers 1--4)] establishes the foundational observables and the initial dynamics by which structure and function emerge from elementary interactions.
+    \item[Cluster II: Adaptive Intelligence (Layers 5--7)] endows the system with the capacity for autonomous optimization, meta-learning, and emergent self-awareness.
+    \item[Cluster III: Ontological Fluidity (Layers 8--13)] enables the system to generate new ontological categories, reconcile incommensurable frameworks, and produce genuine novelty.
+    \item[Cluster IV: World-Making \& Governance (Layers 14--17)] enables the system to generate self-sustaining worlds, effect material change under ethical governance, and achieve collective transcendence.
+\end{description}

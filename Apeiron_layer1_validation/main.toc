@@ -1,0 +1,43 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Background: The \textsc {Apeiron}{} Framework and the Epistemic Singularity}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The \textsc {Apeiron}{} Framework in Brief}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Cluster I: The Substrate of Emergence}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}The Epistemic Singularity and Multi-Axial Atomicity}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}From Atomic Observables to Emergent Structure}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Relation to the Present Work}{6}{subsection.2.5}%
+\contentsline {section}{\numberline {3}The Multi-Axial Atomicity Framework}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The Four Primary Decomposition Operators}{6}{subsection.3.1}%
+\contentsline {paragraph}{Boolean Atomicity (Proposition~A.1).}{6}{section*.2}%
+\contentsline {paragraph}{Measure-Theoretic Atomicity (Proposition~A.2).}{7}{section*.3}%
+\contentsline {paragraph}{Categorical Atomicity (Proposition~A.3).}{7}{section*.4}%
+\contentsline {paragraph}{Information-Theoretic Atomicity (Proposition~A.4).}{7}{section*.5}%
+\contentsline {subsection}{\numberline {3.2}Atomicity Score and Meta-Specification}{7}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Qualitative Dimensions and Relational Context}{8}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Implementation}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Key Optimizations}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Autonomous Discovery and Evolution}{9}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Formal Theorem Proving}{9}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Experimental Validation}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Experiment 1: Canonical Multi-Axial Convergence}{10}{subsection.5.1}%
+\contentsline {paragraph}{Hypothesis ($H_0$):}{10}{section*.6}%
+\contentsline {paragraph}{Setup:}{10}{section*.7}%
+\contentsline {paragraph}{Results:}{10}{section*.8}%
+\contentsline {paragraph}{Interpretation:}{10}{section*.10}%
+\contentsline {subsection}{\numberline {5.2}Experiment 2: Unsupervised Relational Structure Discovery Across Five Datasets}{10}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Experimental Protocol}{10}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Results Across Five Datasets}{11}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Notable Observations}{11}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}Qualitative Cluster Visualization (MNIST)}{12}{subsubsection.5.2.4}%
+\contentsline {subsection}{\numberline {5.3}Synthetic Validation}{12}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Relationship to Atomicity}{12}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Discussion}{12}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Implications for the \textsc {Apeiron}{} Research Programme}{12}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Performance Across Datasets and Comparison with Baselines}{13}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Relation to Existing Work and Unique Contributions}{13}{subsection.6.3}%
+\contentsline {paragraph}{Benchmarking Against Prior Work.}{13}{section*.13}%
+\contentsline {paragraph}{Methodological Distinctions.}{14}{section*.14}%
+\contentsline {paragraph}{Novel Contributions in Context.}{14}{section*.15}%
+\contentsline {subsection}{\numberline {6.4}Limitations and Open Challenges}{15}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Future Work}{15}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Conclusion}{16}{section.7}%
+\contentsline {section}{\numberline {A}Appendix: Proofs of Key Propositions}{16}{appendix.A}%

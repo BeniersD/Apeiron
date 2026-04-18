@@ -1,0 +1,32 @@
+\section{Appendix: Proofs of Key Propositions}
+\label{app:proofs}
+
+For completeness, we restate the proofs of the four foundational propositions from \cite{beniers2026apeiron}.
+
+\subsection*{Proposition A.1 (Boolean Atomicity)}
+For the integer $1$ in the Boolean algebra of natural numbers under divisibility, $\decomp_{\text{bool}}(1) = \{1\}$.
+
+\begin{proof}
+In $(\mathbb{N}, |)$, $1$ divides every number, so $1 \le a$ for all $a$. Suppose there exists $b$ with $1 < b < 1$. Then $1 \mid b$, $b \mid 1$, and $b \neq 1$. The only divisor of $1$ is $1$, contradiction. Thus $1$ is an atom.
+\end{proof}
+
+\subsection*{Proposition A.2 (Measure Atomicity)}
+For the counting measure $\mu$ on $A = \{1\}$, $\decomp_{\text{meas}}(A) = \{A\}$.
+
+\begin{proof}
+$\mu(A) = 1 > 0$. The only measurable subsets are $\emptyset$ and $\{1\}$, with measures $0$ and $1$. No subset has measure strictly between $0$ and $1$. Thus $A$ is an atom.
+\end{proof}
+
+\subsection*{Proposition A.3 (Categorical Zero Object)}
+In $\mathbf{Set}_*$, the singleton $\{*\}$ is a zero object.
+
+\begin{proof}
+For any pointed set $(X, x_0)$, there is exactly one morphism $f: \{*\} \to X$ defined by $f(*) = x_0$ (initiality). There is exactly one morphism $g: X \to \{*\}$ defined by $g(x) = *$ (terminality). Thus $\{*\}$ is both initial and terminal, hence a zero object.
+\end{proof}
+
+\subsection*{Proposition A.4 (Information Atomicity)}
+For $s = a^n$, $K(s) \le \log_2 n + c$, so $\atomicity_{\text{info}}(s) \approx 1$.
+
+\begin{proof}
+A program printing $a$ exactly $n$ times requires $\lceil\log_2 n\rceil$ bits for $n$, plus a constant for the loop. Thus $K(s) \le \log_2 n + c$. The compression ratio $|zlib(s)|/|s| \to 0$ as $n \to \infty$, so $1 - |zlib(s)|/|s| \to 1$.
+\end{proof}
