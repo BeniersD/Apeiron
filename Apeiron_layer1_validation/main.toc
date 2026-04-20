@@ -29,7 +29,7 @@
 \contentsline {subsubsection}{\numberline {5.2.1}Experimental Protocol}{14}{subsubsection.5.2.1}%
 \contentsline {subsubsection}{\numberline {5.2.2}Results Across Five Datasets}{14}{subsubsection.5.2.2}%
 \contentsline {subsubsection}{\numberline {5.2.3}Notable Observations}{15}{subsubsection.5.2.3}%
-\contentsline {subsubsection}{\numberline {5.2.4}Qualitative Cluster Visualization (MNIST)}{15}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.4}Qualitative Cluster Visualization (MNIST)}{16}{subsubsection.5.2.4}%
 \contentsline {subsubsection}{\numberline {5.2.5}DensityField Visualization}{16}{subsubsection.5.2.5}%
 \contentsline {subsection}{\numberline {5.3}Synthetic Validation}{16}{subsection.5.3}%
 \contentsline {subsection}{\numberline {5.4}Relationship to Atomicity}{17}{subsection.5.4}%
@@ -37,12 +37,12 @@
 \contentsline {subsection}{\numberline {6.1}Implications for the \textsc {Apeiron}{} Research Programme}{18}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Performance Across Datasets and Comparison with Baselines}{18}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Relation to Existing Work and Unique Contributions}{19}{subsection.6.3}%
-\contentsline {paragraph}{Benchmarking Against Prior Work.}{19}{section*.18}%
-\contentsline {paragraph}{Methodological Distinctions.}{19}{section*.19}%
-\contentsline {paragraph}{Novel Contributions in Context.}{20}{section*.20}%
+\contentsline {paragraph}{Benchmarking Against Prior Work.}{19}{section*.19}%
+\contentsline {paragraph}{Methodological Distinctions.}{19}{section*.20}%
+\contentsline {paragraph}{Novel Contributions in Context.}{19}{section*.21}%
 \contentsline {subsection}{\numberline {6.4}Limitations and Open Challenges}{20}{subsection.6.4}%
 \contentsline {subsection}{\numberline {6.5}Future Work}{21}{subsection.6.5}%
 \contentsline {section}{\numberline {7}Conclusion}{22}{section.7}%
-\contentsline {subsection}{Code Availability}{22}{section*.21}%
+\contentsline {subsection}{Code Availability}{22}{section*.22}%
 \contentsline {section}{\numberline {A}Appendix: Proofs of Key Propositions}{23}{appendix.A}%
 \contentsline {subsection}{\numberline {A.1}Formal Verification of Atomicity with Multiple Theorem Provers}{24}{subsection.A.1}%

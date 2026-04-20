@@ -205,7 +205,7 @@
     <Compile Include="apeiron\layers\_layers_11_to_17.py" />
     <Compile Include="apeiron\layers\_seventeen_layers_framework.py" />
     <Compile Include="apeiron\layers\__init__.py" />
-    <Compile Include="apeiron\map.py" />
+    <Compile Include="archive\map.py" />
     <Compile Include="apeiron\optional\ontological_diplomacy.py" />
     <Compile Include="apeiron\optional\quantum_vqe.py" />
     <Compile Include="apeiron\optional\quantum_vqe_optimizer.py" />
@@ -318,6 +318,9 @@
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
     <Content Include="17 layers AI model.docx" />
+    <Content Include="apeiron\CONTRIBUTING.md" />
+    <Content Include="apeiron\hardware\README.md" />
+    <Content Include="apeiron\README.md" />
     <Content Include="archive\Evaluations\nexus_backends_eval.docx" />
     <Content Include="archive\Evaluations\nexus_evaluation_v10.docx" />
     <Content Include="archive\Evaluations\nexus_evaluation_v9_1_1.docx" />

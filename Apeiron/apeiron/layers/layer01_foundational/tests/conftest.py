@@ -47,8 +47,6 @@ import pytest
 # ============================================================================
 
 def pytest_configure(config):
-    """Register custom warning filters and markers."""
-    # Warning filters (as before)
     warnings.filterwarnings(
         "ignore",
         message=".*Graph is not fully connected.*",
@@ -65,34 +63,50 @@ def pytest_configure(config):
         category=RuntimeWarning,
     )
 
-    # Custom markers
-    config.addinivalue_line("markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')")
-    config.addinivalue_line("markers", "integration: integration tests requiring multiple components")
-    config.addinivalue_line("markers", "hardware: tests that require specific hardware backends")
-    config.addinivalue_line("markers", "experimental: experimental tests that may be unstable")
+    config.addinivalue_line("markers", "slow: marks tests as slow")
+    config.addinivalue_line("markers", "integration: integration tests")
+    config.addinivalue_line("markers", "hardware: tests that require specific hardware")
+    config.addinivalue_line("markers", "experimental: experimental tests")
 
 
 # ============================================================================
-# Core Layer 1 fixtures
+# Session-scoped fixtures (aangemaakt één keer per testsessie)
+# ============================================================================
+
+@pytest.fixture(scope="session")
+def default_meta_spec():
+    """Session-scoped default MetaSpecification - gedeeld door alle tests."""
+    from apeiron.layers.layer01_foundational.meta_spec import MetaSpecification
+    return MetaSpecification()
+
+
+@pytest.fixture(scope="session")
+def layer1_observables():
+    """Session-scoped Layer1_Observables registry."""
+    from apeiron.layers.layer01_foundational.observables import Layer1_Observables
+    return Layer1_Observables()
+
+
+# ============================================================================
+# Function-scoped fixtures (vers per test)
 # ============================================================================
 
 @pytest.fixture
-def default_meta_spec():
-    """Return a fresh default MetaSpecification."""
+def fresh_meta_spec():
+    """Een verse MetaSpecification per test - gebruik als je de spec wilt muteren."""
     from apeiron.layers.layer01_foundational.meta_spec import MetaSpecification
     return MetaSpecification()
 
 
 @pytest.fixture
 def custom_meta_spec():
-    """Return a MetaSpecification that can be mutated per test."""
+    """Alias voor fresh_meta_spec (backwards compatibel)."""
     from apeiron.layers.layer01_foundational.meta_spec import MetaSpecification
     return MetaSpecification()
 
 
 @pytest.fixture
 def simple_observable():
-    """Return a basic UltimateObservable (integer 1)."""
     from apeiron.layers.layer01_foundational.irreducible_unit import (
         UltimateObservable,
         ObservabilityType,
@@ -106,7 +120,6 @@ def simple_observable():
 
 @pytest.fixture
 def observable_factory():
-    """Factory fixture to create UltimateObservable with custom parameters."""
     from apeiron.layers.layer01_foundational.irreducible_unit import (
         UltimateObservable,
         ObservabilityType,
@@ -122,33 +135,23 @@ def observable_factory():
 
 
 @pytest.fixture
-def layer1_observables():
-    """Return a fresh Layer1_Observables registry."""
-    from apeiron.layers.layer01_foundational.observables import Layer1_Observables
-    return Layer1_Observables()
-
-
-@pytest.fixture
 def density_field():
-    """Return an empty DensityField."""
     from apeiron.layers.layer01_foundational.density_field import DensityField
     return DensityField()
 
 
 @pytest.fixture
-def evolutionary_loop(default_meta_spec):
-    """Return an EvolutionaryFeedbackLoop with default MetaSpec."""
+def evolutionary_loop(fresh_meta_spec):
     from apeiron.layers.layer01_foundational.discovery import EvolutionaryFeedbackLoop
-    return EvolutionaryFeedbackLoop(default_meta_spec)
+    return EvolutionaryFeedbackLoop(fresh_meta_spec)
 
 
 # ============================================================================
-# Core framework fixtures (new core modules)
+# Core framework fixtures
 # ============================================================================
 
 @pytest.fixture
 def event_bus():
-    """Return a fresh EventBus instance (memory backend, no persistence)."""
     from apeiron.core.event_bus import EventBus, EventBusConfig
     config = EventBusConfig(
         node_id="test_node",
@@ -160,7 +163,6 @@ def event_bus():
 
 @pytest.fixture
 async def running_event_bus(event_bus) -> AsyncGenerator:
-    """Return an EventBus that is already started (and stopped after test)."""
     event_bus.start()
     yield event_bus
     await event_bus.stop()
@@ -168,7 +170,6 @@ async def running_event_bus(event_bus) -> AsyncGenerator:
 
 @pytest.fixture
 def layer_config():
-    """Return a default LayerConfig for testing."""
     from apeiron.core.base import LayerConfig, LayerType
     return LayerConfig(
         layer_id="test_layer",
@@ -178,7 +179,6 @@ def layer_config():
 
 @pytest.fixture
 def mock_hardware_backend():
-    """Mock a hardware backend that always returns success."""
     from unittest.mock import MagicMock
     mock = MagicMock()
     mock.initialize.return_value = True
@@ -188,35 +188,22 @@ def mock_hardware_backend():
 
 
 # ============================================================================
-# Asyncio fixtures & event loop management
+# Asyncio
 # ============================================================================
 
 @pytest.fixture(scope="session")
 def event_loop():
-    """Create a session-scoped event loop for async tests."""
     loop = asyncio.new_event_loop()
     yield loop
     loop.close()
 
 
-# @pytest.fixture(autouse=True)
-# async def cleanup_async_tasks():
-#     """Automatically cancel pending tasks after each async test."""
-#     yield
-#     tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
-#     for task in tasks:
-#         task.cancel()
-#     if tasks:
-#         await asyncio.gather(*tasks, return_exceptions=True)
-
-
 # ============================================================================
-# Data fixtures for experiments
+# Data fixtures
 # ============================================================================
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def synthetic_two_groups():
-    """Generate synthetic dataset: 200 samples, 64 features, two perfectly separated groups."""
     rng = np.random.default_rng(42)
     n_samples, n_features = 200, 64
     X = np.zeros((n_samples, n_features))
@@ -226,9 +213,8 @@ def synthetic_two_groups():
     return X, y
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def coactivation_matrix(synthetic_two_groups):
-    """Build co-activation matrix from synthetic data."""
     X, _ = synthetic_two_groups
     corr = np.corrcoef(X.T)
     corr = np.nan_to_num(corr, nan=0.0, posinf=0.0, neginf=0.0)
@@ -238,12 +224,11 @@ def coactivation_matrix(synthetic_two_groups):
 
 
 # ============================================================================
-# Hardware-related fixtures (optional, skipped if not available)
+# Hardware fixtures
 # ============================================================================
 
 @pytest.fixture
 def cpu_backend():
-    """Return an initialized CPU backend."""
     try:
         from apeiron.hardware.backends import CPUBackend
         backend = CPUBackend()
@@ -255,7 +240,6 @@ def cpu_backend():
 
 @pytest.fixture
 def hardware_factory():
-    """Return a HardwareFactory instance."""
     try:
         from apeiron.hardware.factory import HardwareFactory
         return HardwareFactory()
@@ -264,12 +248,11 @@ def hardware_factory():
 
 
 # ============================================================================
-# Self-proving fixtures (Z3, SymPy)
+# Self-proving fixtures
 # ============================================================================
 
 @pytest.fixture
 def self_proving_observable():
-    """Return an UltimateObservable with self-proving capability added."""
     from apeiron.layers.layer01_foundational.irreducible_unit import (
         UltimateObservable,
         ObservabilityType,
@@ -288,7 +271,6 @@ def self_proving_observable():
 
 @pytest.fixture
 def has_sympy():
-    """Check if SymPy is available."""
     try:
         import sympy
         return True
@@ -298,7 +280,6 @@ def has_sympy():
 
 @pytest.fixture
 def has_z3():
-    """Check if Z3 is available."""
     try:
         import z3
         return True

@@ -63,6 +63,7 @@ import logging
 import threading
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Set
+from apeiron.core.base import cached
 
 logger = logging.getLogger(__name__)
 
@@ -539,8 +540,8 @@ class MetaSpecification:
     # -----------------------------------------------------------------------
     # Validatie
     # -----------------------------------------------------------------------
-
-    def validate(self) -> bool:
+    @cached(ttl=60)
+    async def validate(self) -> bool:
         """
         Controleer interne consistentie van de MetaSpecification.
 

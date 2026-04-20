@@ -1572,8 +1572,8 @@ class UltimateObservable:
             return self.atomicity
 
         # If a manually set combined score exists and no weights/observer override, return it.
-        if 'combined' in self.atomicity and weights is None and observer is None:
-            return self.atomicity['combined']
+        # if 'combined' in self.atomicity and weights is None and observer is None:
+        #     return self.atomicity['combined']
 
         # Determine weights: if observer is specified and has atomicity_weights, use those.
         if observer is not None and observer == self.observer_perspective:

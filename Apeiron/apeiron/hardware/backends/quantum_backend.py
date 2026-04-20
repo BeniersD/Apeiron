@@ -50,14 +50,19 @@ except ImportError:
 
 # Qiskit import met betere error handling
 try:
-    from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute, Aer
-    from qiskit.providers.aer import QasmSimulator, StatevectorSimulator
-    from qiskit.quantum_info import state_fidelity, partial_trace
+    from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
     from qiskit.compiler import transpile
+    # Qiskit 1.0+ gebruikt qiskit_aer
+    try:
+        from qiskit_aer import AerSimulator
+        from qiskit_aer import StatevectorSimulator
+        # backwards compat aliassen
+        QasmSimulator = AerSimulator
+    except ImportError:
+        # fallback naar oude qiskit.providers.aer
+        from qiskit.providers.aer import QasmSimulator, StatevectorSimulator
     QISKIT_AVAILABLE = True
 except ImportError:
-    QISKIT_AVAILABLE = False
-except Exception as e:
     QISKIT_AVAILABLE = False
     print(f"⚠️ Fout bij laden Qiskit: {e}")
 
@@ -96,6 +101,7 @@ class QuantumBackend(HardwareBackend):
         
         self.logger = logging.getLogger('Quantum')
         self.is_available = QISKIT_AVAILABLE
+        self.n_qubits = 0   # wordt overschreven in initialize()
         
         # Configuratie
         self.config = {
@@ -216,7 +222,7 @@ class QuantumBackend(HardwareBackend):
             test.cx(0, 1)
             
             # Voer uit
-            job = execute(test, self.statevector_sim)
+            job = self.statevector_sim.run(test)
             result = job.result()
             statevector = result.get_statevector()
             
@@ -270,7 +276,7 @@ class QuantumBackend(HardwareBackend):
             
             # Meet de statevector voor klassieke representatie
             start_time = time.time()
-            job = execute(circuit, self.statevector_sim)
+            job = self.statevector_sim.run(circuit)
             statevector = job.result().get_statevector()
             
             # Update metrics
@@ -345,8 +351,9 @@ class QuantumBackend(HardwareBackend):
         return None
     
     def _cpu_create_field(self, dimensions: int) -> np.ndarray:
-        """CPU fallback voor field creatie."""
         field = np.random.randn(dimensions)
+        if np.linalg.norm(field) == 0:
+            field = np.ones(dimensions)  # fallback
         return self._normalize(field)
     
     @handle_hardware_errors(default_return=None)
@@ -420,13 +427,10 @@ class QuantumBackend(HardwareBackend):
     def _entangled_update(self, field_circuit, verleden_circuit, toekomst_circuit,
                          field, verleden, toekomst,
                          field_id=None, verleden_id=None, toekomst_id=None) -> Dict:
-        """
-        Verstrengelde update met partiële trace.
-        """
         n_qubits = field_circuit.num_qubits
         total_qubits = n_qubits * 3
         
-        from qiskit import QuantumCircuit, execute
+        from qiskit import QuantumCircuit
         
         # Combineer circuits voor verstrengeling
         combined = QuantumCircuit(total_qubits)
@@ -445,7 +449,7 @@ class QuantumBackend(HardwareBackend):
         start_time = time.time()
         
         # Voer ÉÉN keer uit voor statevector
-        job = execute(combined, self.statevector_sim)
+        job = self.statevector_sim.run(combined)
         statevector = job.result().get_statevector()
         
         # Update metrics
@@ -632,6 +636,9 @@ class QuantumBackend(HardwareBackend):
     def _measure_circuit(self, circuit: QuantumCircuit, 
                         qubit_range=None) -> Optional[np.ndarray]:
         """Meet een quantum circuit en retourneer numpy array."""
+        if circuit is None:
+            raise HardwareError("Cannot measure None circuit")
+
         if not QISKIT_AVAILABLE:
             return None
         
@@ -658,7 +665,7 @@ class QuantumBackend(HardwareBackend):
                 )
             
             # Voer uit op statevector simulator
-            job = execute(circuit, self.statevector_sim)
+            job = self.statevector_sim.run(circuit)
             statevector = job.result().get_statevector()
             
             # Converteer naar array
@@ -760,7 +767,7 @@ class QuantumBackend(HardwareBackend):
         
         # Voer uit
         shots = self.config.get('shots', 1000)
-        job = execute(test, self.simulator, shots=shots)
+        job = self.simulator.run(test, shots=shots)
         result = job.result().get_counts()
         
         # p0 = kans dat anker-qubit (rechts in bitstring) |0⟩ is
@@ -921,7 +928,7 @@ class QuantumBackend(HardwareBackend):
     
     def get_info(self) -> str:
         """Haal informatie op over de quantum backend."""
-        info = f"Quantum ({self.n_qubits} qubits)"
+        info = f"Quantum ({getattr(self, 'n_qubits', 0)} qubits)"
         if self.is_available:
             info += f" - {self.metrics['total_circuits']} circuits"
             info += f", {self.metrics['total_executions']} execs"

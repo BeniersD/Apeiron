@@ -319,7 +319,7 @@ class FPGABackend(HardwareBackend):
         except:
             pass
         
-        # 🔥 V12.2: Fallback zonder DMA-kopieën
+        # 🔥 Fallback zonder DMA-kopieën
         self.metrics['cache_misses'] += 1
         for fid, buf in self.fields.items():
             # Gebruik buf.array attribute in plaats van np.array(buf)
@@ -336,7 +336,7 @@ class FPGABackend(HardwareBackend):
     
     def _float_to_fixed(self, value: float) -> int:
         """
-        🔥 V12.2: Converteer float naar fixed-point voor hardware registers.
+        🔥 Converteer float naar fixed-point voor hardware registers.
         
         Args:
             value: Float waarde (bv. dt = 0.1)
@@ -345,11 +345,11 @@ class FPGABackend(HardwareBackend):
             Fixed-point integer voor AXI register
         """
         scale = self.config.get('fixed_point_scale', self.FIXED_POINT_SCALE)
-        return int(value * scale)
+        return int(round(value * scale))
     
     def _float_to_ieee754(self, value: float) -> int:
         """
-        🔥 V12.2: Alternatief: converteer float naar IEEE 754 32-bit integer.
+        🔥 Alternatief: converteer float naar IEEE 754 32-bit integer.
         
         Args:
             value: Float waarde

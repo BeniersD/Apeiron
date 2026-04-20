@@ -64,11 +64,13 @@ class CPUBackend(HardwareBackend):
     def __init__(self):
         super().__init__()
         self.name = "CPU"
+        self.is_available = True
         
         # 🔥 V12.2: Gebruik dictionary voor O(1) lookups
         self.fields: Dict[int, np.ndarray] = {}  # id -> np.ndarray
         self.field_counters: Dict[int, int] = {}  # id -> update counter
         self.field_hash: Dict[str, int] = {}  # hash -> id voor lookup
+        self.field_data: Dict[int, np.ndarray] = {}  # id -> np.ndarray (cached)
         
         self.logger = logging.getLogger('CPU')
         
@@ -166,6 +168,7 @@ class CPUBackend(HardwareBackend):
         self._next_id += 1
         
         self.fields[field_id] = field.copy()
+        self.field_data[field_id] = field.copy()   # <-- toevoegen
         self.field_counters[field_id] = 0
         
         # Sla hash op voor snelle lookup
@@ -177,36 +180,30 @@ class CPUBackend(HardwareBackend):
         return field
     
     def get_field_id(self, field: np.ndarray) -> Optional[int]:
-        """
-        🔥 V12.2: Nieuwe methode om field ID op te halen (O(1) lookup).
-        
-        Args:
-            field: Het veld waarvoor de ID gezocht wordt
-            
-        Returns:
-            Field ID of None als niet gevonden
-        """
-        # Gebruik hash voor O(1) lookup
+        """Haal field ID op via O(1) lookup of lineaire scan."""
+        # Probeer hash (O(1))
         try:
             field_hash = hashlib.md5(field.tobytes()).hexdigest()
             if field_hash in self.field_hash:
                 self.metrics['cache_hits'] += 1
                 return self.field_hash[field_hash]
-        except:
+        except Exception:
             pass
-        
-        # Fallback: lineaire scan (voor als hash niet werkt)
+
+        # Hash niet gevonden -> cache miss
         self.metrics['cache_misses'] += 1
-        for fid, stored in self.fields.items():
+
+        # Lineaire scan
+        for fid, stored in self.field_data.items():
             if np.array_equal(stored, field):
-                # Update hash voor toekomst
+                # Update hash voor toekomstige lookups
                 try:
                     field_hash = hashlib.md5(field.tobytes()).hexdigest()
                     self.field_hash[field_hash] = fid
-                except:
+                except Exception:
                     pass
                 return fid
-        
+
         return None
     
     @handle_hardware_errors(default_return=None)
@@ -364,7 +361,7 @@ class CPUBackend(HardwareBackend):
         
         self.metrics['coherence_time'] = time.time() - start_time
         
-        return float(coherence)
+        return max(0.0, min(1.0, float(coherence)))
     
     # ====================================================================
     # HULP FUNCTIES
@@ -435,6 +432,7 @@ class CPUBackend(HardwareBackend):
         
         n_fields = len(self.fields)
         self.fields.clear()
+        self.field_data.clear()
         self.field_counters.clear()
         self.field_hash.clear()
         

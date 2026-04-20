@@ -337,6 +337,7 @@ class HardwareFactory:
             'avg_init_time': 0.0,
             'start_time': time.time()
         }
+        self._cache: Dict[str, Tuple[HardwareBackend, float]] = {}
         
         logger.info("=" * 80)
         logger.info("🔧 HARDWARE FACTORY (PROFESSIONAL) GEÏNITIALISEERD")
@@ -585,7 +586,7 @@ class HardwareFactory:
     # ---------------------------------------------------------------------
     # Caching
     # ---------------------------------------------------------------------
-    _cache: Dict[str, Tuple[HardwareBackend, float]] = {}
+    # _cache: Dict[str, Tuple[HardwareBackend, float]] = {}
     
     def _cache_backend(self, name: str, backend: HardwareBackend) -> None:
         if self.cache_enabled:

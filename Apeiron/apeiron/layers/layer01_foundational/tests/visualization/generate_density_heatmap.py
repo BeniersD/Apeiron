@@ -1,7 +1,11 @@
-# generate_density_heatmap.py
+﻿# generate_density_heatmap.py
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_openml
+from datetime import datetime
+
+# Tijdstempel voor unieke bestandsnaam
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Laad MNIST
 X, y = fetch_openml('mnist_784', version=1, return_X_y=True, as_frame=False, parser='auto')
@@ -23,11 +27,14 @@ corr[corr < 0] = 0
 influence = corr.mean(axis=1)  # gemiddelde connectiviteit per pixel
 heatmap = influence.reshape(28, 28)
 
-# Plot en opslaan
+# Plot en opslaan met tijdstempel
 plt.figure(figsize=(6, 5))
 plt.imshow(heatmap, cmap='hot', interpolation='nearest')
 plt.colorbar(label='Gemiddelde resonantie')
 plt.title(f'DensityField heatmap for digit {digit}')
 plt.tight_layout()
-plt.savefig('density_heatmap_digit8.pdf', bbox_inches='tight')
+
+filename = f'density_heatmap_digit{digit}_{timestamp}.pdf'
+plt.savefig(filename, bbox_inches='tight')
 plt.close()
+print(f"✅ Heatmap opgeslagen als: {filename}")
