@@ -50,6 +50,29 @@
     tabsize=2
 }
 
+% JSON language definition for listings
+\lstdefinelanguage{json}{
+    basicstyle=\ttfamily\small,
+    morestring=[b]",
+    moredelim=*[s][\color{blue}]{:}{ },
+    moredelim=*[l][\color{blue}]{\ },
+    literate=
+        *{0}{{{\color{red}0}}}{1}
+        {1}{{{\color{red}1}}}{1}
+        {2}{{{\color{red}2}}}{1}
+        {3}{{{\color{red}3}}}{1}
+        {4}{{{\color{red}4}}}{1}
+        {5}{{{\color{red}5}}}{1}
+        {6}{{{\color{red}6}}}{1}
+        {7}{{{\color{red}7}}}{1}
+        {8}{{{\color{red}8}}}{1}
+        {9}{{{\color{red}9}}}{1}
+        {\{}{{{\color{red}\{}}}{1}
+        {\}}{{{\color{red}\}}}}{1}
+        {[}{{{\color{red}[}}}{1}
+        {]}{{{\color{red}]}}}{1},
+}
+
 \title{\huge \textbf{Multi-Axial Atomicity for Unsupervised Relational Structure Discovery} \\
 \large An Empirical Probe of the \Apeiron{} Framework's Foundational Layer}
 

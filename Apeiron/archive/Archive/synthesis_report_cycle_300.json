@@ -1,0 +1,220 @@
+{
+  "domains": {
+    "cs": {
+      "name": "cs",
+      "papers": 20,
+      "concepts": 47,
+      "methodologies": [
+        "unsupervised",
+        "clustering",
+        "supervised"
+      ],
+      "worldview": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.0
+      ]
+    },
+    "physics": {
+      "name": "physics",
+      "papers": 20,
+      "concepts": 21,
+      "methodologies": [],
+      "worldview": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "bridges": [
+    {
+      "concept": "through",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "through"
+    },
+    {
+      "concept": "autonomous \u2248 location",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 location"
+    },
+    {
+      "concept": "autonomous \u2248 publish",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 publish"
+    },
+    {
+      "concept": "autonomous \u2248 location",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 location"
+    },
+    {
+      "concept": "autonomous \u2248 publish",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 publish"
+    },
+    {
+      "concept": "autonomous \u2248 through",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 through"
+    },
+    {
+      "concept": "autonomous \u2248 location",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 location"
+    },
+    {
+      "concept": "autonomous \u2248 through",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 through"
+    },
+    {
+      "concept": "autonomous \u2248 location",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "autonomous \u2192 location"
+    },
+    {
+      "concept": "complexity. \u2248 through",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "complexity. \u2192 through"
+    },
+    {
+      "concept": "complexity. \u2248 through",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "complexity. \u2192 through"
+    },
+    {
+      "concept": "complexity. \u2248 science",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "complexity. \u2192 science"
+    },
+    {
+      "concept": "complexity. \u2248 publish",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "complexity. \u2192 publish"
+    },
+    {
+      "concept": "applications, \u2248 location",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "applications, \u2192 location"
+    },
+    {
+      "concept": "applications, \u2248 publish",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "applications, \u2192 publish"
+    },
+    {
+      "concept": "applications, \u2248 location",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "applications, \u2192 location"
+    },
+    {
+      "concept": "applications, \u2248 publish",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "applications, \u2192 publish"
+    },
+    {
+      "concept": "construct \u2248 through",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "construct \u2192 through"
+    },
+    {
+      "concept": "construct \u2248 through",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "construct \u2192 through"
+    },
+    {
+      "concept": "underlying \u2248 finding",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "underlying \u2192 finding"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "novel_15",
+      "description": "The concept of 'autonomous' in cs may be analogous to 'publish' in physics, suggesting a unified framework",
+      "domains": [
+        "cs",
+        "physics"
+      ],
+      "novelty": 0.8562279885409461,
+      "feasibility": 0.5599999999999999,
+      "impact": 0.7779179242314551,
+      "testability": 0.48999999999999994
+    }
+  ],
+  "statistics": {
+    "total_domains": 2,
+    "total_bridges": 894,
+    "total_hypotheses": 1,
+    "avg_bridge_strength": 0.7003355704697986,
+    "bridge_discovery_history": [
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 139,
+        "coherence": 0.0,
+        "timestamp": 0
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 151,
+        "coherence": 0.0,
+        "timestamp": 1
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 151,
+        "coherence": 0.0,
+        "timestamp": 2
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 151,
+        "coherence": 0.0,
+        "timestamp": 3
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 151,
+        "coherence": 0.0,
+        "timestamp": 4
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 151,
+        "coherence": 0.0,
+        "timestamp": 5
+      }
+    ]
+  }
+}

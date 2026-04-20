@@ -1,0 +1,269 @@
+{
+  "timestamp": "2026-02-19T00:58:24.367536",
+  "cycle": 505,
+  "status": {
+    "cycle": 505,
+    "state": "stable",
+    "safety_level": "CRITICAL",
+    "shutdown_triggered": false,
+    "error_bounds": {
+      "epsilon": 0.13040098581870757,
+      "threshold": 0.3,
+      "divergence_rate": 0.0,
+      "convergence_rate": 0.0,
+      "oscillation": 0.04415404880640447
+    },
+    "recent_events": 10,
+    "coherence": 1.0
+  },
+  "error_history": [
+    0.14318569816426635,
+    0.16832998871498644,
+    0.16497384924334763,
+    0.1754816944703433,
+    0.1528371861292403,
+    0.1741860302904682,
+    0.13193022120332776,
+    0.15235115484232942,
+    0.13664580838963059,
+    0.16195206587274139,
+    0.17336644611091895,
+    0.15135651227764324,
+    0.17224955859435026,
+    0.18057469101604517,
+    0.1564022837112316,
+    0.1757815985978621,
+    0.18304711901850346,
+    0.15813298331295242,
+    0.17699308831906668,
+    0.18389516182334664,
+    0.15872661327634263,
+    0.1774086292934398,
+    0.16618604050540792,
+    0.17633022835378553,
+    0.15343115984764985,
+    0.1728018118933549,
+    0.1809612683253484,
+    0.15667288782774386,
+    0.1750710214794207,
+    0.14397828646416594,
+    0.16078480052491612,
+    0.14254936036744126,
+    0.1642845522572089,
+    0.14499918658004624,
+    0.16149943060603233,
+    0.14304960142422263,
+    0.16373472099695585,
+    0.17032859041215484,
+    0.17923001328850835,
+    0.15546100930195583,
+    0.17152270651136908,
+    0.17006589455795837,
+    0.17904612619057084,
+    0.15533228833339957,
+    0.1705326018333797,
+    0.1293728212833658,
+    0.15056097489835604,
+    0.13539268242884922,
+    0.15567487770019445,
+    0.13040098581870757
+  ],
+  "coherence_history": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "events": [
+    {
+      "cycle": 22,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 24,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 24,
+      "type": "system_state_critical",
+      "level": "CRITICAL",
+      "action": "Emergency stabilization",
+      "result": "Emergency stabilization applied"
+    },
+    {
+      "cycle": 24,
+      "type": "incoherence_detected",
+      "level": "DANGER",
+      "action": "Rollback to last stable state",
+      "result": "Rolled back 10 cycles"
+    },
+    {
+      "cycle": 25,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 27,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 27,
+      "type": "system_state_critical",
+      "level": "CRITICAL",
+      "action": "Emergency stabilization",
+      "result": "Emergency stabilization applied"
+    },
+    {
+      "cycle": 27,
+      "type": "incoherence_detected",
+      "level": "DANGER",
+      "action": "Rollback to last stable state",
+      "result": "Rolled back 10 cycles"
+    },
+    {
+      "cycle": 28,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 30,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 30,
+      "type": "system_state_critical",
+      "level": "CRITICAL",
+      "action": "Emergency stabilization",
+      "result": "Emergency stabilization applied"
+    },
+    {
+      "cycle": 30,
+      "type": "incoherence_detected",
+      "level": "DANGER",
+      "action": "Rollback to last stable state",
+      "result": "Rolled back 10 cycles"
+    },
+    {
+      "cycle": 31,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 33,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 33,
+      "type": "system_state_critical",
+      "level": "CRITICAL",
+      "action": "Emergency stabilization",
+      "result": "Emergency stabilization applied"
+    },
+    {
+      "cycle": 46,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 46,
+      "type": "system_state_critical",
+      "level": "CRITICAL",
+      "action": "Emergency stabilization",
+      "result": "Emergency stabilization applied"
+    },
+    {
+      "cycle": 55,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 58,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 58,
+      "type": "system_state_critical",
+      "level": "CRITICAL",
+      "action": "Emergency stabilization",
+      "result": "Emergency stabilization applied"
+    }
+  ],
+  "shutdown": {
+    "triggered": false,
+    "reason": null
+  }
+}

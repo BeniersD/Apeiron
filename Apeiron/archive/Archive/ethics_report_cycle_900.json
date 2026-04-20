@@ -1,0 +1,85 @@
+{
+  "total_evaluations": 900,
+  "timestamp": "2026-02-18T20:57:43.463176",
+  "risk_distribution": {
+    "critical": 3,
+    "high": 0,
+    "medium": 0,
+    "low": 897
+  },
+  "recommendations": {
+    "proceed": 897,
+    "modify": 0,
+    "reconsider": 0,
+    "reject": 3
+  },
+  "average_scores": {
+    "harm": 0.9000000000000002,
+    "fairness": 0.9411666666666667,
+    "sustainability": 0.5,
+    "autonomy": 1.0,
+    "aggregate": 0.8302837837837841
+  },
+  "recent_evaluations": [
+    {
+      "title": "Concentration of research funding leads to decreasing marginal returns",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8056756756756758
+    },
+    {
+      "title": "The geography of novel and atypical research",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Interaction of Autonomous and Manually Controlled Vehicles Multiscenario Vehicle Interaction Dataset",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Concentration of research funding leads to decreasing marginal returns",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8056756756756758
+    },
+    {
+      "title": "The geography of novel and atypical research",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Interaction of Autonomous and Manually Controlled Vehicles Multiscenario Vehicle Interaction Dataset",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Concentration of research funding leads to decreasing marginal returns",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8056756756756758
+    },
+    {
+      "title": "The geography of novel and atypical research",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Interaction of Autonomous and Manually Controlled Vehicles Multiscenario Vehicle Interaction Dataset",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Concentration of research funding leads to decreasing marginal returns",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8056756756756758
+    }
+  ]
+}

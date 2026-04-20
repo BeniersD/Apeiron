@@ -1,0 +1,36 @@
+============================================================
+APEIRON ON CIFAR-10 (TORCHVISION, GRAYSCALE)
+============================================================
+Step 1: Loading CIFAR-10 via torchvision...
+  Dataset: 3000 samples, 1024 features, 10 classes
+Step 2: Computing co-activation matrix (correlation)...
+  Adjacency matrix shape: (1024, 1024)
+Step 3: Running Louvain community detection...
+  Found 3 clusters
+  Apeiron modularity Q = 0.2268
+Step 4: Apeiron ablation study...
+    Ablation run 1/3...
+    Ablation run 2/3...
+    Ablation run 3/3...
+  Top cluster ablation drop = 8.50% +/- 0.89%
+
+============================================================
+LATEX TABLE READY:
+============================================================
+
+\begin{table}[htbp]
+\centering
+\caption{Apeiron performance on CIFAR-10 (grayscale, subset of 3000 samples).}
+\label{tab:apeiron_cifar10}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Method} & \textbf{Modularity $Q$} & \textbf{Top Cluster Ablation Drop (\%)} \\
+\midrule
+\textbf{Apeiron} & \textbf{0.23} & \textbf{8.5 \pm 0.9} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table written to apeiron_cifar10_table.tex
+
+Script finished.

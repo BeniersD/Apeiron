@@ -1,0 +1,15 @@
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Apeiron clustering against baselines on digits dataset (8x8).}
+\label{tab:baseline}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Method} & \textbf{Modularity $Q$} & \textbf{Top Cluster Ablation Drop (\%)} \\
+\midrule
+$k$-means (pixel space) & 0.17 & $13.6 \pm 0.6$ \\
+Spectral clustering (co-activation) & 0.39 & $42.9 \pm 2.2$ \\
+\textbf{Apeiron (this work)} & \textbf{0.42} & \textbf{12.4 \pm 1.2} \\
+\bottomrule
+\end{tabular}
+\end{table}

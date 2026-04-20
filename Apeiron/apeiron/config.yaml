@@ -1,0 +1,671 @@
+# config.yaml
+# ====================================================================
+# APEIRON V12 - COMPLETE CONFIGURATIE (UITGEBREID)
+# ====================================================================
+
+# ====================================================================
+# MEMORY CONFIGURATIE
+# ====================================================================
+memory:
+  path: "./apeiron_memory"
+  collection_name: "apeiron_memory"
+  max_entries: 10000
+  embedding_model: "default"  # default, all-MiniLM-L6-v2, etc.
+  persist_interval: 60  # seconden
+  
+  # NIEUW: Cache instellingen
+  cache:
+    enabled: true
+    max_size: 1000
+    ttl: 3600  # seconds
+  
+  # NIEUW: Embedding cache
+  embedding_cache_size: 100
+  use_lru_cache: true
+
+# ====================================================================
+# HARDWARE CONFIGURATIE
+# ====================================================================
+hardware:
+  # Backend selectie: auto, cpu, cuda, fpga, quantum
+  backend: "auto"
+  
+  # Val terug naar CPU bij hardware fouten
+  fallback_to_cpu: true
+  
+  # Log level voor hardware operaties
+  log_level: "INFO"
+  
+  # Profileer hardware performance
+  profile: false
+  
+  # NIEUW: Metrics tracking
+  track_metrics: true
+  metrics_interval: 60  # seconds
+  
+  # ====================================================================
+  # CPU BACKEND
+  # ====================================================================
+  cpu:
+    # Precisie: float32 of float64
+    precision: "float64"
+    
+    # Simuleer analoge continuïteit
+    simulate_analog: true
+    
+    # Aantal threads voor parallelle verwerking
+    num_threads: 4
+    
+    # Gebruik geoptimaliseerde BLAS bibliotheken
+    use_blas: true
+    
+    # NIEUW: CPU affiniteit
+    cpu_affinity: null  # null = alle cores, of [0,1,2,3]
+    
+    # NIEUW: Vector instructies
+    use_avx: true
+    use_sse: true
+  
+  # ====================================================================
+  # CUDA/GPU BACKEND
+  # ====================================================================
+  cuda:
+    # GPU device ID (0 = eerste GPU)
+    device_id: 0
+    
+    # Fractie van GPU geheugen om te gebruiken (0.1-1.0)
+    memory_fraction: 0.8
+    
+    # Gebruik Tensor Cores indien beschikbaar
+    use_tensor_cores: true
+    
+    # Gebruik cuDNN benchmark voor optimale kernels
+    cudnn_benchmark: true
+    
+    # Laat GPU geheugen groeien (ipv alles reserveren)
+    allow_growth: false
+    
+    # Gebruik mixed precision training
+    mixed_precision: false
+    
+    # NIEUW: Multi-GPU ondersteuning
+    use_multi_gpu: false
+    device_ids: [0]  # bij multi-gpu
+  
+  # ====================================================================
+  # FPGA BACKEND
+  # ====================================================================
+  fpga:
+    # Pad naar FPGA bitstream bestand (.bit)
+    bitstream: "apeiron.bit"
+    
+    # Timeout voor hardware operaties in seconden
+    timeout: 1.0
+    
+    # Gebruik interrupts voor synchronisatie
+    use_interrupts: true
+    
+    # Aantal DMA kanalen voor parallelle transfers
+    dma_channels: 4
+    
+    # FPGA klokfrequentie in MHz (indien configureerbaar)
+    clock_frequency: null  # null = gebruik standaard
+    
+    # Gebruik dual-port geheugen voor simultane read/write
+    use_dual_port: true
+    
+    # Aantal parallelle velden in hardware
+    parallel_fields: 16
+    
+    # NIEUW: FPGA temperature monitoring
+    monitor_temperature: true
+    max_temperature: 85  # celsius
+    
+    # NIEUW: Power management
+    power_saving: false
+    max_power_watts: 25
+  
+  # ====================================================================
+  # QUANTUM BACKEND
+  # ====================================================================
+  quantum:
+    # Aantal qubits (1-50)
+    n_qubits: 20
+    
+    # Aantal metingen voor statistiek
+    shots: 1000
+    
+    # Gebruik echte quantum hardware (ipv simulator)
+    use_real_hardware: false
+    
+    # Naam van quantum backend
+    # Mogelijkheden: aer_simulator, ibmq_manila, ibmq_quito, etc.
+    backend_name: "aer_simulator"
+    
+    # Optimalisatie niveau voor circuits (0-3)
+    optimization_level: 1
+    
+    # Gebruik ruis model voor realistische simulatie
+    noise_model: true
+    
+    # Gebruik echte qubit verbindingen
+    coupling_map: false
+    
+    # Initiële qubit layout (lijst van indices)
+    initial_layout: null  # null = automatisch
+    
+    # Gebruik verstrengeling voor coherentie meting
+    use_entanglement: true
+    
+    # Maximale circuit diepte
+    max_circuit_depth: 100
+    
+    # NIEUW: Error mitigation
+    error_mitigation: "zero_noise_extrapolation"  # none, zne, pe, etc.
+    
+    # NIEUW: Quantum volume
+    min_quantum_volume: 8
+
+# ====================================================================
+# SAFETY CONFIGURATIE
+# ====================================================================
+safety:
+  # Epsilon threshold voor error bounds
+  epsilon_threshold: 0.3
+  
+  # Divergentie threshold
+  divergence_threshold: 0.5
+  
+  # Oscillatie threshold
+  oscillation_threshold: 0.4
+  
+  # Incoherentie threshold
+  incoherence_threshold: 0.2
+  
+  # Automatische interventie bij chaos
+  auto_intervene: true
+  
+  # Check interval in seconden
+  check_interval: 5.0
+  
+  # NIEUW: Lyapunov exponent threshold
+  lyapunov_threshold: 0.3
+  
+  # NIEUW: Prediction horizon
+  prediction_horizon: 10  # cycles
+  
+  # NIEUW: Recovery strategies
+  recovery:
+    reduce_learning_rate: true
+    rollback: true
+    reset_parameters: true
+    emergency_shutdown: true
+
+# ====================================================================
+# CHAOS DETECTION CONFIGURATIE (UITGEBREID)
+# ====================================================================
+chaos_detection:
+  # Automatische interventie
+  auto_intervene: true
+  
+  # Emergency shutdown bij critical
+  emergency_shutdown: true
+  
+  # State export bij shutdown
+  export_on_shutdown: true
+  
+  # Maximum cycles zonder verbetering
+  max_stagnation_cycles: 100
+  
+  # NIEUW: Metrics tracking
+  track_metrics: true
+  metrics:
+    - "epsilon"
+    - "coherence"
+    - "lyapunov"
+    - "divergence_rate"
+    - "oscillation_amplitude"
+  
+  # NIEUW: Predictive warnings
+  predictive_warnings: true
+  warning_threshold: 0.7  # confidence threshold
+  
+  # NIEUW: Auto-recovery
+  auto_recovery: true
+  recovery_strategies:
+    oscillation: "reduce_learning_rate"
+    divergence: "rollback"
+    chaos: "reset_parameters"
+    critical: "emergency_shutdown"
+
+# ====================================================================
+# RESEARCH CONFIGURATIE
+# ====================================================================
+research:
+  # Entropy threshold voor deep-dive PDF analyse
+  deep_dive_entropy_threshold: 0.75
+  
+  # Maximum aantal papers per domein
+  max_papers_per_domain: 50
+  
+  # Maximum queue grootte
+  max_queue_size: 30
+  
+  # Synthese frequentie (aantal cycles)
+  synthesis_frequency: 50
+  
+  # ArXiv rate limiting (seconden tussen requests)
+  arxiv_delay: 3.0
+  
+  # Gebruik Crossref als fallback
+  use_crossref_fallback: true
+  
+  # Automatische quantum jumps bij lage entropy
+  quantum_jump_threshold: 0.2
+  
+  # PDF download directory
+  pdf_download_path: "./downloaded_pdfs"
+  
+  # Bewaar PDFs na analyse
+  keep_pdfs: false
+  
+  # NIEUW: Search parameters
+  search:
+    max_results_per_query: 10
+    sort_by: "relevance"  # relevance, last_updated, submitted
+    abstract_length: 500  # characters
+  
+  # NIEUW: Deep-dive parameters
+  deep_dive:
+    extract_figures: true
+    extract_tables: true
+    max_pages: 20
+    timeout_seconds: 60
+
+# ====================================================================
+# RESONANCE SCOUT CONFIGURATIE (UITGEBREID)
+# ====================================================================
+resonance_scout:
+  # Interferentie drempel voor 'bijna raken'
+  interferentie_drempel: 0.15
+  
+  # Stabiliteits drempel voor zoekopdracht
+  stabiliteits_drempel: 0.85
+  
+  # Scan interval in seconden
+  scan_interval: 2.0
+  
+  # Maximum leeftijd van interferentieplekken (seconden)
+  max_plek_leeftijd: 3600  # 1 uur
+  
+  # Gebruik embeddings voor match score
+  use_embeddings: true
+  
+  # Fallback naar heuristiek bij fouten
+  fallback_to_heuristiek: true
+  
+  # NIEUW: Batch processing
+  batch_size: 5
+  max_concurrent_searches: 3
+  
+  # NIEUW: Match threshold
+  match_drempel: 0.7
+  
+  # NIEUW: Cache instellingen
+  cache:
+    enabled: true
+    max_size: 100
+    ttl: 3600  # seconds
+  
+  # NIEUW: Metrics
+  track_metrics: true
+  metrics_interval: 10  # scans
+
+# ====================================================================
+# ETHICAL ASSISTANT CONFIGURATIE (UITGEBREID)
+# ====================================================================
+ethical_assistant:
+  # Automatische evaluatie
+  auto_evaluate: true
+  
+  # Risk levels
+  risk_thresholds:
+    low: 0.3
+    medium: 0.5
+    high: 0.7
+    critical: 0.9
+  
+  # Verplichte oversight bij risk level
+  required_oversight:
+    high: ["ethics_board", "external_review"]
+    critical: ["ethics_board", "external_review", "public_consultation"]
+  
+  # Stakeholder weights
+  stakeholder_weights:
+    general_public: 1.0
+    vulnerable_populations: 1.5
+    environment: 1.2
+    future_generations: 1.3
+    researchers: 0.8
+  
+  # NIEUW: Principle weights
+  principle_weights:
+    harm_minimization: 1.0
+    fairness: 0.9
+    sustainability: 0.95
+    autonomy: 0.85
+  
+  # NIEUW: Domain-specific guidelines
+  domain_guidelines:
+    AI_ML:
+      red_lines:
+        - "autonomous_weapons"
+        - "mass_surveillance"
+      yellow_flags:
+        - "facial_recognition"
+        - "predictive_policing"
+    BIOTECH:
+      red_lines:
+        - "human_germline_editing"
+        - "bioweapons"
+      yellow_flags:
+        - "crispr_humans"
+        - "synthetic_biology"
+
+# ====================================================================
+# WORLD BUILDING CONFIGURATIE (UITGEBREID)
+# ====================================================================
+worldbuilding:
+  # Initieel aantal agents
+  initial_agents: 25
+  
+  # Normatieve constraints
+  normative_constraints:
+    - "preserve_biodiversity"
+    - "maintain_energy_balance"
+    - "ensure_agent_welfare"
+    - "promote_cooperation"
+    - "limit_resource_extraction"
+  
+  # Wereld simulatie snelheid
+  simulation_speed: 1.0
+  
+  # Resource regeneratie rate
+  resource_regeneration: 0.1
+  
+  # Energie dissipatie rate
+  energy_dissipation: 0.05
+  
+  # Maximale wereld grootte
+  max_world_size: 1000
+  
+  # NIEUW: Agent parameters
+  agents:
+    max_energy: 100.0
+    reproduction_threshold: 80.0
+    cooperation_bonus: 0.2
+    competition_penalty: 0.1
+  
+  # NIEUW: Environment parameters
+  environment:
+    terrain_complexity: 0.5
+    resource_distribution: "random"  # random, clustered, uniform
+    seasonal_variation: true
+    catastrophe_probability: 0.01
+
+# ====================================================================
+# COLLECTIVE CONFIGURATIE (UITGEBREID)
+# ====================================================================
+collective:
+  # Aantal agents in collectief
+  num_agents: 15
+  
+  # Agent communicatie radius
+  communication_radius: 0.3
+  
+  # Collectief geheugen grootte
+  memory_size: 1000
+  
+  # Consensus drempel
+  consensus_threshold: 0.7
+  
+  # Stemmechanisme: majority, weighted, unanimous
+  voting_mechanism: "weighted"
+  
+  # NIEUW: Learning parameters
+  learning_rate: 0.01
+  exploration_rate: 0.1
+  
+  # NIEUW: Specialization
+  allow_specialization: true
+  max_specializations: 3
+
+# ====================================================================
+# DOCUMENT TRACKING CONFIGURATIE (UITGEBREID)
+# ====================================================================
+document_tracking:
+  # SQLite database pad
+  db_path: "document_tracking.db"
+  
+  # JSON log bestand
+  log_file: "verwerkte_documenten.json"
+  
+  # Track PDFs
+  track_pdfs: true
+  
+  # Track abstracts
+  track_abstracts: true
+  
+  # Maximum geschiedenis lengte
+  max_history: 1000
+  
+  # Automatische cleanup interval (dagen)
+  cleanup_interval_days: 30
+  
+  # NIEUW: Backtracing
+  enable_backtracing: true
+  max_backtrace_depth: 10
+  
+  # NIEUW: Relations
+  track_relations: true
+  relation_types:
+    - "cites"
+    - "extends"
+    - "contradicts"
+    - "supports"
+
+# ====================================================================
+# LOGGING CONFIGURATIE (UITGEBREID)
+# ====================================================================
+logging:
+  # Log directory
+  directory: "./logs"
+  
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+  
+  # Console logging
+  console: true
+  
+  # File logging
+  file: true
+  
+  # JSON logging voor dashboard
+  json_log: true
+  
+  # Log rotatie (dagen)
+  rotation_days: 7
+  
+  # Maximum log bestanden
+  max_files: 10
+  
+  # NIEUW: Component-specific logging
+  components:
+    hardware: "INFO"
+    safety: "INFO"
+    ethics: "INFO"
+    resonance: "INFO"
+    research: "INFO"
+    memory: "WARNING"  # minder verbose
+  
+  # NIEUW: Structured logging
+  structured: true
+  include_timestamp: true
+  include_component: true
+
+# ====================================================================
+# DASHBOARD CONFIGURATIE (UITGEBREID)
+# ====================================================================
+dashboard:
+  # Dashboard poort
+  port: 8501
+  
+  # Auto-refresh interval (seconden)
+  refresh_interval: 5
+  
+  # Maximum history lengte voor graphs
+  max_history: 100
+  
+  # Thema: dark, light
+  theme: "dark"
+  
+  # Toon alle lagen
+  show_all_layers: true
+  
+  # NIEUW: Layout
+  layout:
+    columns: 3
+    show_sidebar: true
+    sidebar_width: 300
+  
+  # NIEUW: Graphs
+  graphs:
+    - "entropy"
+    - "coherence"
+    - "transcendence"
+    - "layer16_types"
+    - "layer17_fundamenten"
+  
+  # NIEUW: Auto-open browser
+  auto_open_browser: true
+
+# ====================================================================
+# NETWORK CONFIGURATIE (UITGEBREID)
+# ====================================================================
+network:
+  # Proxy instellingen (indien nodig)
+  http_proxy: null
+  https_proxy: null
+  
+  # Timeouts
+  connection_timeout: 10
+  read_timeout: 30
+  
+  # Retry instellingen
+  max_retries: 3
+  retry_delay: 1.0
+  
+  # User agent voor requests
+  user_agent: "Apeiron/1.0"
+  
+  # NIEUW: Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_second: 1.0
+    burst: 5
+  
+  # NIEUW: SSL verification
+  verify_ssl: true
+  
+  # NIEUW: DNS caching
+  dns_cache_size: 100
+  dns_cache_ttl: 300
+
+# ====================================================================
+# PERFORMANCE CONFIGURATIE (UITGEBREID)
+# ====================================================================
+performance:
+  # Gebruik caching
+  use_caching: true
+  
+  # Cache grootte
+  cache_size: 1000
+  
+  # Batch grootte voor verwerking
+  batch_size: 10
+  
+  # Asynchrone verwerking
+  async_processing: true
+  
+  # Maximum gelijktijdige taken
+  max_concurrent_tasks: 5
+  
+  # NIEUW: Thread pool
+  thread_pool_size: 4
+  
+  # NIEUW: Memory limits
+  memory_limit_mb: 1024
+  warn_at_percent: 80
+  
+  # NIEUW: Profiling
+  profile_slow_queries: true
+  slow_query_threshold_ms: 100
+
+# ====================================================================
+# ONTWIKKELING & DEBUG (UITGEBREID)
+# ====================================================================
+development:
+  # Debug mode
+  debug: false
+  
+  # Profiling
+  profile: false
+  
+  # Simuleer hardware fouten (voor testing)
+  simulate_hardware_errors: false
+  
+  # Skip ArXiv bij testen
+  skip_arxiv_in_tests: false
+  
+  # Gebruik mock data
+  use_mock_data: false
+  
+  # NIEUW: Test mode
+  test_mode: false
+  test_cycles: 5
+  
+  # NIEUW: Verbose output
+  verbose: false
+  
+  # NIEUW: Breakpoints
+  enable_breakpoints: false
+
+# ====================================================================
+# EXPORT CONFIGURATIE (UITGEBREID)
+# ====================================================================
+export:
+  # State export bestand
+  state_file: "apeiron_state.json"
+  
+  # Export interval (seconden)
+  export_interval: 5.0
+  
+  # Export format: json, yaml
+  format: "json"
+  
+  # Include embeddings in export
+  include_embeddings: false
+  
+  # Compress exports
+  compress: false
+  
+  # NIEUW: Auto-export on shutdown
+  export_on_shutdown: true
+  
+  # NIEUW: Export history
+  keep_history: true
+  history_length: 100
+  
+  # NIEUW: Export metrics
+  export_metrics: true
+  metrics_file: "metrics.json"

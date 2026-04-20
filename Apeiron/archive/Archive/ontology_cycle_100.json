@@ -1,0 +1,1299 @@
+{
+  "cycle": 86,
+  "created_enums": {},
+  "created_dataclasses": [],
+  "emergent_structures": {},
+  "gaps": {
+    "gap_1": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_2": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_3": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_4": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_5": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_6": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_7": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_8": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_9": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_10": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_11": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_12": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_13": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_14": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_15": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_16": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_17": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_18": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_19": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_20": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_21": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_22": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_23": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_24": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_25": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_26": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_27": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_28": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_29": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_30": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_31": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_32": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_33": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_34": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_35": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_36": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_37": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_38": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_39": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_40": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_41": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_42": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_43": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_44": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_45": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_46": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_47": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_48": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_49": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_50": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_51": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_52": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_53": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_54": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_55": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_56": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_57": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_58": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_59": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_60": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_61": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_62": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_63": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_64": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_65": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_66": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_67": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_68": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_69": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_70": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_71": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_72": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_73": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_74": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_75": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_76": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_77": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_78": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_79": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_80": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_81": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_82": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_83": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_84": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_85": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    },
+    "gap_86": {
+      "type": "refinement",
+      "size": 0.5,
+      "attempted_fits": [
+        "Artificial Intelligence & Machine Learning",
+        "Biotechnology & Genetics",
+        "Surveillance & Monitoring",
+        "Weapons & Defense",
+        "Social Engineering & Manipulation",
+        "Autonomous Systems",
+        "Human Enhancement",
+        "Environmental Technology",
+        "General Research"
+      ]
+    }
+  },
+  "self_modifications": []
+}

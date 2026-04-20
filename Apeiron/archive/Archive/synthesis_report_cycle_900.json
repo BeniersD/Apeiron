@@ -1,0 +1,304 @@
+{
+  "domains": {
+    "cs": {
+      "name": "cs",
+      "papers": 20,
+      "concepts": 49,
+      "methodologies": [
+        "supervised",
+        "clustering",
+        "unsupervised"
+      ],
+      "worldview": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.0
+      ]
+    },
+    "physics": {
+      "name": "physics",
+      "papers": 20,
+      "concepts": 21,
+      "methodologies": [],
+      "worldview": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "bridges": [
+    {
+      "concept": "training",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "training"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "produces",
+      "domains": "cs \u2194 physics",
+      "strength": 1.0,
+      "transformation": "produces"
+    },
+    {
+      "concept": "retention \u2248 related",
+      "domains": "cs \u2194 physics",
+      "strength": 0.7,
+      "transformation": "retention \u2192 related"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "novel_65",
+      "description": "The concept of 'autonomous' in cs may be analogous to 'location' in physics, suggesting a unified framework",
+      "domains": [
+        "cs",
+        "physics"
+      ],
+      "novelty": 0.8030223400177452,
+      "feasibility": 0.5599999999999999,
+      "impact": 0.7262668149128739,
+      "testability": 0.48999999999999994
+    }
+  ],
+  "statistics": {
+    "total_domains": 2,
+    "total_bridges": 3696,
+    "total_hypotheses": 1,
+    "avg_bridge_strength": 0.7015422077922077,
+    "bridge_discovery_history": [
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 168,
+        "coherence": 0.0,
+        "timestamp": 0
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 175,
+        "coherence": 0.0,
+        "timestamp": 1
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 175,
+        "coherence": 0.0,
+        "timestamp": 2
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 175,
+        "coherence": 0.0,
+        "timestamp": 3
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 175,
+        "coherence": 0.0,
+        "timestamp": 4
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 196,
+        "coherence": 0.0,
+        "timestamp": 5
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 217,
+        "coherence": 0.0,
+        "timestamp": 6
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 218,
+        "coherence": 0.0,
+        "timestamp": 7
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 218,
+        "coherence": 0.0,
+        "timestamp": 8
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 218,
+        "coherence": 0.0,
+        "timestamp": 9
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 218,
+        "coherence": 0.0,
+        "timestamp": 10
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 217,
+        "coherence": 0.0,
+        "timestamp": 11
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 217,
+        "coherence": 0.0,
+        "timestamp": 12
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 217,
+        "coherence": 0.0,
+        "timestamp": 13
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 223,
+        "coherence": 0.0,
+        "timestamp": 14
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 223,
+        "coherence": 0.0,
+        "timestamp": 15
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 223,
+        "coherence": 0.0,
+        "timestamp": 16
+      },
+      {
+        "domain_a": "cs",
+        "domain_b": "physics",
+        "bridges_found": 223,
+        "coherence": 0.0,
+        "timestamp": 17
+      }
+    ]
+  }
+}

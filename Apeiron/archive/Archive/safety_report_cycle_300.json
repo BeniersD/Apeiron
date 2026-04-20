@@ -1,0 +1,269 @@
+{
+  "timestamp": "2026-02-18T21:46:19.906897",
+  "cycle": 1200,
+  "status": {
+    "cycle": 1200,
+    "state": "stable",
+    "safety_level": "CRITICAL",
+    "shutdown_triggered": false,
+    "error_bounds": {
+      "epsilon": 0.31379252999763557,
+      "threshold": 0.3,
+      "divergence_rate": 0.0024724013477538465,
+      "convergence_rate": 0.0,
+      "oscillation": 0.03948740694421995
+    },
+    "recent_events": 10,
+    "coherence": 1.0
+  },
+  "error_history": [
+    0.26263407505725056,
+    0.3038438525400754,
+    0.27269069677805274,
+    0.2208834877446369,
+    0.2638184414212458,
+    0.30467290899487204,
+    0.2732710362964104,
+    0.2212897254074873,
+    0.2650028077852411,
+    0.3055019654496688,
+    0.27385137581476815,
+    0.2216959630703377,
+    0.26618717414923637,
+    0.3063310219044655,
+    0.2744317153331258,
+    0.22210220073318807,
+    0.26737154051323164,
+    0.3071600783592621,
+    0.27501205485148345,
+    0.2225084383960384,
+    0.26855590687722686,
+    0.30798913481405876,
+    0.2755923943698411,
+    0.22291467605888876,
+    0.26974027324122213,
+    0.30881819126885546,
+    0.2761727338881988,
+    0.22332091372173915,
+    0.2709246396052174,
+    0.30964724772365215,
+    0.27675307340655647,
+    0.2237271513845895,
+    0.2721090059692126,
+    0.31047630417844885,
+    0.27733341292491415,
+    0.2241333890474399,
+    0.27329337233320794,
+    0.31130536063324554,
+    0.2779137524432719,
+    0.2245396267102903,
+    0.2744777386972032,
+    0.31213441708804224,
+    0.27849409196162955,
+    0.22494586437314068,
+    0.2756621050611985,
+    0.31296347354283893,
+    0.27907443147998723,
+    0.22535210203599104,
+    0.2768464714251937,
+    0.31379252999763557
+  ],
+  "coherence_history": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "events": [
+    {
+      "cycle": 200,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 204,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 208,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1136,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1140,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1144,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1148,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1152,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1156,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1160,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1164,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1168,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1172,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1176,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1180,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1184,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1188,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1192,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1196,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    },
+    {
+      "cycle": 1200,
+      "type": "epsilon_exceeded",
+      "level": "WARNING",
+      "action": "Increased monitoring, reduced learning rate",
+      "result": "Learning rate reduced to 0.5x"
+    }
+  ],
+  "shutdown": {
+    "triggered": false,
+    "reason": null
+  }
+}

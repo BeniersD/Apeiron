@@ -1,0 +1,15 @@
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of clustering methods on the digits dataset (8x8, 1797 samples).}
+\label{tab:comparison_digits}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Method} & \textbf{Modularity $Q$} & \textbf{Top Cluster Ablation Drop (\%)} \\
+\midrule
+$k$-means (pixel space) & 0.17 & $13.6 \pm 0.6$ \\
+Spectral clustering (co-activation) & 0.39 & $42.9 \pm 2.2$ \\
+\textbf{Apeiron (this work)} & \textbf{0.46} & \textbf{41.0 \pm 3.6} \\
+\bottomrule
+\end{tabular}
+\end{table}

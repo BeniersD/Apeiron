@@ -1,0 +1,36 @@
+============================================================
+APEIRON ON KUZUSHIJI-MNIST (28x28)
+============================================================
+Step 1: Loading Kuzushiji-MNIST...
+  Dataset: 5000 samples, 784 features, 10 classes
+Step 2: Computing co-activation matrix (correlation)...
+  Adjacency matrix shape: (784, 784)
+Step 3: Running Louvain community detection...
+  Found 4 clusters
+  Apeiron modularity Q = 0.3732
+Step 4: Apeiron ablation study...
+    Ablation run 1/3...
+    Ablation run 2/3...
+    Ablation run 3/3...
+  Top cluster ablation drop = 37.63% +/- 1.06%
+
+============================================================
+LATEX TABLE READY:
+============================================================
+
+\begin{table}[htbp]
+\centering
+\caption{Apeiron performance on Kuzushiji-MNIST (subset of 5000 samples).}
+\label{tab:apeiron_kmnist}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Method} & \textbf{Modularity $Q$} & \textbf{Top Cluster Ablation Drop (\%)} \\
+\midrule
+\textbf{Apeiron} & \textbf{0.37} & \textbf{37.6 \pm 1.1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table written to apeiron_kmnist_table.tex
+
+Script finished.

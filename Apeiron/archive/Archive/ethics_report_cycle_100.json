@@ -1,0 +1,85 @@
+{
+  "total_evaluations": 100,
+  "timestamp": "2026-02-19T00:58:24.359729",
+  "risk_distribution": {
+    "critical": 13,
+    "high": 0,
+    "medium": 0,
+    "low": 87
+  },
+  "recommendations": {
+    "proceed": 86,
+    "modify": 1,
+    "reconsider": 0,
+    "reject": 13
+  },
+  "average_scores": {
+    "harm": 0.9000000000000005,
+    "fairness": 0.9869999999999999,
+    "sustainability": 0.514,
+    "autonomy": 0.99,
+    "aggregate": 0.84272972972973
+  },
+  "recent_evaluations": [
+    {
+      "title": "An introduction to the Barnes double gamma function with an application to an integral involving the cotangent function",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Certain Inequalities Involving the $q$-Deformed Gamma Function",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Matrix identities involving multiplication and transposition",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Maximal smoothness of the anti-analytic part of a trigonometric null series",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "The 2-dimension series of the just-nonsolvable BSV group",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Growth of differential identities",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "More hypergeometric identities related to Ramanujan-type series",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Spectral analysis of the Moore-Penrose inverse of a large dimensional sample covariance matrix",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "On Moore-Penrose ideals",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    },
+    {
+      "title": "Expressions and characterizations for the Moore-Penrose inverse",
+      "risk": "low",
+      "recommendation": "PROCEED",
+      "aggregate_score": 0.8421621621621622
+    }
+  ]
+}

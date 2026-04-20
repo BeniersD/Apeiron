@@ -1,0 +1,6 @@
+============================================================
+APERION BASELINE EXPERIMENT (ROBUST VERSION)
+============================================================
+Step 1: Loading digits dataset (8x8)...
+  Dataset: 1797 samples, 64 features, 10 classes
+Step 2: Computing co-activation matrix (correlation)...

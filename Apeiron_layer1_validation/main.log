@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.2.10)  18 APR 2026 23:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.2.10)  19 APR 2026 15:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1204,24 +1204,24 @@ Package: listings 2025/11/14 1.11b (Carsten Heinz)
 (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
@@ -1237,8 +1237,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
  (main.bbl)
-Package biblatex Info: Reference section=0 on input line 63.
-Package biblatex Info: Reference segment=0 on input line 63.
+Package biblatex Info: Reference section=0 on input line 86.
+Package biblatex Info: Reference segment=0 on input line 86.
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.
 mkii
@@ -1305,19 +1305,19 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 63.
+Package hyperref Info: Link coloring OFF on input line 86.
 (main.out) (main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
 \c@lstlisting=\count504
-LaTeX Font Info:    Trying to load font information for U+msa on input line 66.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 89.
 
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 66.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 89.
 
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
@@ -1332,105 +1332,155 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [2] (Sections/01_introduction.tex
 
 LaTeX Font Warning: Font shape `T1/cmr/m/scit' undefined
-(Font)              using `T1/cmr/m/scsl' instead on input line 6.
+(Font)              using `T1/cmr/m/scsl' instead on input line 7.
 
 
-Overfull \hbox (16.76157pt too wide) in paragraph at lines 15--16
+Overfull \hbox (16.76157pt too wide) in paragraph at lines 16--17
 \T1/cmr/m/n/10.95 verse datasets: Dig-its, MNIST, Fashion-MNIST, Kuzushiji-MNIS
 T, and CIFAR-10 (grayscale).
  []
 
-) (Sections/02_background.tex [3]
+) (Sections/02_background.tex [3
+
+] [4]
 Overfull \hbox (11.15352pt too wide) in paragraph at lines 15--16
 []\T1/cmr/m/n/10.95 Enables au-topoi-etic world-build-
  []
 
-[4] [5]) (Sections/03_atomicity_framework.tex
+[5
+
+] [6]) (Sections/03_atomicity_framework.tex [7]
+Underfull \hbox (badness 1173) in paragraph at lines 9--9
+[][]\T1/cmr/m/n/9 In the orig-i-nal ar-chi-tec-tural spec-i-fi-ca-tion, de-com-
+po-si-tion op-er-a-tors are de-noted by $\OT1/cmr/m/n/9 ^^A[]$\T1/cmr/m/n/9 , w
+ith $\OML/cmm/m/it/9 f \OMS/cmsy/m/n/9 2
+ []
+
+
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 13.
+nput line 14.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 14.
- [6]
-Overfull \hbox (21.31189pt too wide) in paragraph at lines 34--36
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 15.
+ [8
+
+] [9]
+Overfull \hbox (21.31189pt too wide) in paragraph at lines 93--95
 \T1/cmr/m/n/10.95 iomatic com-mit-ments of the layer. Each \T1/cmtt/m/n/10.95 U
 ltimateObservable \T1/cmr/m/n/10.95 holds a copy of its \T1/cmtt/m/n/10.95 Meta
 Specification\T1/cmr/m/n/10.95 ,
  []
 
-[7]) (Sections/04_implementation.tex [8]
-Overfull \hbox (29.94238pt too wide) in paragraph at lines 22--23
+) (Sections/04_implementation.tex [10]
+Overfull \hbox (29.94238pt too wide) in paragraph at lines 23--24
 []\T1/cmr/bx/n/10.95 Caching: \T1/cmr/m/n/10.95 Atom-ic-ity scores are cached w
 ith a dirty-flag in-val-i-da-tion pat-tern (\T1/cmtt/m/n/10.95 _atomicity_stale
 \T1/cmr/m/n/10.95 ),
  []
 
-) (Sections/05_experiments.tex [9] [10] [11]) (Sections/06_discussion.tex
-[12] [13] [14]) (Sections/07_conclusion.tex [15]
-Overfull \hbox (21.96173pt too wide) in paragraph at lines 6--7
+[11
+
+]) (Sections/05_experiments.tex [12] [13
+
+] [14] [15]
+<Figures/density_heatmap_digit8.pdf, id=378, 420.63022pt x 354.60167pt>
+File: Figures/density_heatmap_digit8.pdf Graphic file (type pdf)
+<use Figures/density_heatmap_digit8.pdf>
+Package pdftex.def Info: Figures/density_heatmap_digit8.pdf  used on input line
+ 178.
+(pdftex.def)             Requested size: 273.14923pt x 230.27191pt.
+)
+(Sections/06_discussion.tex [16 <./Figures/density_heatmap_digit8.pdf>]
+[17] [18
+
+] [19] [20]) (Sections/07_conclusion.tex [21]
+Overfull \hbox (21.96173pt too wide) in paragraph at lines 7--8
 []\T1/cmr/m/n/10.95 Through a sys-tem-atic eval-u-a-tion across five datasets^^
 VDigits, MNIST, Fashion-MNIST, Kuzushiji-
  []
 
-) (Sections/08_appendix.tex [16]) [17] [18] (main.aux)
+) (Sections/08_appendix.tex [22
+
+] [23
+
+]) [24
+
+] [25] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E4292793FF01E2BE2F9E1650FA53DDB2;7409.
+(rerunfilecheck)             Checksum: 1B536F83FE0A1EF6B6F54666A4FF627F;8436.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 37812 strings out of 467871
- 739249 string characters out of 5417408
- 1628611 words of memory out of 5000000
- 65985 multiletter control sequences out of 15000+600000
- 654654 words of font info for 103 fonts, out of 8000000 for 9000
+ 38024 strings out of 467871
+ 742966 string characters out of 5417408
+ 1679584 words of memory out of 5000000
+ 66160 multiletter control sequences out of 15000+600000
+ 658666 words of font info for 114 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,11n,104p,1949b,2180s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ec
-rm0800.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/d
-pi600\ecrm0600.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
-pen/ec/dpi600\tcrm1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfo
-ur/jknappen/ec/dpi600\ecxc1200.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts
-/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\DIAG_LP\AppData\Local\MiKT
-eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecxc1440.pk> <C:\Users\DIAG_LP\AppData\Lo
-cal\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\DIAG_LP\Ap
-pData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsc1095.pk> <C:\Users\DI
-AG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\
-Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1095.
-pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\e
-crm1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/
-dpi600\ecxc1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jkna
-ppen/ec/dpi600\ecbx1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljf
-our/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\font
-s/pk/ljfour/jknappen/ec/dpi600\eccc1000.pk> <C:\Users\DIAG_LP\AppData\Local\MiK
-TeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\DIAG_LP\AppData\L
-ocal\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\DIAG_LP\A
-ppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1000.pk> <C:\Users\D
-IAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:
-\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200
-.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
-ecrm1200.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\ecbx2074.pk><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1
-/public/amsfonts/cm/cmbx10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/
-fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/DIAG_LP/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/DIAG_LP/AppData/
-Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/DIAG_L
-P/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Us
-ers/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.p
-fb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/publi
-c/amsfonts/cm/cmsy8.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (18 pages, 404359 bytes).
+ 84i,11n,104p,1949b,1476s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
+, replaced by a fixed one
+
+ <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecit
+1000.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi
+600\ectt0900.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappe
+n/ec/dpi600\ecrm0900.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour
+/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/p
+k/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX
+\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1095.pk> <C:\Users\DIAG_LP\AppData\Loca
+l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecxc1200.pk> <C:\Users\DIAG_LP\AppD
+ata\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\DIAG
+_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecxc1440.pk> <C:\Us
+ers\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk
+> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecs
+c1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dp
+i600\ecti1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknapp
+en/ec/dpi600\eccc1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfou
+r/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/
+pk/ljfour/jknappen/ec/dpi600\ecxc1095.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTe
+X\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\DIAG_LP\AppData\Loc
+al\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\DIAG_LP\App
+Data\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1000.pk> <C:\Users\DIA
+G_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\U
+sers\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.p
+k> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ec
+tt1000.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/d
+pi600\ecti1000.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
+pen/ec/dpi600\eccc1200.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts/pk/ljfo
+ur/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\DIAG_LP\AppData\Local\MiKTeX\fonts
+/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk><C:/Users/DIAG_LP/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/DIAG_LP/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/DIAG_
+LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/
+Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi
+6.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmmi8.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmmi9.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/DIAG_LP/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/DIAG_LP/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/DIAG
+_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/
+Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
+9.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/symbols/msam10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (25 pages, 537867 bytes).
 PDF statistics:
- 1113 PDF objects out of 1200 (max. 8388607)
- 122 named destinations out of 1000 (max. 500000)
- 269 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1396 PDF objects out of 1440 (max. 8388607)
+ 150 named destinations out of 1000 (max. 500000)
+ 306 words of extra memory for PDF output out of 10000 (max. 10000000)
 
