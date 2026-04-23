@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+\usepackage{graphicx}
+\usepackage{booktabs, multirow, longtable}
+\usepackage{caption, subcaption}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows.meta, positioning, fit, backgrounds, patterns}
+\graphicspath{{Figures/}}
+
+\onehalfspacing
+
+% Code listing style
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    showstringspaces=false,
+    tabsize=2,
+    language=Python,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    float=htbp,
+}
+
+% Custom commands
+\newcommand{\Apeiron}{\textsc{Apeiron}}
+\newcommand{\SelfProving}{\texttt{self\_proving}}
+
+\title{\huge \textbf{Formal Verification of Foundational AI Architectures: A Multi-Prover Approach} }
+
+\author{
+    David Beniers \\
+    \small \textit{Independent Researcher, Antwerp, Belgium} \\
+    \small \texttt{david.beniers@telenet.be}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{Sections/00_abstract}
+\tableofcontents
+\newpage
+
+\input{Sections/01_introduction}
+\FloatBarrier
+\input{Sections/02_background}
+\FloatBarrier
+\input{Sections/03_multi_prover_framework}
+\FloatBarrier
+\input{Sections/04_experimental_validation}
+\FloatBarrier
+\input{Sections/05_discussion}
+\FloatBarrier
+\input{Sections/06_related_work}
+\FloatBarrier
+\input{Sections/07_conclusion}
+\FloatBarrier
+
+\printbibliography
+
+\end{document}

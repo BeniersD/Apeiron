@@ -1,0 +1,25 @@
+\newpage
+\section{Configuration System}
+
+APEIRON-Core employs a hierarchical, type-safe configuration system built on Pydantic~\cite{pydantic2024}. This ensures that all hardware parameters are validated at startup, preventing entire classes of runtime errors. The system gracefully degrades to a lightweight dictionary-based fallback when Pydantic is not installed, maintaining zero mandatory dependencies.
+
+\subsection{Configuration Dataclasses}
+
+Each backend has a corresponding configuration dataclass (e.g., \texttt{CPUConfig}, \texttt{CUDAConfig}, \texttt{FPGAConfig}, \texttt{QuantumConfig}) with fields that control precision, memory usage, timeouts, and hardware-specific features. These are aggregated into a root \texttt{HardwareConfig} class. Validation rules are expressed declaratively using Pydantic's \texttt{Field} and \texttt{validator} decorators. For example, the CUDA configuration validates that the requested \texttt{device\_id} exists:
+
+\begin{lstlisting}[language=Python, caption={Declarative validation of CUDA device ID.}]
+@validator('device_id')
+def validate_device(cls, v):
+    if v >= torch.cuda.device_count():
+        logger.warning(f"GPU device {v} not available, using device 0")
+        return 0
+    return v
+\end{lstlisting}
+
+\subsection{Versioning and Migration}
+
+The configuration system includes a \texttt{ConfigVersion} manager that tracks the schema version. When loading a configuration file from disk, if the file's version is older than the current version, a migration function is invoked to transform the dictionary to the new schema. This ensures backward compatibility and smooth upgrades as the HAL evolves.
+
+\subsection{Loading from Multiple Sources}
+
+Configuration can be loaded from a YAML or JSON file, from environment variables, or passed as a Python dictionary. The \texttt{load\_hardware\_config} function orchestrates this process, merging sources with a predefined precedence order (explicit dictionary \(>\) environment \(>\) config file \(>\) defaults). This flexibility allows the same codebase to be deployed in development, testing, and production with minimal changes.

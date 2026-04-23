@@ -30,6 +30,12 @@
     <Compile Include="apeiron\core\dependencies.py" />
     <Compile Include="apeiron\hardware\decorators.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\baselines\__init__.py" />
+    <Compile Include="apeiron\layers\layer01_foundational\tests\benchmarks\benchmark_atomicity.py" />
+    <Compile Include="apeiron\layers\layer01_foundational\tests\benchmarks\save_proofs.py" />
+    <Compile Include="apeiron\layers\layer01_foundational\tests\benchmarks\test_imports.py" />
+    <Compile Include="apeiron\layers\layer01_foundational\tests\benchmarks\test_minimal_import.py" />
+    <Compile Include="apeiron\layers\layer01_foundational\tests\benchmarks\verify_z3_claims.py" />
+    <Compile Include="apeiron\layers\layer01_foundational\tests\certificates\generate_real_certificates.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\certificates\__init__.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\experiments\__init__.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\falsification\__init__.py" />
@@ -407,6 +413,7 @@
     <Folder Include="apeiron\layers\layer01_foundational\tests\archive\" />
     <Folder Include="apeiron\layers\layer01_foundational\tests\falsification\" />
     <Folder Include="apeiron\layers\layer01_foundational\tests\certificates\" />
+    <Folder Include="apeiron\layers\layer01_foundational\tests\benchmarks\" />
     <Folder Include="apeiron\layers\layer01_foundational\tests\visualization\" />
     <Folder Include="apeiron\layers\layer01_foundational\tests\unit\" />
     <Folder Include="archive\Evaluations\" />

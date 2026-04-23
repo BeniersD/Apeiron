@@ -1,0 +1,95 @@
+\newpage
+\section{The Multi-Prover Verification Framework}
+
+\subsection{Overview of \texttt{self\_proving.py}}
+
+The \texttt{self\_proving.py} module extends Layer~1 with formal proof capabilities. It provides the \texttt{SelfProvingAtomicity} class, which is attached to an \texttt{UltimateObservable} instance and exposes a single public method:
+
+\begin{lstlisting}[language=Python, caption={Public interface of \texttt{SelfProvingAtomicity}.}]
+def prove_atomicity(self, framework: str,
+                    provers: Optional[List[TheoremProverType]] = None,
+                    timeout_ms: int = 5000) -> Optional[Proof]
+\end{lstlisting}
+
+This method attempts to prove that the observable is atomic according to the specified framework (\texttt{"boolean"}, \texttt{"measure"}, \texttt{"category"}, or \texttt{"info"}) using a configurable list of theorem provers. It returns a \texttt{Proof} object containing the generated proof artifacts and verification status.
+
+Internally, the module contains:
+\begin{itemize}
+    \item \texttt{AtomicityTheoremGenerator}: Translates the abstract atomicity claim into a formal statement suitable for each prover.
+    \item \textbf{Prover-specific backends:} Functions that invoke SymPy, Z3, Lean~4, and Coq, capture their output, and update the \texttt{Proof} object.
+    \item \textbf{Certificate generation:} The \texttt{Proof.to\_certificate()} method exports a JSON document containing the proof statement, verification status, and (for SymPy) the simplified logical formula.
+\end{itemize}
+
+\input{Figures/architecture_overview}
+\input{Sections/03b_translation_semantics}
+
+\subsection{Theorem Generation}
+
+For each framework, the \texttt{AtomicityTheoremGenerator} produces a human-readable theorem statement and, where applicable, a formal representation in the prover's native language.
+
+\subsubsection{SymPy (Logical Simplification)}
+For Boolean and information-theoretic atomicity, the generator constructs a SymPy Boolean expression. For example, for Boolean atomicity of an integer $n$:
+\begin{lstlisting}[language=Python]
+atomic = Symbol('atomic')
+decomposable = Symbol('decomposable')
+base = And(Implies(atomic, Not(decomposable)),
+           Implies(Not(decomposable), atomic))
+# Additional axioms specific to the integer value are conjoined.
+\end{lstlisting}
+SymPy's \texttt{simplify\_logic} is then used to reduce the formula. If the simplified result is not \texttt{False}, the proof is considered successful (i.e., the negation of atomicity is not forced).
+
+\subsubsection{Z3 (SMT Solving)}
+For Z3, the generator creates a Z3 Boolean expression. For Boolean atomicity, it directly encodes the definition: an integer $n$ is a Boolean atom if no proper divisor exists.
+\begin{lstlisting}[language=Python]
+x = Int('divisor')
+solver = Solver()
+solver.add(x > 1, x < n, n % x == 0)
+is_atom = (solver.check() == unsat)
+\end{lstlisting}
+For measure-theoretic atomicity, it checks that the set has exactly one element. For information-theoretic atomicity, it checks the incompressibility ratio of the byte representation.
+
+\subsubsection{Lean~4 and Coq (Interactive Proof Assistants)}
+For Lean~4, the generator produces a Lean theorem statement and a proof script. For Boolean atomicity of the integer~1, the generated Lean code is:
+\begin{lstlisting}[language=Python]
+theorem atomicity_obs : isAtom 1 := by
+  constructor
+  - decide
+  - intro b h1 h2; omega
+\end{lstlisting}
+For Coq, a trivial proof (\texttt{Proof. trivial. Qed.}) is generated for non-Boolean frameworks; a more substantive proof could be provided for the Boolean case.
+
+\subsection{Prover Invocation and Verification}
+
+Each prover backend executes the generated proof script in a subprocess or via API calls, with a configurable timeout. The results are captured and used to update the \texttt{Proof} object:
+\begin{itemize}
+    \item \textbf{SymPy:} The simplified formula is stored in \texttt{proof.proof\_sympy}. If the simplification does not yield \texttt{False}, \texttt{proof.add\_verification("sympy", elapsed\_ms)} is called.
+    \item \textbf{Z3:} If \texttt{solver.check()} returns \texttt{unsat}, the proof is considered verified, and the SMT-LIB representation is stored in \texttt{proof.proof\_z3}.
+    \item \textbf{Lean~4:} A temporary \texttt{.lean} file is written and executed with \texttt{lean --run}. A return code of $0$ indicates success, and the proof script is stored in \texttt{proof.proof\_lean}.
+    \item \textbf{Coq:} A temporary \texttt{.v} file is compiled with \texttt{coqc}. A return code of $0$ indicates success, and the proof script is stored in \texttt{proof.proof\_coq}.
+\end{itemize}
+
+The \texttt{Proof} object maintains a list \texttt{verified\_by} containing the names of all provers that successfully discharged the proof. The overall \texttt{status} becomes \texttt{ProofStatus.VERIFIED} if at least one prover succeeded.
+
+\subsection{Certificate Export}
+
+The \texttt{Proof.to\_certificate()} method serializes the proof into a JSON structure:
+\begin{lstlisting}[caption={Example certificate for Boolean atomicity of integer~1.}]
+{
+  "statement": "Theorem atomicity_one_boolean: ...",
+  "status": "verified",
+  "verified_by": ["sympy", "z3", "lean", "coq"],
+  "verification_time_ms": 10.3,
+  "created_at": 1776710478.8289564,
+  "has_lean": true,
+  "has_coq": true,
+  "has_sympy": true,
+  "has_z3": true,
+  "proof_sympy": "atomic_one_boolean & ~decomposable_one_boolean",
+  "metadata": {"framework": "boolean"}
+}
+\end{lstlisting}
+This certificate can be stored, shared, and independently re-verified using the same (or compatible) provers. The inclusion of the SymPy proof string allows for lightweight re-checking without requiring the original Python environment.
+
+\subsection{Caching and Thread Safety}
+
+All proof computations are cached per framework and prover combination. The cache is stored in the \texttt{SelfProvingAtomicity} instance attached to the observable, and access is protected by a reentrant lock (\texttt{threading.RLock}). This ensures that repeated queries for the same proof are served instantly, which is essential for interactive applications and higher-layer algorithms that may request atomicity proofs multiple times.

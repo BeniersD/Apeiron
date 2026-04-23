@@ -1,0 +1,16 @@
+% figures/prover_comparison_table.tex
+\begin{table}[htbp]
+\centering
+\caption{Comparative strengths and weaknesses of the integrated theorem provers.}
+\label{tab:prover_comparison}
+\begin{tabular}{p{2.2cm} p{3.5cm} p{3.5cm}}
+\toprule
+\textbf{Prover} & \textbf{Strengths} & \textbf{Weaknesses} \\
+\midrule
+SymPy & Pure Python, fast logical simplification, no external dependencies. & Limited to propositional logic; cannot handle quantifiers or complex arithmetic. \\
+Z3 & Powerful SMT solving (arithmetic, bit-vectors, quantifiers); high automation. & External solver required; performance degrades on large theories; proofs not human-readable. \\
+Lean 4 & Dependent type theory; highest assurance; large mathlib. & Requires manual proof effort; automation limited; steep learning curve. \\
+Coq & Mature ecosystem; strong automation (Ltac); widely used in formal verification. & Steep learning curve; automation can be brittle; requires external compilation. \\
+\bottomrule
+\end{tabular}
+\end{table}

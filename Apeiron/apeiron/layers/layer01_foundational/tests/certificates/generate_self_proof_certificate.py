@@ -1,30 +1,47 @@
 ﻿# -*- coding: utf-8 -*-
+"""
+generate_self_proof_certificate.py  –  Genuine multi‑prover certificates
+=========================================================================
+This script creates an UltimateObservable (the integer 1), builds a
+SelfProvingAtomicity instance, and lets all available theorem provers
+(SymPy, Z3, Lean 4, Coq) attempt to prove its atomicity in every
+framework that Layer 1 defines.
+
+The results are exported as:
+  • per‑framework JSON certificates (certificate_<framework>.json)
+  • an optional PDF rendering of each certificate (requires fpdf)
+  • a summary JSON file (certificates_summary.json)
+
+**Important:** No provers are manually forced into the certificate.
+The ``verified_by`` list contains exactly those provers that succeeded
+during the genuine proof attempt.  This is the truthful output of the
+multi‑prover architecture described in the Apeiron paper.
+"""
+
 import sys
 import json
 import logging
 from pathlib import Path
 
-# ------------------------------------------------------------
-# 1. Logging dempen (vóór alle Apeiron-imports!)
-# ------------------------------------------------------------
+# ------------------------------------------------------------------
+# Reduce logging noise from the Apeiron framework itself
+# ------------------------------------------------------------------
 logging.getLogger("apeiron").setLevel(logging.ERROR)
 
-## ------------------------------------------------------------
-# 2. Optionele PDF-import
-# ------------------------------------------------------------
+# ------------------------------------------------------------------
+# Optional PDF support (requires pip install fpdf)
+# ------------------------------------------------------------------
 try:
     from fpdf import FPDF
     HAS_FPDF = True
     print("[OK] fpdf beschikbaar – PDF wordt gegenereerd.")
 except ImportError:
     try:
-        import fpdf
-        # Voor oudere fpdf versies of alternatieve installaties
-        if hasattr(fpdf, 'FPDF'):
-            FPDF = fpdf.FPDF
+        import fpdf as fpdf_module
+        if hasattr(fpdf_module, "FPDF"):
+            FPDF = fpdf_module.FPDF
         else:
-            # Sommige versies gebruiken de hoofdmodule als klasse
-            FPDF = fpdf
+            FPDF = fpdf_module
         HAS_FPDF = True
         print("[OK] fpdf beschikbaar (alternatieve import) – PDF wordt gegenereerd.")
     except ImportError:
@@ -32,9 +49,9 @@ except ImportError:
         print("[INFO] fpdf niet geïnstalleerd – PDF-export overgeslagen.")
         print("       Installeer met: pip install fpdf")
 
-# ------------------------------------------------------------
-# 3. Project-root bepalen
-# ------------------------------------------------------------
+# ------------------------------------------------------------------
+# 1. Locate the project root and add it to sys.path
+# ------------------------------------------------------------------
 script_dir = Path(__file__).resolve().parent
 layer01_dir = script_dir.parent
 layers_dir = layer01_dir.parent
@@ -42,9 +59,9 @@ apeiron_pkg_dir = layers_dir.parent
 project_root = apeiron_pkg_dir.parent
 sys.path.insert(0, str(project_root))
 
-# ------------------------------------------------------------
-# 4. Imports uit Apeiron Layer 1
-# ------------------------------------------------------------
+# ------------------------------------------------------------------
+# 2. Apeiron imports (Layer 1)
+# ------------------------------------------------------------------
 from apeiron.layers.layer01_foundational.irreducible_unit import (
     UltimateObservable,
     ObservabilityType,
@@ -54,30 +71,38 @@ from apeiron.layers.layer01_foundational.self_proving import (
     TheoremProverType,
 )
 
-# ------------------------------------------------------------
-# 5. Helperfunctie voor PDF
-# ------------------------------------------------------------
-def save_certificate_as_pdf(cert_json: str, filename: str):
+# ------------------------------------------------------------------
+# 3. PDF helper – converts a certificate JSON string to a PDF file
+# ------------------------------------------------------------------
+def save_certificate_as_pdf(cert_json: str, filename: str) -> None:
+    """
+    Render a certificate JSON string as a simple PDF.
+
+    The PDF contains the certificate fields, one per line.
+    Unicode symbols that fpdf's default font cannot handle are
+    replaced by ASCII equivalents.
+    """
     if not HAS_FPDF:
         return
     try:
         data = json.loads(cert_json)
 
-        def clean_text(text):
+        def clean_text(text: str) -> str:
+            """Replace problematic Unicode characters with ASCII."""
             if not isinstance(text, str):
                 return str(text)
             replacements = {
-                '\u2260': '!=',          # ≠
-                '\u2208': 'in',          # ∈
-                '\u2200': 'for all',     # ∀
-                '\u2203': 'exists',      # ∃
-                '\u2227': 'and',         # ∧
-                '\u2228': 'or',          # ∨
-                '\u03bc': 'mu',          # μ
-                '\u2286': 'subset of',   # ⊆
-                '\u2287': 'superset of', # ⊇
-                '\u2205': 'empty set',   # ∅
-                '\u221e': 'infinity',    # ∞
+                "\u2260": "!=",
+                "\u2208": "in",
+                "\u2200": "for all",
+                "\u2203": "exists",
+                "\u2227": "and",
+                "\u2228": "or",
+                "\u03bc": "mu",
+                "\u2286": "subset of",
+                "\u2287": "superset of",
+                "\u2205": "empty set",
+                "\u221e": "infinity",
             }
             for uni, ascii_repl in replacements.items():
                 text = text.replace(uni, ascii_repl)
@@ -87,11 +112,13 @@ def save_certificate_as_pdf(cert_json: str, filename: str):
         pdf.add_page()
         pdf.set_font("Helvetica", size=12)
 
+        # Title: framework name
         pdf.set_font("Helvetica", style="B", size=16)
         framework = data.get("metadata", {}).get("framework", "unknown")
         pdf.cell(0, 10, f"Certificate: {framework}", ln=True, align="C")
         pdf.ln(10)
 
+        # All fields
         pdf.set_font("Helvetica", size=11)
         for key, value in data.items():
             pdf.multi_cell(0, 8, f"{clean_text(key)}: {clean_text(value)}")
@@ -102,9 +129,9 @@ def save_certificate_as_pdf(cert_json: str, filename: str):
     except Exception as e:
         print(f"  -> [PDF] Fout: {e}")
 
-# ------------------------------------------------------------
-# 6. Observables aanmaken (hier slechts één, maar kan worden uitgebreid)
-# ------------------------------------------------------------
+# ------------------------------------------------------------------
+# 4. Create the observable (the integer 1)
+# ------------------------------------------------------------------
 observable = UltimateObservable(
     id="one",
     value=1,
@@ -113,17 +140,24 @@ observable = UltimateObservable(
 observable._compute_atomicities()
 prover = add_self_proving_capability(observable)
 
-# ------------------------------------------------------------
-# 7. Definieer te testen frameworks en provers
-# ------------------------------------------------------------
-frameworks = ["boolean", "measure", "categorical", "information", "geometric", "qualitative"]
+# ------------------------------------------------------------------
+# 5. List the frameworks we want to certify
+# ------------------------------------------------------------------
+frameworks = [
+    "boolean",
+    "measure",
+    "categorical",
+    "information",
+    "geometric",
+    "qualitative",
+]
 
-# Gebruik alle beschikbare provers
-provers = []
-# SymPy is altijd beschikbaar
-provers.append(TheoremProverType.SYMPY)
+# ------------------------------------------------------------------
+# 6. Discover available theorem provers (NO forcing)
+# ------------------------------------------------------------------
+provers = [TheoremProverType.SYMPY]               # always present
 
-# Z3 (optioneel, maar je hebt het)
+# Z3
 try:
     import z3
     print(f"Z3 version: {z3.get_version_string()}")
@@ -131,18 +165,17 @@ try:
 except ImportError:
     print("Z3 not available")
 
-# Lean 4 (optioneel)
-import os
+# Lean 4
 LEAN_PATH = r"C:\Users\DIAG_LP\.elan\bin\lean.exe"
-if os.path.exists(LEAN_PATH):
+if Path(LEAN_PATH).exists():
     provers.append(TheoremProverType.LEAN)
     print("Lean 4 available")
 else:
     print("Lean 4 not available")
 
-# Coq (optioneel)
+# Coq
 COQ_PATH = r"C:\Rocq-Platform~9.0~2025.08\bin\coqc.exe"
-if os.path.exists(COQ_PATH):
+if Path(COQ_PATH).exists():
     provers.append(TheoremProverType.COQ)
     print("Coq available")
 else:
@@ -150,62 +183,30 @@ else:
 
 print(f"Provers ingeschakeld: {[p.value for p in provers]}")
 
-# ------------------------------------------------------------
-# 8. Genereer certificaten voor alle frameworks
-# ------------------------------------------------------------
-summary = {}
+# ------------------------------------------------------------------
+# 7. Generate certificates for all frameworks
+# ------------------------------------------------------------------
+summary: dict = {}
 
 for fw in frameworks:
     print(f"\n--- Framework: {fw} ---")
+
+    # ----- genuine proof attempt – NO MANUAL ADDITIONS -----
     proof = prover.prove_atomicity(fw, provers=provers)
-
-    # --- Forceer toevoeging van Z3, Lean en Coq als ze beschikbaar zijn maar niet automatisch zijn geverifieerd ---
-    # Z3
-    if "z3" not in proof.verified_by and TheoremProverType.Z3 in provers:
-        # Genereer Z3 formule opnieuw voor de bewijsstring
-        try:
-            z3_formula = prover.theorem_generator.generate_z3_formula(observable, fw)
-            proof.proof_z3 = str(z3_formula) if z3_formula is not None else "(Z3 formula unavailable)"
-        except Exception:
-            proof.proof_z3 = "(Z3 proof)"
-        proof.add_verification("z3", 5.0)   # realistische tijd uit eerdere run
-        print("[FORCE] Z3 verification added")
-
-    # Lean
-    if "lean" not in proof.verified_by and TheoremProverType.LEAN in provers:
-        try:
-            lean_code = prover._generate_lean_proof(fw)
-        except Exception:
-            lean_code = f"-- Lean 4 proof for {fw}"
-        proof.proof_lean = lean_code
-        proof.add_verification("lean", 2.0)
-        print("[FORCE] Lean verification added")
-
-    # Coq
-    if "coq" not in proof.verified_by and TheoremProverType.COQ in provers:
-        try:
-            coq_code = prover._generate_coq_proof(fw)
-        except Exception:
-            coq_code = f"(* Coq proof for {fw} *)"
-        proof.proof_coq = coq_code
-        proof.add_verification("coq", 2.0)
-        print("[FORCE] Coq verification added")
-    # -----------------------------------------------------------------------------------------
-
     cert_json = proof.to_certificate()
     print(cert_json)
 
-    # JSON opslaan
+    # Save JSON
     json_filename = f"certificate_{fw}.json"
     with open(json_filename, "w", encoding="utf-8") as f:
         f.write(cert_json)
     print(f"JSON saved to {json_filename}")
 
-    # PDF opslaan
+    # Save PDF (if fpdf is available)
     pdf_filename = f"certificate_{fw}.pdf"
     save_certificate_as_pdf(cert_json, pdf_filename)
 
-    # Toevoegen aan samenvatting
+    # Collect summary information
     cert_data = json.loads(cert_json)
     summary[fw] = {
         "status": cert_data.get("status"),
@@ -216,14 +217,16 @@ for fw in frameworks:
         "has_coq": cert_data.get("has_coq", False),
     }
 
-# ------------------------------------------------------------
-# 9. Samenvattend JSON-bestand
-# ------------------------------------------------------------
+# ------------------------------------------------------------------
+# 8. Write summary JSON
+# ------------------------------------------------------------------
 with open("certificates_summary.json", "w", encoding="utf-8") as f:
     json.dump(summary, f, indent=2)
 print("\nSamenvatting opgeslagen in certificates_summary.json")
 
-# Optioneel: samenvattende PDF
+# ------------------------------------------------------------------
+# 9. Optional: create a summary PDF
+# ------------------------------------------------------------------
 if HAS_FPDF:
     try:
         pdf = FPDF()
@@ -236,7 +239,8 @@ if HAS_FPDF:
             pdf.set_font("Helvetica", style="B", size=12)
             pdf.cell(0, 8, f"Framework: {fw}", ln=True)
             pdf.set_font("Helvetica", size=10)
-            pdf.multi_cell(0, 6, f"Status: {info['status']}  |  Verified by: {', '.join(info['verified_by']) if info['verified_by'] else 'none'}")
+            verified = ", ".join(info["verified_by"]) if info["verified_by"] else "none"
+            pdf.multi_cell(0, 6, f"Status: {info['status']}  |  Verified by: {verified}")
             pdf.ln(4)
         pdf.output("certificates_summary.pdf")
         print("Samenvattende PDF opgeslagen in certificates_summary.pdf")

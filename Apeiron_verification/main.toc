@@ -1,0 +1,36 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Background: The \textsc {Apeiron}{} Framework and Multi-Axial Atomicity}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The \textsc {Apeiron}{} Framework}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Multi-Axial Atomicity}{5}{subsection.2.2}%
+\contentsline {section}{\numberline {3}The Multi-Prover Verification Framework}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Overview of \texttt {self\_proving.py}}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Translation Semantics and Prover Encodings}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Formal Specification of Multi-Axial Atomicity}{7}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Encoding Across Provers}{8}{subsubsection.3.2.2}%
+\contentsline {paragraph}{SymPy.}{8}{section*.4}%
+\contentsline {paragraph}{Z3.}{8}{section*.5}%
+\contentsline {paragraph}{Lean 4 and Coq.}{9}{section*.6}%
+\contentsline {subsubsection}{\numberline {3.2.3}Limitations of the Translation Layer}{9}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Theorem Generation}{10}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}SymPy (Logical Simplification)}{10}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Z3 (SMT Solving)}{10}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Lean~4 and Coq (Interactive Proof Assistants)}{10}{subsubsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.4}Prover Invocation and Verification}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Certificate Export}{11}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Caching and Thread Safety}{11}{subsection.3.6}%
+\contentsline {section}{\numberline {4}Experimental Validation}{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Canonical Convergence Experiment}{13}{subsection.4.1}%
+\contentsline {paragraph}{Results.}{13}{section*.7}%
+\contentsline {subsection}{\numberline {4.2}Certificate Generation}{13}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Scalability Probe}{13}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Discussion}{15}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Comparative Analysis of Theorem Provers}{15}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}The Scalability Gap}{16}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Implications for AI Alignment and Trustworthiness}{16}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Limitations and Future Work}{16}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Related Work}{18}{section.6}%
+\contentsline {paragraph}{Formal Verification of AI Systems.}{18}{section*.10}%
+\contentsline {paragraph}{Multi-Prover and Cross-Verification.}{18}{section*.11}%
+\contentsline {paragraph}{Certified Programming and Proof Assistants.}{18}{section*.12}%
+\contentsline {paragraph}{AI Alignment via Formal Constraints.}{18}{section*.13}%
+\contentsline {section}{\numberline {7}Conclusion}{19}{section.7}%

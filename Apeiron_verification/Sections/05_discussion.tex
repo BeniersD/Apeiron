@@ -1,0 +1,95 @@
+\newpage
+\section{Discussion}
+
+\subsection{A Trust Hierarchy for Multi‑Prover Verification}
+
+The benchmark and the follow‑up verification underline that not all provers
+are equally trustworthy for every task.  We formalise this observation by
+assigning each prover a \emph{trust level} $\tau \in [0,1]$ for a given
+framework $f$ and observable type $T$:
+
+\[
+\tau(\text{prover}, f, T) \in \{0, \tfrac{1}{2}, 1\},
+\]
+
+where $1$ denotes ``sound and fully automatic'', $\tfrac{1}{2}$ denotes
+``sound under specific conditions (e.g., only for integers)'', and $0$
+denotes ``not sound / placeholder''.  The certificate's \texttt{verified\_by}
+list is then filtered to include only provers with $\tau \ge \tfrac{1}{2}$
+and, for $\tau = \tfrac{1}{2}$, a metadata field records the restriction.
+Currently:
+
+\begin{itemize}
+    \item $\tau(\text{Z3}, \text{boolean}, \text{int}) = 1$,
+          $\tau(\text{Z3}, \text{boolean}, \text{set}) = 1$;
+    \item $\tau(\text{Lean}, \text{boolean}, \text{int}) = \tfrac{1}{2}$,
+          $\tau(\text{Coq}, \text{boolean}, \text{int}) = \tfrac{1}{2}$;
+    \item all other combinations have $\tau = 0$.
+\end{itemize}
+
+This hierarchy is not static; as the Lean and Coq backends mature (e.g., by
+implementing a cardinality check for sets), their trust levels can be raised
+and automatically reflected in future certificates without changing the
+client code.
+
+\subsection{Comparative Analysis of Theorem Provers}
+
+\input{Figures/prover_comparison_table}
+
+For the specific task of atomicity verification, the trade‑offs are clear:
+SymPy is fast but unsound; Z3 is the workhorse for automated, sound proofs;
+Lean and Coq offer the highest potential assurance but require substantially
+more engineering to reach full automation.  This division of labor mirrors
+the design philosophy of the \Apeiron{} Framework itself: lightweight
+heuristics guide the system, while formal proofs are reserved for safety‑
+critical claims.
+
+\subsection{Translation Semantics and the Semantic Gap}
+
+A fundamental challenge in multi‑prover systems is ensuring that the
+property being proved is preserved across translation.  Let $P$ be a
+target property of an observable $o$, and let $\llbracket P \rrbracket_L$
+be its encoding in prover $L$'s logic.  We say that the translation is
+\emph{sound} if
+\[
+\forall o,\; \llbracket P \rrbracket_L \text{ is provable in } L
+\implies P(o) \text{ holds}.
+\]
+Currently, soundness is manually validated for each prover–framework–
+type combination (Section~4.2).  A formally verified translation layer,
+built around an abstract syntax tree with certified serialisers, would
+elevate the system to the highest assurance level and is a central item on
+our research agenda.
+
+\subsection{Scalability and Compositional Verification}
+
+The scalability gap between verifying a single observable and verifying an
+entire knowledge graph remains the primary obstacle.  We are investigating
+compositional proof rules that allow the atomicity of a complex structure
+(e.g., a functional cluster in Layer~3) to be derived from the atomicity
+of its constituents, potentially reducing the proof burden from exponential
+to linear in the number of components.
+
+\subsection{Implications for AI Alignment}
+
+The ability to produce machine‑checkable certificates of foundational
+properties directly addresses a core alignment concern: if an AI builds its
+own ontology, we need guarantees that its ``atoms'' are not arbitrary or
+contradictory.  The JSON certificates, together with the trust hierarchy,
+enable third‑party auditors to verify the system's internal claims without
+trusting the AI itself—a crucial property for regulatory acceptance.
+
+\subsection{Limitations and Future Work}
+
+\begin{itemize}
+    \item \textbf{Lean/Coq coverage}: Only Boolean atomicity for integers
+          is currently trustworthy.  Extending the backends to sets,
+          strings, and the other three frameworks is ongoing.
+    \item \textbf{Kolmogorov proxy}: The zlib‑based information‑theoretic
+          test is a heuristic; a true formal proof of incompressibility is
+          impossible in general.
+    \item \textbf{Certificate revocation}: When a prover's trust level is
+          lowered (e.g., a bug is discovered), existing certificates should
+          be re‑evaluated.  We plan to implement a versioned certificate
+          store with automatic re‑verification.
+\end{itemize}
