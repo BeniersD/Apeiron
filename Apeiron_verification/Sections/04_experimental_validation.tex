@@ -17,6 +17,29 @@ timeout of 5,000\,ms.  The full raw data are available in the supplementary
 material (\texttt{benchmark\_results.csv}); a representative excerpt is
 shown in Table~\ref{tab:benchmark}.
 
+\begin{table}[htbp]
+\centering
+\caption{Composition of the 47‑observable benchmark.}
+\label{tab:benchmark_composition}
+\begin{tabular}{l r r}
+\toprule
+\textbf{Observable type} & \textbf{Count} & \textbf{Example values} \\
+\midrule
+Prime integers        & 20 & 2, 3, 5, \dots, 71 \\
+Composite integers    & 10 & 6, 15, 35, \dots, 899 \\
+Finite sets           & 10 & $\{0\}, \{0,1\}, \dots, \{0,\dots,9\}$ \\
+Repeated strings      &  7 & \texttt{"a"} $\times$ 10, 50, 100, 500, 1000, 5000, 10000 \\
+\midrule
+\textbf{Total}        & 47 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The benchmark is deliberately unbalanced in favour of integer
+observables because Boolean atomicity is most naturally defined on
+integers and because the Lean/Coq backends currently only support
+that type.  The set and string observables serve to test Z3's
+generalisation and to document the limits of the interactive provers.
 \input{Figures/benchmark_table}
 
 \begin{itemize}

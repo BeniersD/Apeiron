@@ -42,6 +42,17 @@ implementing a cardinality check for sets), their trust levels can be raised
 and automatically reflected in future certificates without changing the
 client code.
 
+\paragraph{Trusted Computing Base.}
+The current TCB comprises (i)~the Python implementation of
+\texttt{self\_proving.py} and its string‑templating generator,
+(ii)~the Z3, Lean, and Coq executables, and (iii)~the operating system
+and hardware.  Reducing the TCB is a primary motivation for the
+AST‑based translation layer: once the printers are verified, the
+Python generator is no longer part of the TCB, and only the provers'
+trusted kernels remain.  A further reduction can be achieved by
+adopting a proof‑producing SMT solver~\cite{deepspec2016} and by
+validating the generated Lean/Coq proofs through independent checkers.
+
 \subsection{Comparative Analysis of Theorem Provers}
 
 \input{Figures/prover_comparison_table}
@@ -103,6 +114,65 @@ and by the DeepSpec consortium's methodology~\cite{deepspec2016,leroy2009coq}.
 We estimate that the Boolean backend for integers can be migrated
 to an AST‑based printer within a few person‑months; the other
 frameworks will follow as their Lean/Coq formalisations mature.
+
+\subsection{An AST‑Based Translation Model}
+
+Figure~\ref{fig:ast_model} illustrates the data flow in the proposed
+AST‑based translation layer.  A \texttt{UltimateObservable} carries
+a typed value $v$, an observability type $T$, and a meta‑specification
+$\Sigma$.  The \texttt{ASTBuilder} maps this triple to a node in an
+abstract syntax tree whose grammar covers the atomicity criteria
+(singleton sets, divisor‑free integers, incompressible strings, zero
+objects).  Prover‑specific printers then walk the AST and emit the
+corresponding input for Z3, Lean, or Coq.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance = 1.4cm and 2.2cm,
+    box/.style = {draw, rounded corners, align=center, minimum width=2.8cm, minimum height=0.8cm, font=\small},
+    arrow/.style = {-{Stealth[length=2.5mm]}, thick}
+]
+\node[box, fill=blue!10] (obs) {\texttt{UltimateObservable}\\(value, type, meta)};
+\node[box, fill=orange!15, right=of obs] (ast) {\texttt{ASTBuilder}\\(language‑agnostic)};
+\node[box, fill=green!10, below=of ast] (printer) {\texttt{Verified Printers}\\(per prover)};
+\node[box, fill=red!10, below=of printer, xshift=-2.5cm] (z3) {Z3 input};
+\node[box, fill=red!10, below=of printer, xshift=0cm] (lean) {Lean input};
+\node[box, fill=red!10, below=of printer, xshift=2.5cm] (coq) {Coq input};
+
+\draw[arrow] (obs) -- node[above, font=\footnotesize] {encode} (ast);
+\draw[arrow] (ast) -- node[right, font=\footnotesize] {walk} (printer);
+\draw[arrow] (printer) -- (z3);
+\draw[arrow] (printer) -- (lean);
+\draw[arrow] (printer) -- (coq);
+\end{tikzpicture}
+\caption{AST‑based translation pipeline.}
+\label{fig:ast_model}
+\end{figure}
+
+The corresponding denotational semantics can be sketched as follows.
+Let $\mathbb{V}$ be the set of observable values and $\mathbb{T}$ the
+set of observability types.  The AST grammar defines a set of terms
+$\mathcal{T}$ with, for example:
+\[
+\texttt{IsSingleton}(s) \in \mathcal{T} \quad \text{for } s \in \texttt{set},
+\qquad
+\texttt{HasNoProperDivisor}(n) \in \mathcal{T} \quad \text{for } n \in \texttt{int}.
+\]
+A printer for Z3 is a function
+$\mathcal{P}_{\mathrm{Z3}} : \mathcal{T} \to \mathrm{SMT‑LIB}$
+that satisfies:
+\[
+\forall t \in \mathcal{T}, \; \forall v \in \mathbb{V},\;
+\llbracket \mathcal{P}_{\mathrm{Z3}}(t) \rrbracket_{\mathrm{Z3}} =
+\mathcal{A}(t,v),
+\]
+where $\llbracket \cdot \rrbracket_{\mathrm{Z3}}$ denotes the Z3
+satisfiability semantics and $\mathcal{A}(t,v)$ is the intended
+atomicity claim.  Equivalent correctness statements hold for the
+Lean and Coq printers.  Proving these properties is a one‑time effort
+per printer and can be carried out in a proof assistant, thereby
+removing the string‑templating code from the trusted computing base.
 
 \subsection{Scalability and Compositional Verification}
 

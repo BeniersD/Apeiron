@@ -15,5 +15,15 @@ This paper makes the following contributions:
     \item \textbf{Experimental validation and comparison:} We evaluate the system on canonical observables (e.g., the integer~1), demonstrating successful verification across all provers and providing a comparative analysis of the provers' strengths, weaknesses, and scalability characteristics.
     \item \textbf{Discussion of the scalability gap:} We critically examine the challenges of scaling formal verification from simple foundational units to complex, layered AI architectures, and outline strategies for incremental and compositional verification.
 \end{enumerate}
-
+The importance of atomicity for AI stability can be stated succinctly:
+a non‑atomic observable, by definition, admits a decomposition into
+strictly smaller parts.  If the system inadvertently treats a
+non‑atom as a building block, higher‑order relations (Layers~2–4
+of the \Apeiron{} Framework) may be built on a fragmented foundation.
+This can lead to spurious correlations, contradictions in the knowledge
+graph, and ultimately to decisions that are not grounded in a coherent
+representation of the environment.  Formal certification of atomicity
+therefore provides a \emph{soundness guarantee} for the entire layered
+architecture: every composite structure is ultimately derived from
+units that cannot be further split without losing their identity.
 The remainder of this paper is organized as follows. Section~2 provides background on the \Apeiron{} Framework and the concept of multi-axial atomicity. Section~3 details the design and implementation of the multi-prover framework. Section~4 describes the experimental setup and results, including the generation of formal certificates. Section~5 discusses the comparative strengths of the provers, the scalability gap, and the implications for AI verification. Section~6 reviews related work in formal methods for AI. Section~7 concludes and outlines future work.
