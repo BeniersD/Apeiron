@@ -1,31 +1,24 @@
 \begin{abstract}
-As artificial intelligence systems grow in complexity and autonomy, the need for
-machine‑checkable guarantees about their foundational properties becomes
-paramount.  This paper presents a multi‑prover framework that formally verifies
-the \emph{atomicity}—the irreducibility—of the elementary representational
-units within the \Apeiron{} Framework, a seventeen‑layer architecture for
-non‑anthropocentric knowledge genesis.  We integrate four theorem provers
-(SymPy, Z3, Lean~4, and Coq) into a unified pipeline, \texttt{self\_proving.py},
-that automatically generates proof obligations in each prover's native language,
-executes them, and exports machine‑checkable JSON certificates.
+We present a multi-prover \emph{architecture} for formally verifying the
+atomicity—the irreducibility—of elementary representational units
+within the \Apeiron{} Framework. The architecture integrates four
+theorem provers (SymPy, Z3, Lean~4, and Coq) into a unified pipeline,
+\texttt{self\_proving.py}, that generates proof obligations, executes
+them, and exports JSON certificates.
 
-We evaluate the system on a benchmark of 47 observables comprising prime
-numbers, composite numbers, finite sets, and repetitive strings.  A rigorous
-verification of each prover's output reveals that \textbf{Z3} is the only
-fully automatic, sound prover for Boolean atomicity on integers and sets,
-correctly distinguishing atoms from non‑atoms across all test cases.
-\textbf{SymPy} serves as a fast, lightweight consistency check but is not
-sound for atomicity.  \textbf{Lean~4} and \textbf{Coq} generate correct
-proofs for integers via computational reflection (\texttt{native\_decide} /
-\texttt{vm\_compute}), but their backends for non‑integer observables are
-currently placeholders and must not be trusted.  We define a \emph{trust
-hierarchy} that assigns formal weight to each prover accordingly, and we
-generate certificates that reflect this hierarchy.  Our work demonstrates a
-pragmatic, verifiable multi‑prover architecture and openly discusses the
-limitations that remain, providing a realistic foundation for formal methods
-in autonomous AI systems.
+A rigorous evaluation on a benchmark of 47 observables reveals the
+current formal coverage: \textbf{Z3} correctly decides Boolean atomicity
+for integers and sets; \textbf{Lean~4} and \textbf{Coq} provide genuine
+proofs for integers via computational reflection, but for all other
+observable types and frameworks their backends are still placeholders;
+\textbf{SymPy} serves as a fast consistency filter but is not sound.
+We formalise this situation as a \emph{trust hierarchy} and generate
+certificates that faithfully reflect it.
 
-\textbf{Keywords:} Formal verification, theorem proving, SMT, interactive
-proof assistants, AI alignment, epistemic foundations, atomicity,
-\Apeiron{} Framework.
+The contribution of this paper is the architecture itself, together
+with an honest characterisation of what each prover can currently
+deliver. We discuss the semantic gap induced by string‑templating,
+propose an AST‑based translation layer as the next step, and outline
+how the Lean/Coq backends can be extended to broader classes of
+observables.
 \end{abstract}

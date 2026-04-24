@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.2.10)  22 APR 2026 20:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.2.10)  24 APR 2026 01:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1169,6 +1169,12 @@ File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 ikz/libraries\tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
+(C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/stmaryrd\stmaryrd.sty
+Package: stmaryrd 1994/03/03 St Mary's Road symbol package
+\symstmry=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `stmry' in version `bold'
+(Font)                  U/stmry/m/n --> U/stmry/b/n on input line 89.
+)
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/t
 ikz/libraries\tikzlibraryshapes.code.tex
 File: tikzlibraryshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
@@ -1272,7 +1278,7 @@ File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 \@quotelevel=\count497
 \@quotereset=\count498
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 61
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 64
 .
  (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1280,24 +1286,24 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
@@ -1313,8 +1319,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
  (main.bbl)
-Package biblatex Info: Reference section=0 on input line 61.
-Package biblatex Info: Reference segment=0 on input line 61.
+Package biblatex Info: Reference section=0 on input line 64.
+Package biblatex Info: Reference segment=0 on input line 64.
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.
 mkii
@@ -1381,22 +1387,22 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 61.
+Package hyperref Info: Link coloring OFF on input line 64.
 (main.out) (main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
 \c@lstlisting=\count505
-LaTeX Info: Redefining \microtypecontext on input line 61.
-Package microtype Info: Applying patch `item' on input line 61.
-Package microtype Info: Applying patch `toc' on input line 61.
-Package microtype Info: Applying patch `eqnum' on input line 61.
+LaTeX Info: Redefining \microtypecontext on input line 64.
+Package microtype Info: Applying patch `item' on input line 64.
+Package microtype Info: Applying patch `toc' on input line 64.
+Package microtype Info: Applying patch `eqnum' on input line 64.
 
 
-Package microtype Warning: Unable to apply patch `footnote' on input line 61.
+Package microtype Warning: Unable to apply patch `footnote' on input line 64.
 
-Package microtype Info: Applying patch `verbatim' on input line 61.
-LaTeX Info: Redefining \microtypesetup on input line 61.
+Package microtype Info: Applying patch `verbatim' on input line 64.
+LaTeX Info: Redefining \microtypesetup on input line 64.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1411,36 +1417,39 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
+Package microtype Info: Character `029' is missing
+(microtype)             in font `T1/lmr/m/sc/12'.
+(microtype)             Ignoring protrusion settings for this character.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 6
-4.
+7.
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 6
-4.
+7.
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-64.
+67.
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-64.
+67.
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 64.
+(Font)              <12> on input line 67.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 64.
+(Font)              <8> on input line 67.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 64.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
+(Font)              <6> on input line 67.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 67.
 
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
@@ -1449,7 +1458,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 67.
 
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1457,8 +1466,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
+LaTeX Font Info:    Trying to load font information for U+stmry on input line 6
+7.
+(C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/stmaryrd\ustmry.fd)
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 6
-4.
+7.
+
 (C:\Users\DIAG_LP\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1620,17 +1633,9 @@ Overfull \hbox (3.04092pt too wide) in paragraph at lines 50--51
 oolean_atomicity(1)\T1/lmr/m/n/10.95 (-20) .
  []
 
-
-LaTeX Warning: Reference `sec:consensus' on page 9 undefined on input line 56.
-
 ) [9] [10]) (Sections/04_experimental_validation.tex [11] [12]
-Overfull \hbox (116.69408pt too wide) in paragraph at lines 6--7
-\T1/lmr/m/n/10.95 (-20) To val-i-date the multi-prover frame-work, we con-ducte
-d the ex-per-i-ment de-fined in \T1/lmtt/m/n/10.95 falsify_layer1_prime_converg
-ence.py\T1/lmr/m/n/10.95 (-20) .
- []
-
-) (Sections/05_discussion.tex [13] [14] (Figures/prover_comparison_table.tex
+(Figures/benchmark_table.tex) [13] [14]) (Sections/05_discussion.tex [15]
+(Figures/prover_comparison_table.tex
 Underfull \hbox (badness 2990) in paragraph at lines 10--10
 []\T1/lmr/m/n/10.95 (+20) Pure Python, fast
  []
@@ -1680,14 +1685,8 @@ Underfull \hbox (badness 1137) in paragraph at lines 13--14
 \T1/lmr/m/n/10.95 (+20) au-toma-tion can be
  []
 
-) [15]
-Overfull \hbox (21.86578pt too wide) in paragraph at lines 27--28
-\T1/lmr/m/n/10.95 (-20) rather than re-com-puted from scratch. The dirty-flag c
-aching mech-a-nism in \T1/lmtt/m/n/10.95 UltimateObservable
- []
-
-[16]) (Sections/06_related_work.tex [17]) (Sections/07_conclusion.tex [18])
-[19] (main.aux)
+) [16] [17]) (Sections/06_related_work.tex [18]) (Sections/07_conclusion.tex
+[19]) [20] [21] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1696,41 +1695,40 @@ L3 programming layer <2025-12-24>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6817A9C263CAD50861E959808A09C89D;5651.
+(rerunfilecheck)             Checksum: 321F56862000E7AE7CC199AB1215B1C5;7120.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40307 strings out of 467871
- 785253 string characters out of 5417408
- 1721796 words of memory out of 5000000
- 68166 multiletter control sequences out of 15000+600000
- 732320 words of font info for 231 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 84i,16n,94p,1499b,1386s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 40659 strings out of 467871
+ 790477 string characters out of 5417408
+ 1722611 words of memory out of 5000000
+ 68478 multiletter control sequences out of 15000+600000
+ 737237 words of font info for 244 fonts, out of 8000000 for 9000
+ 1142 hyphenation exceptions out of 8191
+ 84i,16n,94p,1003b,1503s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.
 pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx1
 2.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmc
 sc10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/
 lmmi10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/l
-m/lmr10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/
-lm/lmr12.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/lm/lmr6.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/lm/lmr8.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/lm/lmr9.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/lm/lmri10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/publ
-ic/lm/lmsy10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/pu
-blic/lm/lmtk10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/
-public/lm/lmtt10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type
-1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (19 pages, 419576 bytes).
+m/lmmi8.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+lm/lmr10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/public
+/lm/lmr12.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/publi
+c/lm/lmr6.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/publi
+c/lm/lmr8.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/publi
+c/lm/lmr9.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/publi
+c/lm/lmri10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/lm/lmsy10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/lm/lmtk10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/lm/lmtt10.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/lm/lmtt9.pfb><C:/Users/DIAG_LP/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/hoekwater/stmary10.pfb>
+Output written on main.pdf (21 pages, 468000 bytes).
 PDF statistics:
- 431 PDF objects out of 1000 (max. 8388607)
- 125 named destinations out of 1000 (max. 500000)
- 59117 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 495 PDF objects out of 1000 (max. 8388607)
+ 140 named destinations out of 1000 (max. 500000)
+ 61733 words of extra memory for PDF output out of 61914 (max. 10000000)
 

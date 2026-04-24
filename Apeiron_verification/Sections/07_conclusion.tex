@@ -1,6 +1,30 @@
 \newpage
 \section{Conclusion}
 
-We have presented a multi-prover framework for formally verifying the atomicity of foundational observables in the \Apeiron{} Framework. By integrating SymPy, Z3, Lean~4, and Coq, the system can generate, cross-verify, and export machine-checkable proofs of atomicity across multiple mathematical frameworks. Experiments on canonical observables demonstrate the feasibility of the approach and the convergence of all provers.
+We have presented a multi‑prover framework for formally verifying the
+atomicity of foundational observables in the \Apeiron{} Framework.  By
+integrating SymPy, Z3, Lean~4, and Coq, the system can generate,
+cross‑verify, and export machine‑checkable proofs of atomicity across
+multiple mathematical frameworks.
 
-This work represents a step toward rigorously grounded AI architectures, where the most basic units of representation are not merely heuristically defined but \textit{certified} by formal mathematics. While significant scalability challenges remain, the multi-prover architecture provides a flexible foundation for incremental, compositional verification as the field of formal methods continues to advance. The open-source release of \texttt{self\_proving.py} and its accompanying certificates invites the community to critique, extend, and build upon this foundation in the pursuit of truly trustworthy artificial intelligence.
+A rigorous evaluation on a 47‑observable benchmark reveals a clear trust
+hierarchy: \textbf{Z3} is the only fully automatic prover that is sound for
+Boolean atomicity on both integers and sets; \textbf{Lean~4} and \textbf{Coq}
+provide genuine computational proofs for integers, but their backends for
+other types are currently placeholders; \textbf{SymPy} serves as a fast
+consistency filter but is not sound for atomicity.  We have defined a formal
+trust function $\tau$ that assigns each prover a weight of $1$, $\frac{1}{2}$,
+or $0$, and we generate certificates that faithfully reflect this hierarchy.
+
+This work demonstrates that pragmatic, verifiable multi‑prover architectures
+are feasible today, while openly acknowledging the limitations that remain.
+The JSON certificates, together with the trust hierarchy, enable third‑party
+auditors to verify the system’s internal claims without trusting the AI
+itself—a crucial property for regulatory acceptance.  Future work will focus
+on extending the Lean and Coq backends to non‑integer observables,
+formalising the translation layer via an abstract syntax tree, and developing
+compositional proof rules that scale beyond individual observables.
+
+The open‑source release of \texttt{self\_proving.py} and its accompanying
+certificates invites the community to critique, extend, and build upon this
+foundation in the pursuit of truly trustworthy artificial intelligence.

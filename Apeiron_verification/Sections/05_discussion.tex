@@ -27,6 +27,16 @@ Currently:
     \item all other combinations have $\tau = 0$.
 \end{itemize}
 
+The assignment of trust levels is not based solely on the benchmark
+results reported in Section~4.  Z3 is an industrial‑strength SMT
+solver whose soundness for quantifier‑free arithmetic has been
+independently established~\cite{moura2008z3}; SymPy's propositional
+simplification is, by construction, unable to detect existential
+counterexamples.  Lean and Coq are interactive provers with small,
+trusted kernels, but their automation for our specific domain is
+still under development.  Hence the trust hierarchy reflects both
+empirical evidence and the fundamental design of each tool.
+
 This hierarchy is not static; as the Lean and Coq backends mature (e.g., by
 implementing a cardinality check for sets), their trust levels can be raised
 and automatically reflected in future certificates without changing the
@@ -55,11 +65,44 @@ be its encoding in prover $L$'s logic.  We say that the translation is
 \forall o,\; \llbracket P \rrbracket_L \text{ is provable in } L
 \implies P(o) \text{ holds}.
 \]
+
 Currently, soundness is manually validated for each prover–framework–
 type combination (Section~4.2).  A formally verified translation layer,
 built around an abstract syntax tree with certified serialisers, would
 elevate the system to the highest assurance level and is a central item on
 our research agenda.
+
+A stronger approach—planned for the next iteration—is to define the
+atomicity criteria \emph{directly} in the language of the interactive
+provers.  For example, the Boolean atomicity of integers would be
+expressed as a Lean predicate
+\begin{lstlisting}[language=Python]
+def isAtom (n : Nat) : Prop := n = 1
+\end{lstlisting}
+together with a proof that this definition is equivalent to the
+divisibility‑based one.  The Python layer would then only supply the
+concrete value \texttt{n} to be substituted.  This eliminates the
+trusted code base in the generator and makes the semantic preservation
+a theorem inside the prover rather than an implicit assumption.
+
+\subsection{Toward an AST‑Based Translation Layer}
+
+To close the semantic gap, we are developing a translation layer
+centred on an \emph{abstract syntax tree} (AST).  In this design,
+the \texttt{AtomicityTheoremGenerator} would no longer perform string
+interpolation; instead, it would build a language‑agnostic AST
+representing the atomicity claim.  Each prover backend would then
+be a \emph{verified printer} that walks the AST and emits the
+corresponding prover‑native code.  Because the AST nodes carry
+precise semantic information (e.g., \texttt{Forall} for universal
+quantification, \texttt{BinaryOp} for divisibility), a machine‑
+checkable proof can be carried out \emph{once} for each printer,
+ensuring that the generated code faithfully captures the original
+claim.  This approach is inspired by the CompCert verified compiler
+and by the DeepSpec consortium's methodology~\cite{deepspec2016,leroy2009coq}.
+We estimate that the Boolean backend for integers can be migrated
+to an AST‑based printer within a few person‑months; the other
+frameworks will follow as their Lean/Coq formalisations mature.
 
 \subsection{Scalability and Compositional Verification}
 

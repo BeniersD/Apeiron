@@ -53,6 +53,6 @@ The current implementation employs \textit{string templating} to generate prover
     \item \textbf{Lack of error recovery:} If a prover fails due to a malformed script, the system simply marks that prover as unsuccessful; it cannot diagnose or correct the translation error.
 \end{itemize}
 
-These limitations are intrinsic to the current rapid-prototyping stage of the \Apeiron{} verification module. For production-grade formal assurance, the translation layer should be rebuilt around an \textbf{Abstract Syntax Tree (AST)} in Python, with formally verified serializers for each target language. The multi-prover consensus mechanism described in Section~\ref{sec:consensus} provides a pragmatic, albeit heuristic, safeguard against individual translation errors.
+These limitations are intrinsic to the current rapid-prototyping stage of the \Apeiron{} verification module. For production-grade formal assurance, the translation layer should be rebuilt around an \textbf{Abstract Syntax Tree (AST)} in Python, with formally verified serializers for each target language. The multi-prover consensus mechanism described in Section~3 provides a pragmatic, albeit heuristic, safeguard against individual translation errors.
 
 In the next section, we detail the theorem generation process, which builds upon the encodings described here.
