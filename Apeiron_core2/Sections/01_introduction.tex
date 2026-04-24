@@ -1,0 +1,60 @@
+\section{Introduction}
+
+A genuinely autonomous knowledge system cannot be a mere pipeline of
+inference steps; it must survive for months or years, gracefully handle
+resource fluctuations, and justify its own computational expenditures in
+terms of information gain.  These requirements demand an infrastructure
+that is \emph{self‑monitoring} and \emph{self‑regulating}---qualities
+that are conspicuously absent in most AI frameworks, which treat hardware
+as an infinite resource and failures as rare exceptions.
+
+The \Apeiron{} Framework~\cite{beniers2026apeiron} aims to build an AI
+that constructs knowledge from first principles without human‑provided
+categories.  Its seventeen‑layer design moves from irreducible observables
+to pluri‑versal world‑making, but every layer rests on a shared
+foundational substrate that must guarantee responsiveness, auditability, and
+ethical resource consumption.  This paper describes that substrate: the
+\Core{}.
+
+The \Core{} consists of four interoperating modules:
+\begin{enumerate}
+    \item \textbf{EventBus} -- a publish‑subscribe message bus with
+          persistent storage, dead‑letter queues, and replay capability,
+          enabling decoupled communication across all layers.
+    \item \textbf{AdaptiveThresholds} -- a self‑calibrating threshold
+          manager that adjusts safety margins, stability criteria, and
+          sensitivity parameters in response to the system's current
+          complexity and the number of unresolved gaps.
+    \item \textbf{ChaosDetector} -- a runtime monitor that classifies the
+          system state (stable, oscillating, diverging, chaotic) and triggers
+          programmed interventions, using Lyapunov exponent estimation,
+          Kalman filtering, and a circuit breaker.
+    \item \textbf{ThermodynamicCost} -- an energy‑aware cost model that
+          tracks power consumption via hardware telemetry (CPU, GPU),
+          optionally queries real‑time CO\(_2\) intensity, and approves
+          or rejects computational structures based on their
+          information‑value‑per‑Joule.
+\end{enumerate}
+
+Together, these modules provide the operational substrate that enables
+the formal verification and self‑proving capabilities described in our
+companion work on multi‑prover atomicity certification~\cite{beniers2026multi}.
+Without a self‑regulating infrastructure, the guarantees obtained from
+the theorem provers would be confined to isolated experiments; the \Core{}
+embeds them into a continuously running, resilient agent.
+
+The contribution of this paper is the \emph{integrated design} of these
+four modules and an empirical demonstration that they can be composed into
+a coherent self‑regulation loop.  We are not the first to propose
+event‑driven architectures, adaptive thresholds, chaos engineering, or
+energy‑aware computing.  Our contribution lies in combining them into a
+single, lightweight infrastructure that is purpose‑built for autonomous
+knowledge systems, is fully implemented, and is accompanied by reproducible
+benchmarks.
+
+The rest of the paper is organised as follows.  Section~2 surveys related
+work.  Section~3 gives a high‑level architectural overview.  Sections~4--7
+detail the event bus, adaptive thresholds, chaos detector, and
+thermodynamic cost model, respectively.  Section~8 presents experimental
+results, Section~9 discusses limitations and future directions, and
+Section~10 concludes.

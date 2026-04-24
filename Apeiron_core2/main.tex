@@ -1,0 +1,102 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+\usepackage{graphicx}
+\usepackage{booktabs, multirow, longtable}
+\usepackage{caption, subcaption}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{tikz}
+\usepackage{stmaryrd}
+\usepackage{microtype}
+\usetikzlibrary{shapes, arrows.meta, positioning, fit, backgrounds, patterns, calc}
+\graphicspath{{Figures/}}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\onehalfspacing
+
+% Code listing style
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    showstringspaces=false,
+    tabsize=2,
+    language=Python,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    float=htbp,
+}
+
+\newcommand{\Apeiron}{\textsc{Apeiron}}
+\newcommand{\Core}{\textsc{Apeiron Core}}
+
+\title{\huge The \textsc{Apeiron Core}: A Self-Monitoring, Event-Driven Foundation for Autonomous Knowledge Systems}
+
+\author{
+    David Beniers \\
+    \small \textit{Independent Researcher, Antwerp, Belgium} \\
+    \small \texttt{david.beniers@telenet.be}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{Sections/00_abstract}
+\tableofcontents
+\clearpage
+
+\input{Sections/01_introduction}
+\FloatBarrier
+\clearpage
+\input{Sections/02_architecture}
+\FloatBarrier
+\clearpage
+\input{Sections/03_event_bus}
+\FloatBarrier
+\clearpage
+\input{Sections/04_adaptive_thresholds}
+\FloatBarrier
+\clearpage
+\input{Sections/05_chaos_detection}
+\FloatBarrier
+\clearpage
+\input{Sections/06_thermodynamic_ethics}
+\FloatBarrier
+\clearpage
+\input{Sections/10_integration}
+\FloatBarrier
+\clearpage
+\input{Sections/07_experiments}
+\FloatBarrier
+\clearpage
+\input{Sections/08_discussion}
+\FloatBarrier
+\clearpage
+\input{Sections/09_conclusion}
+\FloatBarrier
+\clearpage
+\printbibliography
+
+\end{document}

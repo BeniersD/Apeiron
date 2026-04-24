@@ -1,0 +1,21 @@
+\section{Conclusion}
+
+We introduced the \Core{}, a reusable, event‑driven substrate that
+provides four essential self‑regulation capabilities: decoupled
+communication, adaptive thresholds, chaos detection, and thermodynamic
+cost accounting.  The core is implemented in Python, fully instrumented
+with Prometheus, and released as open‑source software.  Benchmarks on a
+commodity laptop (ASUS Strix GL704GW, Intel i7‑8750H, NVIDIA RTX 2070)
+show that the bus introduces a per‑event overhead of only $6.9\,\mu$s,
+while a single‑subscriber configuration sustains over 120\,k events/s.
+The predictive warning mechanism of the ChaosDetector detected divergent
+behaviour 78 time steps earlier than a classical threshold, and GPU‑based
+computation reduced energy consumption by a factor of 24$\times$ compared
+to CPU, demonstrating that the \Core{} enables both safe and
+energy‑efficient autonomous operation.
+
+The \Core{} is not a complete agent; it is the scaffold on which such
+agents can be built.  Its design reflects the conviction that
+autonomous knowledge systems must be \emph{constructively self‑aware}—
+continuously monitoring, calibrating, and justifying their own
+operation.

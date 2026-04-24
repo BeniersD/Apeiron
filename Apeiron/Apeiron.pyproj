@@ -43,6 +43,12 @@
     <Compile Include="apeiron\layers\layer01_foundational\tests\unit\test_minimal.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\unit\__init__.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\visualization\__init__.py" />
+    <Compile Include="apeiron\tests\test_chaos_benchmark.py" />
+    <Compile Include="apeiron\tests\test_chaos_filter.py" />
+    <Compile Include="apeiron\tests\test_energy_workload.py" />
+    <Compile Include="apeiron\tests\test_event_throughput.py" />
+    <Compile Include="apeiron\tests\test_overhead.py" />
+    <Compile Include="apeiron\tests\test_safe_area.py" />
     <Compile Include="archive\core\framework.py" />
     <Compile Include="archive\core\higher_layers_wrapper.py" />
     <Compile Include="apeiron\hardware\backends\backend.py" />

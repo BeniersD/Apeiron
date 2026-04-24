@@ -542,7 +542,7 @@ class ChaosDetector:
 
     async def _check_predictive_warnings(self) -> None:
         """Genereer voorspellende waarschuwingen op basis van trends."""
-        if len(self.epsilon_history) < self.config.prediction_horizon:
+        if self.config.prediction_horizon <= 0 or len(self.epsilon_history) < self.config.prediction_horizon:
             return
 
         recent = self.epsilon_history[-self.config.prediction_horizon :]

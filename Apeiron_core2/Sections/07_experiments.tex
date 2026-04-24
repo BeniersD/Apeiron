@@ -1,0 +1,107 @@
+\section{Experimental Evaluation}
+
+\subsection{Testbed and Workloads}
+
+All experiments were performed on an ASUS Strix GL704GW laptop
+(Intel Core i7‑8750H, 6C/12T, 2.2\,GHz base, 32\,GB DDR4‑2666,
+NVIDIA GeForce RTX 2070 8\,GB, Windows 11 Home, Python 3.10.19,
+CUDA 11.8).  The EventBus used the in‑memory backend for throughput
+tests; SQLite persistence was employed for durability and replay
+evaluations.
+
+Four synthetic workloads were designed:
+\begin{itemize}
+    \item \textbf{Event throughput} – emit $10^5$ events of varying payload sizes
+          (128\,B, 1\,kB, 16\,kB) with 1 subscriber, measuring raw throughput.
+    \item \textbf{Event overhead} – a realistic micro‑workload (numpy dot product)
+          is passed through the bus and compared to a direct function call,
+          yielding per‑event overhead in microseconds.
+    \item \textbf{Chaos detection} – synthetic error‑epsilon series with isolated
+          spikes and a linear divergence, measuring false‑alarm suppression and
+          predictive warning lead time against a reactive threshold detector.
+    \item \textbf{Energy management} – a ResNet‑18 training loop on CIFAR‑10,
+          comparing CPU vs.~GPU energy consumption, CO$_2$ emission, and
+          efficiency under BALANCED and GREEN priority modes.
+\end{itemize}
+
+\subsection{Event Bus Throughput}
+
+Throughput was measured with the in‑memory backend and a single subscriber.
+Mean values over 5 runs are reported in Table~\ref{tab:throughput}.  
+On this hardware the bus sustains well over 100\,000 events/s for small
+messages, remaining practical for control‑plane communication even under load.
+
+\begin{table}[htbp]
+\centering
+\caption{Event bus throughput (in‑memory backend, 1 subscriber).}
+\label{tab:throughput}
+\begin{tabular}{l c}
+\toprule
+\textbf{Payload size} & \textbf{Throughput (events/s)} \\
+\midrule
+128\,B  & 121\,000 \\
+1\,kB   & 113\,000 \\
+16\,kB  & 56\,000  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Event Bus Overhead}
+
+To isolate the infrastructure cost, a realistic handler performing a
+128‑dimensional dot product was executed both directly and via the EventBus.
+Over 10 repetitions of 500 events each, the bus introduced an average per‑event
+latency of $6.9\,\mu\text{s}$ (std.\ $0.5\,\mu\text{s}$), independent of the
+vector size.  This corresponds to an overhead of less than 0.01\,\% for a
+typical AI training step (50--100\,ms).
+
+\subsection{Chaos Detection}
+
+\paragraph{False‑alarm robustness.}
+The ChaosDetector’s built‑in exponential moving average (EMA, $\alpha=0.3$)
+already suppresses isolated noise spikes effectively.  In a 1000‑point series
+with five single‑point spikes (height 0.3, baseline 0.1), the detector
+generated an average of $1.1 \pm 0.1$ alarm cycles per spike without any
+additional filtering.  The EMA alone is therefore sufficient to prevent
+nuisance alarms; adding a median filter did not further reduce false alarms.
+
+\paragraph{Predictive vs.~reactive detection.}
+We compared the \Core{}’s predictive warning against a classical threshold
+detector on a linearly increasing error signal (0.1 → 1.5 over 200 points,
+reactive threshold 1.0).  The \Core{}’s trend extrapolation (10‑step horizon)
+issued a caution at point~48, while the reactive detector only fired at
+point~126 – a lead time of 78 points (39\% of the series).  
+This demonstrates that the introspection‑based approach of the \Core{}
+provides earlier warning than reactive monitoring, allowing for gentler
+interventions.
+
+\subsection{Energy Management}
+
+A ResNet‑18 model was trained on CIFAR‑10 for one epoch, with the
+ThermodynamicCost module tracking energy and CO$_2$ on every batch.
+Each configuration (CPU/GPU, BALANCED/GREEN priority) was repeated three
+times; mean values are shown in Table~\ref{tab:energy}.
+
+\begin{table}[htbp]
+\centering
+\caption{Energy and CO$_2$ for one epoch of ResNet‑18 on CIFAR‑10.}
+\label{tab:energy}
+\begin{tabular}{l c c c c}
+\toprule
+\textbf{Config} & \textbf{Energy (J)} & \textbf{CO$_2$ (g)} & \textbf{Efficiency} \\
+\midrule
+CPU BALANCED & $16\,508 \pm 195$ & $1.60 \pm 0.02$ & $3.8\times10^{-2}$ \\
+CPU GREEN    & $16\,352 \pm 59$  & $1.59 \pm 0.01$ & $3.8\times10^{-2}$ \\
+GPU BALANCED & $  688 \pm 26$   & $0.07 \pm 0.00$ & $9.1\times10^{-1}$ \\
+GPU GREEN    & $  710 \pm 65$   & $0.07 \pm 0.01$ & $8.9\times10^{-1}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+GPU execution used roughly 24$\times$ less energy than CPU, with a
+corresponding reduction in CO$_2$.  Under GREEN priority the efficiency
+threshold is doubled, which slightly increases the average efficiency of
+approved structures but does not significantly alter total consumption at
+this budget scale.  With a tighter energy budget the system would begin to
+reject computationally expensive, low‑value structures, trading cognitive
+throughput for environmental responsibility.
