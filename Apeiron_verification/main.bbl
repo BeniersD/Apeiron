@@ -40,7 +40,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Preprint}
-      \field{title}{{APEIRON}: Autonomous Knowledge Genesis from First Principles -- A Seventeen-Layer Architecture for Non-Anthropocentric Artificial Intelligence}
+      \field{title}{{Apeiron}: Autonomous Knowledge Genesis from First Principles -- A Seventeen-Layer Architecture for Non-Anthropocentric Artificial Intelligence}
       \field{year}{2026}
     \endentry
     \entry{moura2008z3}{inproceedings}{}{}
@@ -112,8 +112,8 @@
       \strng{authornamehash}{437df325bdf126ab15c356676db2c0d5}
       \strng{authorfullhash}{437df325bdf126ab15c356676db2c0d5}
       \strng{authorfullhashraw}{437df325bdf126ab15c356676db2c0d5}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Communications of the ACM}
@@ -160,8 +160,8 @@
       \strng{authornamehash}{57eefd1028a84f5a0212d06429a1f736}
       \strng{authorfullhash}{41a61862a86300d49f36f22445bbf11b}
       \strng{authorfullhashraw}{41a61862a86300d49f36f22445bbf11b}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Computer Aided Verification (CAV)}
@@ -186,8 +186,8 @@
       \strng{authornamehash}{d7650e61ccbe732d2cdbd76cb31989b4}
       \strng{authorfullhash}{d7650e61ccbe732d2cdbd76cb31989b4}
       \strng{authorfullhashraw}{d7650e61ccbe732d2cdbd76cb31989b4}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv preprint arXiv:2305.06500}
@@ -215,8 +215,8 @@
       \strng{authornamehash}{b4e9ef6e2c9776fd79a330c3c5a948fe}
       \strng{authorfullhash}{b4e9ef6e2c9776fd79a330c3c5a948fe}
       \strng{authorfullhashraw}{b4e9ef6e2c9776fd79a330c3c5a948fe}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{AAAI Conference on Artificial Intelligence}
@@ -242,8 +242,8 @@
       \strng{authornamehash}{143fa183327d9fcd9de18eec99d6ca97}
       \strng{authorfullhash}{143fa183327d9fcd9de18eec99d6ca97}
       \strng{authorfullhashraw}{143fa183327d9fcd9de18eec99d6ca97}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Human Compatible: Artificial Intelligence and the Problem of Control}
