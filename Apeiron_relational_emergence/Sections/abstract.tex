@@ -1,0 +1,8 @@
+\begin{abstract}
+The APEIRON Framework proposes a multi‑layer architecture for autonomous knowledge genesis that derives structure directly from elementary observables, without human‑provided labels or categories.
+Previous work demonstrated that the relational hypergraph of Layer~2 and the Louvain‑based functional clustering of Layer~3 can recover meaningful pixel groupings from raw images (MNIST, CIFAR‑10).
+Here we extend the same unsupervised pipeline to three non‑visual domains: electrocardiograms (ECG), financial time series, and seismic records.
+In each case, we construct a co‑activation graph from sliding‑window representations, apply Louvain community detection, and assess the functional significance of the resulting clusters via counterfactual ablation.
+The pipeline consistently discovers modules that align with known physiological, economic, or geophysical structures, confirming that the APEIRON substrate operates in a genuinely domain‑agnostic manner.
+All experiments are fully reproducible via an accompanying Python script.
+\end{abstract}

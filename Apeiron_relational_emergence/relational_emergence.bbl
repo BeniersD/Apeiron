@@ -1,0 +1,50 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{BGLL08}
+
+\bibitem[Ben26a]{Beniers2026Apeiron}
+David Beniers.
+\newblock Apeiron: Autonomous knowledge genesis from first principles -- a
+  seventeen-layer architecture for non-anthropocentric artificial intelligence.
+\newblock Technical report, 2026.
+\newblock Preprint.
+
+\bibitem[Ben26b]{Beniers2026Categorical}
+David Beniers.
+\newblock Categorical foundations of the apeiron framework: Multi‑axial
+  atomicity as a separated object and the functorial network of layers.
+\newblock Technical report, 2026.
+\newblock Preprint.
+
+\bibitem[Ben26c]{Beniers2026Empirical}
+David Beniers.
+\newblock Multi‑axial atomicity for unsupervised relational structure
+  discovery: An empirical probe of the apeiron framework's foundational layer.
+\newblock Technical report, 2026.
+\newblock Preprint.
+
+\bibitem[BGLL08]{Blondel2008}
+Vincent~D. Blondel, Jean‑Loup Guillaume, Renaud Lambiotte, and Etienne
+  Lefebvre.
+\newblock Fast unfolding of communities in large networks.
+\newblock {\em Journal of Statistical Mechanics: Theory and Experiment},
+  2008(10):P10008, 2008.
+
+\bibitem[FDJ19]{Franceschi2019}
+Jean‑Yves Franceschi, Aymeric Dieuleveut, and Martin Jaggi.
+\newblock Unsupervised scalable representation learning for multivariate time
+  series.
+\newblock {\em Advances in Neural Information Processing Systems}, 32, 2019.
+
+\bibitem[KR05]{Keogh2005}
+Eamonn Keogh and Chotirat~Ann Ratanamahatana.
+\newblock Exact indexing of dynamic time warping.
+\newblock {\em Knowledge and Information Systems}, 7:358--386, 2005.
+
+\bibitem[LLB{\etalchar{+}}08]{Lacasa2008}
+Lucas Lacasa, Bartolo Luque, Fernando Ballesteros, Jordi Luque, and Juan
+  Carlos~Nu\ no.
+\newblock From time series to complex networks: The visibility graph.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  105(13):4972--4975, 2008.
+
+\end{thebibliography}

@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: relational_emergence.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: alpha.bst
+Reallocating 'name_of_file' (item size: 1) to 21 items.
+Database file #1: relational_emergence.bib
+Warning--empty institution in Beniers2026Apeiron
+Warning--empty institution in Beniers2026Categorical
+Warning--empty institution in Beniers2026Empirical
+You've used 7 entries,
+            2543 wiz_defined-function locations,
+            600 strings with 5835 characters,
+and the built_in function-call counts, 2602 in all, are:
+= -- 261
+> -- 134
+< -- 3
++ -- 48
+- -- 46
+* -- 192
+:= -- 465
+add.period$ -- 24
+call.type$ -- 7
+change.case$ -- 48
+chr.to.int$ -- 5
+cite$ -- 10
+duplicate$ -- 91
+empty$ -- 165
+format.name$ -- 55
+if$ -- 500
+int.to.chr$ -- 3
+int.to.str$ -- 0
+missing$ -- 4
+newline$ -- 42
+num.names$ -- 21
+pop$ -- 30
+preamble$ -- 1
+purify$ -- 52
+quote$ -- 0
+skip$ -- 74
+stack$ -- 0
+substring$ -- 123
+swap$ -- 4
+text.length$ -- 3
+text.prefix$ -- 3
+top$ -- 0
+type$ -- 56
+warning$ -- 3
+while$ -- 23
+width$ -- 9
+write$ -- 97
+(There were 3 warnings)
