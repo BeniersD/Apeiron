@@ -2382,6 +2382,7 @@
     <bcf:citekey order="6" intorder="1">basiri2016chaos</bcf:citekey>
     <bcf:citekey order="7" intorder="1">landauer1961</bcf:citekey>
     <bcf:citekey order="8" intorder="1">acun2023carbon</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">beniers2026multi</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

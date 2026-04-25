@@ -151,9 +151,32 @@ will be reported in a follow‑up publication.
 \label{fig:statemachine}
 \end{figure}
 
-Let $\mathcal{S}$ be the current safety level, $\mathcal{T}$ the set of active thresholds.  
-We define an invariant $\mathcal{I}$: for any sequence of events, there exists a finite $k$ such that after $k$ cycles the system is in STABLE with all thresholds clamped within $[0.05,0.95]$.  
-Proof sketch: the Lyapunov exponent $\lambda$ is estimated over a rolling window of size $N=50$; a genuine divergence rises monotonically, triggering a DANGER event.  The consequent reset restores the last known‑good configuration, which corresponds to a STABLE state.  If a false positive occurs, the Kalman‑filtered trend $\gamma_t$ will quickly indicate convergence, lowering $\lambda$ before the CAUTION level escalates.  Thus the meta‑controller cannot loop infinitely, and the system is *strongly self‑stabilising*.
+Let $\mathcal{S}$ be the current safety level, $\mathcal{T}$ the set of
+active thresholds.  We define an invariant $\mathcal{I}$: for any sequence
+of events, there exists a finite $k$ such that after $k$ cycles the system
+is in STABLE with all thresholds clamped within $[0.05,0.95]$.
+
+Proof sketch: the Lyapunov exponent $\lambda$ is estimated over a rolling
+window of size $N=50$; a genuine divergence rises monotonically, triggering
+a DANGER event.  The consequent reset restores the last known‑good
+configuration, which corresponds to a STABLE state.  If a false positive
+occurs, the Kalman‑filtered trend $\gamma_t$ will quickly indicate
+convergence, lowering $\lambda$ before the CAUTION level escalates.
+Thus the meta‑controller cannot loop infinitely, and the system is
+\emph{strongly self‑stabilising}.
+
+This invariant can be independently verified by the multi‑prover
+architecture described in our companion work~\cite{beniers2026multi}:
+the Lean~4 prover checks that the state‑machine transitions preserve
+$\mathcal{I}$, while the Coq prover verifies the monotonicity of $\lambda$
+under genuine divergence.  Work is underway to generate lean4‑compatible
+assertions directly from the runtime monitor via an AST‑based translation
+layer, thereby closing the remaining gap between runtime observation and
+compile‑time formal guarantees.
+Conversely, a detected divergent signal could be automatically
+translated into a counterexample that falsifies a claimed invariant,
+closing the loop between empirical monitoring and formal proof.
+
 
 \begin{figure}[htbp]
 \centering

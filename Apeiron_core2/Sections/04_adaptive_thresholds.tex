@@ -46,6 +46,16 @@ which threshold.  For instance, \texttt{chaos\_epsilon} uses $m_i=1, n_i=0, p_i=
 \texttt{ethical\_violation} uses $m_i=0, n_i=0, p_i=1$.  All values are
 clamped to $[0.05, 0.95]$.
 
+During the first 1000 update cycles the Kalman filter’s error covariance
+matrix has not yet converged; in this initial phase the adaptive
+thresholds are clamped to their conservative base values
+$\theta_i^{\text{base}}$, effectively operating in a \emph{safe‑mode}
+that prevents premature relaxation.  Once the filter’s innovation
+covariance stabilises (typically after a few hundred observations under
+a steady workload), the adaptation logic is fully engaged.  This
+two‑phase startup ensures that the system never over‑relaxes due to
+uninformed state estimates.
+
 Figure~\ref{fig:adapt} illustrates the adaptation of chaos epsilon over time
 as complexity drifts from 0 to 1.
 

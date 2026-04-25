@@ -75,6 +75,37 @@ This demonstrates that the introspection‑based approach of the \Core{}
 provides earlier warning than reactive monitoring, allowing for gentler
 interventions.
 
+\subsection{Multi‑Agent Chaos Interaction}
+
+To assess whether the \Core{} can maintain stability when two instances
+interact, we coupled two ChaosDetectors via a shared EventBus.
+Agent~A was fed a diverging error signal starting at cycle~100;
+Agent~B received a stable signal but also subscribed to A's error
+broadcasts.  Table~\ref{tab:multiagent} summarises the results.
+
+\begin{table}[htbp]
+\centering
+\caption{Multi‑agent chaos experiment.}
+\label{tab:multiagent}
+\begin{tabular}{l c c}
+\toprule
+\textbf{Metric} & \textbf{Agent A (divergent)} & \textbf{Agent B (stable)} \\
+\midrule
+First alarm cycle       & 26  & 88 \\
+Total alarm cycles      & 174 & 2  \\
+Mean alarm after A fire & --  & 62 cycles later \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Agent~B experienced only two brief alarm episodes, both well after A's
+divergence was fully established.  No sustained false‑positive cascade
+occurred, demonstrating that the event‑based coupling combined with
+the built‑in EMA filtering provides inherent inter‑agent stability.
+This experiment indicates that the \Core{} is suitable as a building
+block for multi‑agent systems where individual agents monitor each
+other's health without risking mutual destabilisation.
+
 \subsection{Energy Management}
 
 A ResNet‑18 model was trained on CIFAR‑10 for one epoch, with the

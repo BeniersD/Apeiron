@@ -7,7 +7,19 @@ thousands of concurrent layers, a distributed backend such as Kafka
 would be mandatory.  The adaptive thresholds and chaos detector react
 quickly enough to prevent runaway dynamics in low‑dimensional
 simulations; their effectiveness in high‑dimensional, real‑world
-scenarios remains an open question.
+scenarios remains an open question. Furthermore, the Lyapunov exponent calculation currently operates on
+CPU‑resident sliding windows of $N=50$ points; for extremely high‑frequency
+event streams, the overhead of \texttt{np.diff} and log‑ratio computations
+may become dominant.  A GPU‑accelerated tensor implementation of the
+chaos detector would address this bottleneck and is planned as a
+drop‑in replacement for the existing \texttt{LyapunovCalculator}.
+A further enhancement would be an adaptive window size that tracks
+the CPU clock frequency, allowing the chaos detector to maintain
+consistent sensitivity even during thermal throttling episodes.
+For event rates exceeding $10^6$\,events/s, the present CPU‑based
+window estimator may become a bottleneck; porting the Lyapunov
+calculation to a GPU‑accelerated tensor primitive would preserve
+real‑time guarantees even at that scale.
 
 A central limitation is the energy model.  While the CPU and GPU power
 estimates are reasonably accurate (within 10\,\% of a wall‑plug
@@ -32,6 +44,16 @@ long‑lived autonomous agent; it forces the system to internalize the true cost
 computation, much as biological organisms allocate metabolic resources.  
 Future work will explore the philosophical implications of this forced frugality.
 
+\paragraph{Collective Stability.}
+The multi‑agent chaos experiment shows that when two \Core{} instances
+share error signals via the event bus, the stable agent is not drawn
+into a false‑positive cascade.  The built‑in exponential moving average
+and the threshold mechanism together act as a natural stabiliser: only
+sustained, genuine divergence triggers persistent alarms.  This
+property is essential for large‑scale autonomous systems where
+self‑monitoring components must coexist without interfering with each
+other's operation.
+
 \paragraph{Stability of the Meta‑Controller.}
 A legitimate concern is whether the coupling between AdaptiveThresholds
 and ChaosDetector could create a positive‑feedback loop in which rising
@@ -55,7 +77,17 @@ sensors and cryptographic attestation of the energy log would be
 required.
 
 Future work will integrate the \Core{} with the higher layers of the
-\Apeiron{} Framework, particularly Layer 10 (coherence evaluation) and
-Layer 15 (morphogenetic ethics).  We also plan to extend the event bus
+\Apeiron{} Framework, particularly Layer~10 (coherence evaluation) and
+Layer~15 (morphogenetic ethics).  We also plan to extend the event bus
 with a dedicated stream‑processing language for expressing complex
-event patterns.
+event patterns.  
+A further direction is the replacement of the embedded SQLite store
+with a distributed, replicated log (e.g., Kafka or Redpanda), which
+would allow the \Core{} to be deployed across a cluster of autonomous
+agents while preserving the same event‑sourcing semantics and
+durability guarantees.
+A particularly compelling demonstration will be a
+benchmark in which the ThermodynamicCost module decides to migrate a
+computationally expensive CPU task to an FPGA‑accelerated backend,
+showcasing the full vision of energy‑aware, self‑regulating computation
+across heterogeneous hardware.

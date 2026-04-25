@@ -48,6 +48,17 @@ class LyapunovCalculator:
         return float(slope)
 \end{lstlisting}
 
+The current implementation estimates $\lambda_1$ directly on the
+raw error‑epsilon time series without performing explicit phase‑space
+reconstruction (e.g., via Takens’ embedding theorem).  This simplified
+estimator is sufficient for detecting the monotonic divergence that
+characterises genuine instability in the agent’s learning dynamics,
+and has proven robust in all synthetic and semi‑synthetic workloads
+tested.  For systems exhibiting more complex, non‑linear oscillations,
+an adaptive procedure that determines the optimal embedding dimension~$d$
+and delay~$\tau$ online could further reduce false positives; such an
+extension is left for future work.
+
 \subsection{Intervention Protocol}
 
 When the safety level rises above \texttt{NORMAL}, a graded intervention is

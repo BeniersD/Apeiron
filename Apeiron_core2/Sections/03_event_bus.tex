@@ -56,7 +56,20 @@ before being placed in the queue.  This ensures that no event is ever lost,
 even in the event of a crash.  A separate \emph{event sourcing log} records
 each state mutation as an append-only fact, enabling full audit trails and
 deterministic replay.  Replay is implemented as a generator that streams
-events from the database in chronological order.
+events from the database in chronological order. To prevent I/O wait from becoming a bottleneck at high throughput,
+the SQLite store operates in \texttt{WAL} (Write‑Ahead Logging) mode
+and all writes are performed asynchronously via \texttt{aiosqlite},
+allowing the main event loop to continue processing without blocking.
+When persistence is enabled, the bus internally buffers events and
+flushes them to disk in configurable batches.  In streaming scenarios
+that require the absolute highest throughput, the in‑memory backend
+remains the recommended choice; the persistent store can then be kept
+as a separate, asynchronously updated audit trail, ensuring that event
+sourcing guarantees are never compromised. 
+Under extreme back‑pressure the internal buffer can grow temporarily,
+but no events are lost: the circuit breaker and dead‑letter mechanisms
+ensure that the system either processes, retries, or safely archives
+every message.
 
 \subsection{Fault Tolerance}
 
