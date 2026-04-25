@@ -1,0 +1,62 @@
+% !TEX program = pdflatex
+\documentclass[11pt,a4paper]{article}
+
+% ---------- packages ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{tikz-cd}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage[capitalise]{cleveref}
+\usepackage{authblk}
+
+% ---------- theorem environments ----------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% ---------- title page ----------
+\title{\textbf{Categorical Foundations of the APEIRON Framework}\\[5pt]
+\large Multi‑axial atomicity as a zero‑object and the functorial network of layers}
+\author{David Beniers}
+\affil{\texttt{david.beniers@telenet.be}}
+\date{April 25, 2026}
+
+\begin{document}
+\maketitle
+
+% ---------- abstract ----------
+\input{Sections/abstract}
+
+% ---------- sections ----------
+\clearpage
+\input{Sections/1_introduction}
+\clearpage
+\input{Sections/2_related_work}
+\clearpage
+\input{Sections/3_preliminaries}
+\clearpage
+\input{Sections/4_category_definition}
+\clearpage
+\input{Sections/5_separated_object}
+\clearpage
+\input{Sections/6_functorial_network}
+\clearpage
+\input{Sections/7_implementation}
+\clearpage
+\input{Sections/8_conclusion}
+
+% ---------- bibliography ----------
+\bibliographystyle{alpha}
+\bibliography{categorical_foundations}
+
+\end{document}

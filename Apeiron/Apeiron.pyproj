@@ -43,6 +43,7 @@
     <Compile Include="apeiron\layers\layer01_foundational\tests\unit\test_minimal.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\unit\__init__.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\visualization\__init__.py" />
+    <Compile Include="apeiron\tests\categorical_verification.py" />
     <Compile Include="apeiron\tests\test_chaos_benchmark.py" />
     <Compile Include="apeiron\tests\test_chaos_filter.py" />
     <Compile Include="apeiron\tests\test_energy_workload.py" />
