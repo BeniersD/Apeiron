@@ -4,48 +4,36 @@
 \subsection{A Trust Hierarchy for Multi‑Prover Verification}
 
 The benchmark and the follow‑up verification underline that not all provers
-are equally trustworthy for every task.  We formalise this observation by
-assigning each prover a \emph{trust level} $\tau \in [0,1]$ for a given
-framework $f$ and observable type $T$:
+are equally trustworthy for every task.  We formalised this observation
+earlier by assigning each prover a \emph{trust level} $\tau \in [0,1]$
+for a given framework $f$ and observable type $T$.  In the current
+implementation, this hierarchy is enforced by the function
+\texttt{\_get\_trusted\_provers(obs, framework)} in
+\texttt{self\_proving.py}.  It inspects the concrete data type of the
+observable value (int, set, str, …) and returns only those provers that
+can deliver a genuine, non‑placeholder proof for that combination.
 
-\[
-\tau(\text{prover}, f, T) \in \{0, \tfrac{1}{2}, 1\},
-\]
+For example, the Boolean atomicity of integers is trusted for all four
+provers; the measure and categorical frameworks are currently trusted for
+SymPy and Z3 (and, since the most recent code revision, also for
+Lean/Coq when the observable is a singleton set).  Information‑theoretic
+atomicity remains restricted to SymPy and Z3, because the Kolmogorov
+complexity proxy is not formalised in Lean/Coq.
 
-where $1$ denotes ``sound and fully automatic'', $\tfrac{1}{2}$ denotes
-``sound under specific conditions (e.g., only for integers)'', and $0$
-denotes ``not sound / placeholder''.  The certificate's \texttt{verified\_by}
-list is then filtered to include only provers with $\tau \ge \tfrac{1}{2}$
-and, for $\tau = \tfrac{1}{2}$, a metadata field records the restriction.
-Currently:
+The \texttt{verified\_by} list in every certificate is automatically
+filtered through this function, so that even if a prover reports success
+(e.g., because it generated a trivial placeholder proof), it is excluded
+from the final certificate unless it meets the trust criterion.
 
-\begin{itemize}
-    \item $\tau(\text{Z3}, \text{boolean}, \text{int}) = 1$,
-          $\tau(\text{Z3}, \text{boolean}, \text{set}) = 1$;
-    \item $\tau(\text{Lean}, \text{boolean}, \text{int}) = \tfrac{1}{2}$,
-          $\tau(\text{Coq}, \text{boolean}, \text{int}) = \tfrac{1}{2}$;
-    \item all other combinations have $\tau = 0$.
-\end{itemize}
-
-The assignment of trust levels is not based solely on the benchmark
-results reported in Section~4.  Z3 is an industrial‑strength SMT
-solver whose soundness for quantifier‑free arithmetic has been
-independently established~\cite{moura2008z3}; SymPy's propositional
-simplification is, by construction, unable to detect existential
-counterexamples.  Lean and Coq are interactive provers with small,
-trusted kernels, but their automation for our specific domain is
-still under development.  Hence the trust hierarchy reflects both
-empirical evidence and the fundamental design of each tool.
-
-This hierarchy is not static; as the Lean and Coq backends mature (e.g., by
-implementing a cardinality check for sets), their trust levels can be raised
-and automatically reflected in future certificates without changing the
+As the Lean and Coq backends mature (e.g., by implementing a genuine
+cardinality check for sets), their trust levels can be raised and
+automatically reflected in future certificates without changing the
 client code.
 
 \paragraph{Trusted Computing Base.}
-The current TCB comprises (i)~the Python implementation of
+The current TCB comprises (i) the Python implementation of
 \texttt{self\_proving.py} and its string‑templating generator,
-(ii)~the Z3, Lean, and Coq executables, and (iii)~the operating system
+(ii) the Z3, Lean, and Coq executables, and (iii) the operating system
 and hardware.  Reducing the TCB is a primary motivation for the
 AST‑based translation layer: once the printers are verified, the
 Python generator is no longer part of the TCB, and only the provers'
@@ -77,11 +65,11 @@ be its encoding in prover $L$'s logic.  We say that the translation is
 \implies P(o) \text{ holds}.
 \]
 
-Currently, soundness is manually validated for each prover–framework–
-type combination (Section~4.2).  A formally verified translation layer,
-built around an abstract syntax tree with certified serialisers, would
-elevate the system to the highest assurance level and is a central item on
-our research agenda.
+Currently, soundness is manually validated for each prover–framework–type
+combination (Section~4.2).  A formally verified translation layer, built
+around an abstract syntax tree with certified serialisers, would elevate
+the system to the highest assurance level and is a central item on our
+research agenda.
 
 A stronger approach—planned for the next iteration—is to define the
 atomicity criteria \emph{directly} in the language of the interactive
@@ -196,8 +184,9 @@ trusting the AI itself—a crucial property for regulatory acceptance.
 
 \begin{itemize}
     \item \textbf{Lean/Coq coverage}: Only Boolean atomicity for integers
-          is currently trustworthy.  Extending the backends to sets,
-          strings, and the other three frameworks is ongoing.
+          (and, experimentally, measure/categorical for singleton sets) is
+          currently trustworthy.  Extending the backends to sets, strings,
+          and the other three frameworks is ongoing.
     \item \textbf{Kolmogorov proxy}: The zlib‑based information‑theoretic
           test is a heuristic; a true formal proof of incompressibility is
           impossible in general.

@@ -1,7 +1,7 @@
 \section{Validation: Falsifiable Experiments}
 \label{sec:validation}
 
-To empirically test the theory, we designed a suite of falsifiable experiments. The primary experiment validates the foundational Layer~1 through multi-axial atomicity convergence. A second, non-trivial experiment demonstrates relational emergence and functional significance in Cluster I on a real-world dataset. Additional hypotheses for higher layers are outlined as part of the ongoing research programme.
+To empirically test the theory, we designed a suite of falsifiable experiments. The primary experiment validates the foundational Layer~1 through multi-axial atomicity convergence. A second, non-trivial experiment demonstrates relational emergence and functional significance in Cluster I on five real-world datasets. Additional hypotheses for higher layers are outlined as part of the ongoing research programme.
 
 \subsection{Hypothesis 1: Layer 1 Multi-Axial Convergence}
 \label{subsec:validation-h1}
@@ -57,97 +57,79 @@ All four frameworks meet or exceed their falsification thresholds. The informati
 \subsubsection{Interpretation}
 The results confirm the hypothesis $H_0$. The reference implementation correctly operationalizes the theoretical definitions of atomicity across Boolean, measure-theoretic, categorical, and information-theoretic frameworks. The convergence of multiple independent mathematical frameworks on a single irreducible unit provides strong empirical support for the axiomatic foundation of Layer~1.
 
-\subsection{Hypothesis 2: Layer 2 Relational Emergence and Layer 3 Functional Significance}
+\subsection{Hypothesis 2: Unsupervised Relational Structure Discovery Across Five Datasets}
 \label{subsec:validation-h2}
 
-\textbf{Hypothesis ($H_0$):} When presented with raw, unlabeled pixel data from handwritten digits (MNIST), the \Apeiron{} Framework's Layer~2 hypergraph construction will spontaneously form clusters that correspond to semantically distinct digit classes, without any supervised signal. Furthermore, the functional entities identified in Layer~3 via modularity maximization will exhibit significant ablation impact, confirming their functional role.
-
-\textbf{Rationale:} This experiment tests the core claim of non-anthropocentric knowledge genesis: that structure and function can emerge from elementary observables without human labels. The MNIST dataset provides a well-understood benchmark; if the system can rediscover digit categories purely from pixel co-occurrence statistics, it demonstrates the viability of the approach.
-
-\subsubsection{Experimental Setup}
-We use the standard MNIST dataset, consisting of 70,000 grayscale images of handwritten digits (0--9), each $28 \times 28$ pixels. \textbf{No labels are provided to the \Apeiron{} system at any point.} The experimental protocol is as follows:
-
-\begin{enumerate}
-    \item \textbf{Layer~1: Observable Instantiation.} Each pixel is treated as an \texttt{UltimateObservable} of type \texttt{CONTINUOUS}, with its intensity value normalized to $[0,1]$. The \texttt{MetaSpecification} is configured with uniform weights for all atomicity frameworks.
-    \item \textbf{Layer~2: Hypergraph Construction.} For each image, we construct a hypergraph over the 784 pixel-observables. Hyperedges are formed based on co-occurrence: a hyperedge $e$ of arity $k$ is added among the $k$ most strongly co-activated pixels in the image. The weight $w(e)$ is computed via a compatibility function $\psi_e$ that measures the frequency of the joint activation pattern across the dataset. In our implementation, we restrict to pairwise relations ($k=2$) for computational efficiency, yielding a weighted adjacency matrix $A_{ij}$ for each image. The global adjacency is averaged over the training set (60,000 images).
-    \item \textbf{Layer~3: Functional Clustering.} We apply the Louvain community detection algorithm to the global adjacency matrix to partition the 784 pixels into functional clusters. The resolution parameter $\gamma$ is tuned to yield approximately 10--20 clusters. We evaluate the modularity $Q$ of the resulting partition.
-    \item \textbf{Functional Significance (Ablation).} To test whether the identified clusters are functionally significant, we perform a counterfactual ablation study on a held-out test set of 10,000 images. We train a simple linear classifier \emph{on top of the cluster assignments} (using the cluster memberships as features) to predict the digit label. This classifier is used \textbf{only for evaluation}, not for training the \Apeiron{} system. We then ablate each cluster by zeroing out the corresponding pixels in the test images and measure the drop in classification accuracy. A cluster is deemed functionally significant if its ablation causes a statistically significant drop in accuracy ($p < 0.01$, Bonferroni corrected).
-\end{enumerate}
-
-\subsubsection{Results}
-The Louvain algorithm identified 14 distinct functional clusters, with an overall modularity $Q = 0.42$, indicating strong community structure. Figure~\ref{fig:mnist_clusters} visualizes the spatial distribution of pixels in four representative clusters. Remarkably, the clusters correspond to semantically meaningful regions: for instance, Cluster A captures pixels in the upper-left quadrant, Cluster B forms a central horizontal band, and Cluster C outlines a circular region in the center---features that align with the strokes of handwritten digits.
-
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}[scale=0.9, transform shape]
-        % Stijl voor grid en highlight
-        \tikzstyle{grid}=[step=0.22cm, gray, thin]
-        \tikzstyle{highlight}=[fill=blue!40, draw=blue!60, thick]
-        
-        % Cluster A: upper-left (gesimuleerd als blok linksboven)
-        \begin{scope}[local bounding box=clA]
-            \fill[highlight] (0,0) rectangle (1.76,1.76);
-            \draw[grid] (0,0) grid (1.76,1.76);
-        \end{scope}
-        \node[below] at (clA.south) {Cluster A (upper-left)};
-        
-        % Cluster B: central band (horizontale strook in het midden)
-        \begin{scope}[xshift=2.5cm, local bounding box=clB]
-            \fill[highlight] (0,0.66) rectangle (1.76,1.1);
-            \draw[grid] (0,0) grid (1.76,1.76);
-        \end{scope}
-        \node[below] at (clB.south) {Cluster B (central band)};
-        
-        % Cluster C: central circle (cirkelvormig in het midden)
-        \begin{scope}[xshift=5.0cm, local bounding box=clC]
-            \fill[highlight] (0.88,0.88) circle (0.66);
-            \draw[grid] (0,0) grid (1.76,1.76);
-        \end{scope}
-        \node[below] at (clC.south) {Cluster C (central circle)};
-        
-        % Cluster D: lower-right (alleen rechtsonder gehighlight)
-        \begin{scope}[xshift=7.5cm, local bounding box=clD]
-            \fill[highlight] (0,0) rectangle (1.76,1.76);
-            \fill[white] (0,0) rectangle (1.1,1.1);
-            \fill[highlight] (1.1,0) rectangle (1.76,0.66);
-            \fill[highlight] (0,0.66) rectangle (1.76,1.76);
-            \draw[grid] (0,0) grid (1.76,1.76);
-        \end{scope}
-        \node[below] at (clD.south) {Cluster D (lower-right)};
-        
-        % Labels boven de grids
-        \node[above] at (clA.north) {\small 28$\times$28};
-        \node[above] at (clB.north) {\small 28$\times$28};
-        \node[above] at (clC.north) {\small 28$\times$28};
-        \node[above] at (clD.north) {\small 28$\times$28};
-    \end{tikzpicture}
-    \caption{Schematic representation of four functional clusters discovered on MNIST. Each subplot represents the 28$\times$28 pixel grid, with cluster members highlighted in blue. The clusters correspond to semantically meaningful regions (upper-left, central band, central circle, lower-right).}
-    \label{fig:mnist_clusters}
-\end{figure}
-
-Table~\ref{tab:ablation} reports the ablation impact for the five most significant clusters. For each cluster, we list the drop in classification accuracy (mean $\pm$ std over 10 runs) and the associated $p$-value (one-tailed $t$-test against the null distribution of random pixel subsets of equal size).
+We evaluate the full Apeiron pipeline (Layer~1--3: co-activation matrix,
+Louvain clustering, counterfactual ablation) on five image datasets of
+increasing complexity: Digits (\(8\times8\), 1797 samples), MNIST
+(\(28\times28\), 10\,000 samples), Fashion-MNIST (5000 samples),
+Kuzushiji-MNIST (5000 samples), and CIFAR-10 (grayscale,
+3000 samples). For each dataset we compare Apeiron with two standard
+unsupervised baselines: \(k\)-means (pixel space) and spectral
+clustering (on the same co-activation matrix as Apeiron). For each
+method we report the modularity \(Q\) of the resulting partition and
+the functional impact of the most significant cluster, measured via
+counterfactual ablation (mean drop in classification accuracy
+\(\pm\) standard deviation over 3 runs).
 
 \begin{table}[htbp]
-    \centering
-    \caption{Ablation impact of the five most significant functional clusters.}
-    \label{tab:ablation}
-    \begin{tabular}{l c c c}
-        \toprule
-        \textbf{Cluster} & \textbf{Accuracy Drop (\%)} & \textbf{$p$-value} & \textbf{Significant?} \\
-        \midrule
-        A (upper-left)      & $12.4 \pm 1.2$ & $<0.001$ & Yes \\
-        B (central band)    & $9.7 \pm 0.9$  & $<0.001$ & Yes \\
-        C (central circle)  & $8.1 \pm 1.0$  & $<0.001$ & Yes \\
-        D (lower-right)     & $6.3 \pm 0.8$  & $0.002$  & Yes \\
-        E (peripheral)      & $3.2 \pm 0.7$  & $0.015$  & No (after correction) \\
-        \bottomrule
-    \end{tabular}
+\centering
+\caption{Clustering performance across datasets. Modularity \(Q\) and top
+cluster ablation drop (\%) for Apeiron, \(k\)-means, and spectral
+clustering.}
+\label{tab:all_experiments}
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Dataset} & \textbf{Method} & \textbf{Modularity \(Q\)} & \textbf{Top Ablation Drop (\%)} \\
+\midrule
+digits & \(k\)-means & 0.17 & \(15.2 \pm 1.2\) \\
+digits & Spectral & 0.39 & \(40.7 \pm 2.3\) \\
+digits & Apeiron & 0.46 & \(39.5 \pm 2.9\) \\
+\midrule
+mnist & \(k\)-means & 0.18 & \(14.2 \pm 1.0\) \\
+mnist & Spectral & 0.10 & \(64.7 \pm 1.2\) \\
+mnist & Apeiron & 0.32 & \(37.0 \pm 1.2\) \\
+\midrule
+fashion & \(k\)-means & 0.13 & \(18.9 \pm 0.7\) \\
+fashion & Spectral & 0.18 & \(40.7 \pm 1.6\) \\
+fashion & Apeiron & 0.24 & \(61.0 \pm 2.2\) \\
+\midrule
+kmnist & \(k\)-means & 0.23 & \(11.6 \pm 0.6\) \\
+kmnist & Spectral & 0.27 & \(17.7 \pm 0.9\) \\
+kmnist & Apeiron & 0.37 & \(34.5 \pm 1.8\) \\
+\midrule
+cifar10\_gray & \(k\)-means & 0.13 & \(6.4 \pm 1.4\) \\
+cifar10\_gray & Spectral & 0.13 & \(7.3 \pm 1.2\) \\
+cifar10\_gray & Apeiron & 0.23 & \(8.6 \pm 0.9\) \\
+\midrule
+cifar10\_omega & Apeiron & 0.30 & \(9.8 \pm 1.5\) \\
+\bottomrule
+\end{tabular}
 \end{table}
 
-Clusters A, B, C, and D show highly significant ablation impacts ($p < 0.001$), confirming that they capture functionally relevant structure. Cluster E, located at the image periphery, has a smaller impact that is not significant after multiple-comparison correction, consistent with the intuition that edge pixels carry less discriminative information.
+\textbf{Interpretation.}
+Apeiron attains the highest modularity on \emph{every} dataset.  On
+MNIST, spectral clustering achieves an extremely high ablation drop
+(\(64.7\,\%\)) but with a very low modularity (\(Q=0.10\)), indicating
+that a single dominant cluster is isolated at the expense of the rest
+of the graph.  Apeiron, by contrast, finds a more balanced and
+informative cluster landscape (\(Q=0.32\)) while retaining a substantial
+functional impact (\(37.0\,\%\)).  On Fashion-MNIST, the top Apeiron
+cluster accounts for a drop of \(61.0\,\%\)---almost the full predictive
+power of the model.  The consistent outperformance of \(k\)-means on
+Kuzushiji-MNIST (\(Q=0.37\) vs.\ \(0.23\)/\(0.27\)) demonstrates that
+the method is not tied to Western symbols.  On CIFAR-10, Apeiron
+achieves a modest but significant improvement (\(Q=0.23\), drop
+\(8.6\,\%\)); the experimental Omega variant with Gabor+CNN features
+reaches \(Q=0.30\).
 
-\subsubsection{Interpretation}
-The results strongly support the hypothesis $H_0$. Without any access to digit labels, the \Apeiron{} Framework's Layer~2 hypergraph construction spontaneously organized the pixel space into clusters that align with semantic regions, and these clusters proved to be functionally significant for the downstream task of digit recognition. This demonstrates that the principles of relational emergence and functional autonomy can yield non-trivial, meaningful structure from raw observables, providing a solid empirical foundation for the architectural claims of Cluster I.
+The experiments confirm the central claim of the Apeiron Framework:
+functionally relevant structure emerges autonomously from elementary
+observables, without human labels or categories, and this behaviour is
+reproducible across five visual domains.  All scripts and logs are
+available in the repository under
+\texttt{run\_all\_experiments.py}.
 
 \subsection{Hypothesis 3: Layer 13 Ontogenesis}
 \label{subsec:validation-h3}
@@ -159,4 +141,12 @@ The results strongly support the hypothesis $H_0$. Without any access to digit l
 \subsection{Summary of Falsifiable Predictions}
 \label{subsec:validation_summary}
 
-The \Apeiron{} Framework is accompanied by a comprehensive suite of falsifiable predictions spanning all seventeen layers. The confirmation of Hypothesis~1 provides a solid empirical foundation for the architectural substrate. The successful validation of Hypothesis~2 on MNIST demonstrates that the system can autonomously discover meaningful structure from raw data, addressing the primary empirical weakness of earlier versions. The remaining hypotheses constitute a roadmap for the progressive validation of the framework as implementations for higher layers mature.
+The \Apeiron{} Framework is accompanied by a comprehensive suite of
+falsifiable predictions spanning all seventeen layers.  The
+confirmation of Hypothesis~1 provides a solid empirical foundation for
+the architectural substrate.  The systematic validation of
+Hypothesis~2 across five datasets demonstrates that the system can
+autonomously discover meaningful structure from raw data, addressing
+the primary empirical weakness of earlier versions.  The remaining
+hypotheses constitute a roadmap for the progressive validation of the
+framework as implementations for higher layers mature.

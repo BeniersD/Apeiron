@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "apeiron"
+version = "1.0.0"
+description = "Apeiron Framework: non-anthropocentric knowledge genesis"
+authors = [{name = "David Beniers", email = "david.beniers@telenet.be"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+    "networkx>=3.0",
+    "python-louvain>=0.16",
+    "scikit-learn>=1.3.0",
+]
+[project.optional-dependencies]
+gpu = ["torch>=2.0.0", "torchvision>=0.15.0"]
+quantum = ["qiskit>=0.43.0", "qiskit-aer>=0.11.0"]
+fpga = ["pynq>=3.0.0"]
+all = ["torch>=2.0.0", "torchvision>=0.15.0", "qiskit>=0.43.0", "qiskit-aer>=0.11.0"]
+
+[tool.setuptools.packages.find]
+include = ["apeiron", "apeiron.*"]

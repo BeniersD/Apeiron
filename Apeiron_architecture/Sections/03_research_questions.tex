@@ -29,9 +29,22 @@ The \Apeiron{} Framework is not merely a descriptive taxonomy but a research pro
 
 \subsubsection{Cluster I: Substrate \& Emergence (Layers 1--4)}
 \begin{enumerate}[label=RQ\arabic*:, leftmargin=2.5cm, series=rq]
-    \item \textbf{Multi-axial convergence:} Under what conditions do the Boolean, measure-theoretic, categorical, and information-theoretic atomicity frameworks converge on a consistent verdict for a given observable? What are the falsifiable bounds on this convergence?
+    \item \textbf{Multi-axial convergence:} Under what conditions do the
+Boolean, measure-theoretic, categorical, and information-theoretic
+atomicity frameworks converge on a consistent verdict for a given
+observable?  The reference implementation already confirms convergence
+for the canonical observables \emph{integer~1} and \emph{singleton set
+\{1\}}; the remaining open question is to establish the statistical
+convergence rate over the broader 47-observable benchmark
+(Table~\ref{tab:benchmark}) and to characterise the observable types for
+which convergence is guaranteed.
     \item \textbf{Relational emergence threshold:} What is the minimal relational density (edge-to-node ratio, hyperedge arity) required for the emergence of statistically significant functional motifs?
-    \item \textbf{Functional stability:} How does the robustness of a functional entity (measured via counterfactual ablation) scale with the modularity of its underlying relational cluster?
+    \item \textbf{Functional stability:} How does the robustness of a
+functional entity (measured via counterfactual ablation) scale with the
+modularity of its underlying relational cluster?  Preliminary results on
+five datasets (Section~\ref{sec:validation}, Table~\ref{tab:all_experiments})
+suggest a positive rank-order correlation; the precise functional form
+of this relationship remains an open empirical question.
     \item \textbf{Feedback-induced bifurcations:} What are the critical parameter regimes (learning rate $\eta$, noise scale $\sigma$) at which a homeostatic feedback loop transitions into oscillatory or chaotic behavior?
 \end{enumerate}
 

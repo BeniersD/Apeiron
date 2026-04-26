@@ -52,3 +52,41 @@ The framework asymptotically approaches a fixed point of self-consistency (Layer
 \end{axiom}
 
 These axioms are not isolated declarations; they form a coherent system. Axioms~\ref{ax:irred}--\ref{ax:multi} ground the substrate. Axioms~\ref{ax:relational}--\ref{ax:emergence} govern emergence. Axioms~\ref{ax:time}--\ref{ax:openness} enable ontological fluidity. Axioms~\ref{ax:autopoiesis}--\ref{ax:reversibility} embed ethics and world-making. Axioms~\ref{ax:observer}--\ref{ax:convergence} ensure reflexivity and asymptotic self-consistency. In the layer descriptions that follow, each layer explicitly states which axioms it satisfies.
+
+\subsection{Formal Verification Status}
+\label{subsec:formal-verification}
+
+Layer~1 is equipped with a multi-prover architecture
+(\texttt{self\_proving.py}) that integrates SymPy, Z3, Lean~4, and
+Coq.  In the current implementation the following honest trust
+hierarchy has been established through systematic benchmarks over 47
+observables:
+
+\begin{itemize}
+\item \textbf{Z3} is the only fully automatic prover that is sound for
+  both integers and sets; it correctly proves Boolean atomicity for
+  all primes, singleton sets, and the integer~1, and correctly fails
+  for composite numbers.
+\item \textbf{Lean~4} and \textbf{Coq} deliver genuine computational
+  proofs for Boolean atomicity of integers (via
+  \texttt{native\_decide}/\texttt{vm\_compute}).  For other types
+  their backends currently generate placeholders; these proofs are
+  excluded from the certificates by a fine-grained trust filter.
+\item \textbf{SymPy} serves as a fast consistency filter and does not
+  provide formal guarantees.
+\end{itemize}
+
+Official JSON certificates have been produced for the canonical atomic
+observables \emph{integer~1} and \emph{singleton set \{1\}} in the
+Boolean, measure, and categorical frameworks.  The certificates are
+verified by Z3 and SymPy and can be independently re-checked with the
+same provers; they are included in the repository
+(\texttt{true\_certificate\_integer1\_boolean.json},
+\texttt{true\_certificate\_set\_singleton\_boolean.json}, \emph{etc.}).
+
+This is a substantial step toward formally verified foundations; we
+acknowledge that full coverage across all types and frameworks is not
+yet achieved.  The roadmap includes the formalisation of the measure-
+and categorical definitions in Lean, the implementation of an
+AST-based translator to reduce the trusted code base, and full
+automation of Coq via \texttt{coq-serapi}.

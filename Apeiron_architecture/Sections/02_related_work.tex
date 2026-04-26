@@ -10,7 +10,14 @@ The ambition to build AI systems on rigorous mathematical foundations has a long
 The application of category theory to machine learning has gained traction, particularly through the lens of \textit{applied category theory} \cite{fong2019}. Frameworks such as \textit{DisCoPy} \cite{delpeuch2021} use monoidal categories to compose neural network layers, while \textit{categorical deep learning} \cite{gavranovic2024} explores functorial semantics of architectures. However, these approaches remain focused on representing existing human-designed architectures rather than enabling autonomous ontological creation. The \Apeiron{} Framework extends categorical methods beyond representation to the active construction of new categories (Layer~9) and the reconciliation of incommensurable ontologies (Layer~12).
 
 \subsection{Formal Verification and Explainable AI}
-The need for verifiable AI has spurred developments in \textit{neuro-symbolic verification} and \textit{certified learning}. Systems like \textit{AlphaVerus} \cite{wang2023} and \textit{VeriDeep} \cite{chen2024} provide guarantees for specific neural network properties, but they operate post-hoc on trained models. In contrast, the \Apeiron{} Framework embeds formal verification at the architectural level: atomicity is not a property to be checked after training but a constitutive condition of the irreducible observables (Layer~1). The \texttt{SelfProvingAtomicity} module provides on-the-fly theorem proving for atomicity claims.
+The need for verifiable AI has spurred developments in \textit{neuro-symbolic verification} and \textit{certified learning}. Systems like \textit{AlphaVerus} \cite{wang2023} and \textit{VeriDeep} \cite{chen2024} provide guarantees for specific neural network properties, but they operate post-hoc on trained models. In contrast, the \Apeiron{} Framework embeds formal verification at the
+architectural level: atomicity is not a property to be checked after
+training but a constitutive condition of the irreducible observables
+(Layer~1).  A multi-prover pipeline (Section~\ref{subsec:formal-verification})
+integrates SymPy, Z3, Lean~4 and Coq; it has produced machine-checkable
+atomicity certificates for canonical observables, with Z3 serving as the
+sound automatic workhorse and Lean/Coq contributing genuine computational
+proofs for Boolean atomicity of integers.
 
 \subsection{Non-Anthropocentric and Emergentist AI}
 Recent work has begun to question the anthropocentric assumptions underlying mainstream AI. \textit{Embodied AI} and \textit{enactive cognition} \cite{thompson2007} emphasize the role of the agent's own sensorimotor loop in shaping its categories, but they still presuppose a human-designed body and environment. The \textit{Open-ended Learning} paradigm \cite{stanley2019} seeks systems that continually generate novel behaviors, yet the space of possible behaviors is typically constrained by a human-specified reward or novelty metric. The \Apeiron{} Framework radicalizes these efforts by removing human-defined objectives entirely: the system constructs its own categories, temporalities, and causal structures from first principles, without any external reward signal.
@@ -28,7 +35,11 @@ The present paper is not a report on a completed, empirically validated system. 
     \item \textbf{Friston's Free Energy Principle} \cite{friston2010} began as a theoretical proposal in neuroscience, postulating that biological systems minimize variational free energy. Over more than a decade, this conceptual framework has expanded into a broad research programme spanning neuroscience, psychiatry, and even artificial agent design, demonstrating how a well-articulated theoretical vision can progressively accumulate empirical support.
 \end{itemize}
 
-The \Apeiron{} Framework follows in this tradition. Like these works, it aims to establish a coherent conceptual and formal foundation---in this case, for non-anthropocentric knowledge genesis---upon which future theoretical and empirical work can build. The present paper fully specifies and partially implements the foundational Cluster I, while Clusters II--IV are presented as detailed architectural specifications that define the trajectory for the research programme.
+The \Apeiron{} Framework follows in this tradition. Like these works, it aims to establish a coherent conceptual and formal foundation---in this case, for non-anthropocentric knowledge genesis---upon which future theoretical and empirical work can build. The present paper fully specifies and implements the foundational
+Layer~1, provides prototype implementations of Layers~2--3, and validates
+Cluster~I on five image datasets; Clusters~II--IV are presented as
+detailed architectural specifications that define the trajectory for the
+research programme.
 
 \subsection{Contrast with Deep Learning Paradigms}
 \label{subsec:contrast}

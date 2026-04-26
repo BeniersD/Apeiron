@@ -13,7 +13,7 @@ The embedded ethical and governance framework (Section~\ref{sec:ethics}) further
 
 The \Apeiron{} Framework synthesizes ideas from a diverse array of traditions, yet it occupies a distinct position relative to each. Compared to Schmidhuber's G\"odel Machine \cite{schmidhuber2007}, which focuses on self-referential code rewriting, \Apeiron{} provides a layered ontology with explicit translation functors between layers, enabling a structured rather than monolithic approach to self-modification. Relative to Hutter's AIXI \cite{hutter2005}, which assumes a fixed reward signal, \Apeiron{} dispenses with external objectives entirely: knowledge genesis is driven by internal coherence and generative capacity rather than by human-defined utility.
 
-In the landscape of neuro-symbolic AI and formal verification (e.g., AlphaVerus \cite{wang2023}, VeriDeep \cite{chen2024}), \Apeiron{} differs by embedding verification at the architectural level rather than applying it post-hoc to trained models. The \texttt{SelfProvingAtomicity} module provides on-the-fly theorem proving for atomicity claims, a capability that remains rare in mainstream AI systems.
+In the landscape of neuro-symbolic AI and formal verification (e.g., AlphaVerus \cite{wang2023}, VeriDeep \cite{chen2024}), \Apeiron{} differs by embedding verification at the architectural level rather than applying it post-hoc to trained models. The multi-prover verification pipeline (Section~\ref{subsec:formal-verification}) has produced machine-checkable atomicity certificates for canonical observables, a capability that remains rare in mainstream AI systems.
 
 Finally, in relation to emergentist and non-anthropocentric AI \cite{thompson2007, stanley2019}, \Apeiron{} radicalizes the commitment to autonomy by removing not only human-specified rewards but also human-specified categories, temporalities, and causal structures. The system is designed to rebuild these from first principles, offering humanity a genuinely alien perspective on the latent structure of the domains it observes.
 
@@ -36,12 +36,13 @@ The \Apeiron{} Framework is not confined to artificial intelligence; it has impl
 
 \subsection{Limitations and Open Challenges}
 
-The current reference implementation is restricted to Layer~1, the irreducible substrate. While this layer has been formally specified, empirically validated (Section~\ref{sec:validation}), and analyzed for computational complexity (Section~\ref{sec:complexity}), the higher layers remain theoretical constructs awaiting implementation. The primary challenges for extending the implementation to Layers 2--17 include:
+The reference implementation currently covers the complete Layer~1 (irreducible observables) and provides prototype implementations of Layers~2--3 (relational hypergraph and functional clustering). Layer~1 has been formally specified, empirically validated across five datasets (Section~\ref{sec:validation}), and analyzed for computational complexity (Section~\ref{sec:complexity}). The primary challenges for extending the implementation to the remaining layers include:
 
 \begin{itemize}
     \item \textbf{Scalability of hypergraph operations:} As noted in Section~\ref{sec:complexity}, the $\mathcal{O}(N^2)$ complexity of relational influence computation becomes prohibitive for large $N$. Approximate methods and hardware acceleration will be essential for practical deployments.
     \item \textbf{Formal specification of functorial translations:} While category theory provides the vocabulary, constructing explicit, computable functors between the categories of distinct layers (e.g., from functional entities to optimization operators) requires substantial domain-specific engineering.
-    \item \textbf{Empirical validation of higher-layer hypotheses:} The falsifiable predictions outlined in Section~\ref{sec:validation} for Layers 2 and 13 provide a roadmap, but realizing the simulation environments needed to test them demands significant development effort.
+    \item \textbf{Empirical validation of higher-layer hypotheses:} The falsifiable predictions outlined in Section~\ref{sec:validation} for Layers~13 and above provide a roadmap, but realizing the simulation environments needed to test them demands significant development effort.
+    \item \textbf{Formal verification coverage:} The multi-prover pipeline currently provides sound, machine-checkable certificates for Boolean atomicity of integers and sets. Extending full formal coverage to all types and frameworks---particularly measure-theoretic and categorical atomicity for complex objects---is ongoing work.
     \item \textbf{Governance instantiation:} The polycentric governance structures envisioned in Section~\ref{sec:ethics} require institutional innovation as much as technical progress. Binding treaties, interoperable registries, and participatory co-design mechanisms are socio-political challenges that transcend any single research programme.
 \end{itemize}
 
@@ -49,8 +50,10 @@ A further limitation is the bootstrap problem acknowledged in the introduction: 
 
 \subsection{Future Work}
 
-The immediate priority is the implementation of Layer~2 (Relational Emergence) and Layer~3 (Functional Emergence), enabling end-to-end validation of the first cluster. Concurrently, the \texttt{DensityField} and \texttt{UltimateObservable} classes will be extended to support the meta-learning operators of Layers 5--6, providing a substrate for empirical investigation of RQ5--RQ7.
+The immediate priority is the formal specification and full implementation of Layer~2 (Relational Emergence), building on the prototype hypergraph code already present in the repository. Concurrently, the \texttt{DensityField} and \texttt{UltimateObservable} classes will be extended to support the meta-learning operators of Layers~5--6, providing a substrate for empirical investigation of RQ5--RQ7.
 
-In the medium term, the development of a categorical translation framework for Layers 9--12 will be pursued, leveraging applied category theory \cite{fong2019} and recent advances in functorial data migration. The ethical and governance primitives of Layers 15--17 will be elaborated into a formal specification suitable for legal and regulatory review.
+In the medium term, the development of a categorical translation framework for Layers~9--12 will be pursued, leveraging applied category theory \cite{fong2019} and recent advances in functorial data migration. The multi-prover verification pipeline will be extended with an AST-based translator to reduce the trusted code base, and the Lean/Coq backends will be formalised for the measure-theoretic and categorical frameworks.
+
+The ethical and governance primitives of Layers~15--17 will be elaborated into a formal specification suitable for legal and regulatory review.
 
 The open-source nature of the project invites collaboration from the broader research community. By providing a rigorous, falsifiable, and modular foundation, the \Apeiron{} Framework aims to serve as a shared substrate for the interdisciplinary exploration of non-anthropocentric intelligence.

@@ -43,7 +43,9 @@
     <Compile Include="apeiron\layers\layer01_foundational\tests\unit\test_minimal.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\unit\__init__.py" />
     <Compile Include="apeiron\layers\layer01_foundational\tests\visualization\__init__.py" />
+    <Compile Include="apeiron\run_all_experiments.py" />
     <Compile Include="apeiron\tests\categorical_verification.py" />
+    <Compile Include="apeiron\tests\functorial_emergence_verify.py" />
     <Compile Include="apeiron\tests\relational_emergence_experiments.py" />
     <Compile Include="apeiron\tests\test_chaos_benchmark.py" />
     <Compile Include="apeiron\tests\test_chaos_filter.py" />
@@ -334,6 +336,8 @@
     <Content Include="17 layers AI model.docx" />
     <Content Include="apeiron\CONTRIBUTING.md" />
     <Content Include="apeiron\hardware\README.md" />
+    <Content Include="apeiron\layers\layer02_relational\docs\spec_layer02_relational_emergence.md" />
+    <Content Include="apeiron\pyproject.toml" />
     <Content Include="apeiron\README.md" />
     <Content Include="archive\Evaluations\nexus_backends_eval.docx" />
     <Content Include="archive\Evaluations\nexus_evaluation_v10.docx" />
@@ -424,6 +428,7 @@
     <Folder Include="apeiron\layers\layer01_foundational\tests\benchmarks\" />
     <Folder Include="apeiron\layers\layer01_foundational\tests\visualization\" />
     <Folder Include="apeiron\layers\layer01_foundational\tests\unit\" />
+    <Folder Include="apeiron\layers\layer02_relational\docs\" />
     <Folder Include="archive\Evaluations\" />
     <Folder Include="archive\" />
     <Folder Include="archive\Archive\" />

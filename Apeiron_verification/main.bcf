@@ -2378,17 +2378,16 @@
     <bcf:citekey order="2" intorder="1">beniers2026apeiron</bcf:citekey>
     <bcf:citekey order="3" intorder="1">beniers2026apeiron</bcf:citekey>
     <bcf:citekey order="4" intorder="1">beniers2026apeiron</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">moura2008z3</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">deepspec2016</bcf:citekey>
     <bcf:citekey order="6" intorder="1">deepspec2016</bcf:citekey>
-    <bcf:citekey order="7" intorder="1">deepspec2016</bcf:citekey>
-    <bcf:citekey order="7" intorder="2">leroy2009coq</bcf:citekey>
-    <bcf:citekey order="8" intorder="1">katz2017reluplex</bcf:citekey>
-    <bcf:citekey order="8" intorder="2">wang2023alphaverus</bcf:citekey>
-    <bcf:citekey order="9" intorder="1">fulton2018safe</bcf:citekey>
-    <bcf:citekey order="10" intorder="1">russell2019human</bcf:citekey>
-    <bcf:citekey order="11" intorder="1">klein2009sel4</bcf:citekey>
-    <bcf:citekey order="12" intorder="1">deepspec</bcf:citekey>
-    <bcf:citekey order="13" intorder="1">everitt2021provably</bcf:citekey>
+    <bcf:citekey order="6" intorder="2">leroy2009coq</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">katz2017reluplex</bcf:citekey>
+    <bcf:citekey order="7" intorder="2">wang2023alphaverus</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">fulton2018safe</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">russell2019human</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">klein2009sel4</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">deepspec</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">everitt2021provably</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
