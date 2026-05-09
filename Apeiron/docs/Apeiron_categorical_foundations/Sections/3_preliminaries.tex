@@ -1,0 +1,29 @@
+\section{Preliminaries: Multi‑axial atomicity}\label{sec:prelim}
+We briefly summarise the four atomicity frameworks from \cite{Beniers2026Apeiron}.
+Let $\mathcal{O}$ be the set of all Ultimate Observables.
+
+\begin{definition}[Boolean atomicity]\label{def:bool_atom}
+An observable $o\in\mathcal{O}$ is Boolean‑atomic if its value is an atom in a Boolean algebra.
+For integers under divisibility, this means $o$ is a prime number or $1$; for sets under inclusion, a singleton set.
+In the implementation, an integer is considered Boolean‑atomic (no proper subset decomposition exists), while a multi‑element set is not.
+\end{definition}
+
+\begin{definition}[Measure‑theoretic atomicity]\label{def:meas_atom}
+An observable $o$ is measure‑theoretically atomic if, for a fixed measure $\mu$ (e.g., counting measure), $\mu(o)>0$ and every measurable subset $B\subseteq o$ satisfies $\mu(B)=0$ or $\mu(B)=\mu(o)$.
+Practically, a singleton set scores 1, while a set with more than one element scores 0.
+\end{definition}
+
+\begin{definition}[Categorical atomicity]\label{def:cat_atom}
+In a category $\mathcal{C}$, an object $X$ is a zero‑object if it is simultaneously initial and terminal.
+An observable $o$ is categorical‑atomic if it can be viewed as a zero‑object in a suitable categorical representation of its structure.
+The implementation checks this by verifying that the observable has exactly one incoming and one outgoing morphism (after constructing a simple categorical structure).
+\end{definition}
+
+\begin{definition}[Information‑theoretic atomicity]\label{def:info_atom}
+An observable $o$ is information‑theoretically atomic if its Kolmogorov complexity $K(o)\approx |o|$, i.e., it is algorithmically incompressible.
+In practice, a proxy based on zlib compression is used: if $|\mathrm{zlib}(o)|\ge 0.85\cdot|o|$, the observable is deemed atomic.
+\end{definition}
+
+The multi‑axial condition requires an observable to satisfy \emph{all four} criteria simultaneously.
+The original framework \cite{Beniers2026Apeiron} already hinted at a categorical unification: the four frameworks are projections of a single \emph{Apeiron category}, and atomicity corresponds to being a zero‑object in that category.
+We now make that insight explicit.

@@ -1,0 +1,29 @@
+\newpage
+\section{Introduction}
+
+Contemporary artificial intelligence systems are predominantly built on statistical foundations, where correctness is assessed through empirical performance rather than formal guarantees. While this approach has yielded remarkable practical advances, it leaves open fundamental questions about the \textit{constitutive} properties of the system: Are the basic representational units genuinely irreducible? Does the system's knowledge rest on a coherent, contradiction-free substrate? As AI systems approach autonomy and are deployed in safety-critical domains, such foundational questions demand rigorous, machine-checkable answers.
+
+The \Apeiron{} Framework~\cite{beniers2026apeiron} is a research programme aimed at constructing a non-anthropocentric AI that autonomously generates knowledge from elementary observables. Its foundational layer—Layer~1, termed the \textit{Epistemic Singularity}—defines the irreducible atoms of observation from which all higher structure emerges. A core requirement of this layer is \textit{multi-axial atomicity}: an observable is certified as atomic only if it simultaneously satisfies the atomicity criteria of four independent mathematical frameworks: Boolean algebra, measure theory, category theory, and information theory (approximated via Kolmogorov complexity). The convergence of these frameworks provides robustness against the limitations of any single formalism.
+
+In the original \Apeiron{} paper~\cite{beniers2026apeiron}, atomicity was assessed through heuristic functions that computed continuous scores. While useful for guiding the system's own internal reasoning, these heuristics do not constitute \textit{proof}. To elevate the framework's rigor to the level required for formal assurance, we have developed \texttt{self\_proving.py}, a module that generates and verifies formal proofs of atomicity using multiple automated and interactive theorem provers. This multi-prover approach not only provides machine-checkable certificates of atomicity but also cross-validates the results across different logical foundations, mitigating the risk of prover-specific bugs or limitations.
+
+This paper makes the following contributions:
+\begin{enumerate}
+    \item \textbf{A multi-prover architecture for AI foundations:} We present the design of \texttt{self\_proving.py}, which integrates SymPy, Z3, Lean~4, and Coq into a unified pipeline for proving the atomicity of arbitrary observables.
+    \item \textbf{Formalization of multi-axial atomicity:} We show how the abstract definitions of atomicity in Boolean algebra, measure theory, category theory, and information theory are concretely encoded in each prover's input language.
+    \item \textbf{Cross-verification and certificate export:} We describe how proofs are verified by multiple provers and exported as JSON certificates, enabling independent third-party validation.
+    \item \textbf{Experimental validation and comparison:} We evaluate the system on canonical observables (e.g., the integer~1), demonstrating successful verification across all provers and providing a comparative analysis of the provers' strengths, weaknesses, and scalability characteristics.
+    \item \textbf{Discussion of the scalability gap:} We critically examine the challenges of scaling formal verification from simple foundational units to complex, layered AI architectures, and outline strategies for incremental and compositional verification.
+\end{enumerate}
+The importance of atomicity for AI stability can be stated succinctly:
+a non‑atomic observable, by definition, admits a decomposition into
+strictly smaller parts.  If the system inadvertently treats a
+non‑atom as a building block, higher‑order relations (Layers~2–4
+of the \Apeiron{} Framework) may be built on a fragmented foundation.
+This can lead to spurious correlations, contradictions in the knowledge
+graph, and ultimately to decisions that are not grounded in a coherent
+representation of the environment.  Formal certification of atomicity
+therefore provides a \emph{soundness guarantee} for the entire layered
+architecture: every composite structure is ultimately derived from
+units that cannot be further split without losing their identity.
+The remainder of this paper is organized as follows. Section~2 provides background on the \Apeiron{} Framework and the concept of multi-axial atomicity. Section~3 details the design and implementation of the multi-prover framework. Section~4 describes the experimental setup and results, including the generation of formal certificates. Section~5 discusses the comparative strengths of the provers, the scalability gap, and the implications for AI verification. Section~6 reviews related work in formal methods for AI. Section~7 concludes and outlines future work.

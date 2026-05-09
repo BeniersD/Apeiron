@@ -1,0 +1,33 @@
+\newpage
+\section{Error Handling and Observability}
+
+Robust error handling is a first-class concern in APEIRON-Core. The diverse nature of the supported backends—from CPU threads to FPGA bitstreams to cloud quantum processors—means that transient failures are inevitable. The framework provides a unified, declarative error-handling mechanism that wraps all hardware operations.
+
+\subsection{The \texttt{@handle\_hardware\_errors} Decorator}
+
+All public methods of the \texttt{HardwareBackend} subclasses are decorated with \texttt{@handle\_hardware\_errors}. This decorator, applied at the factory level, injects the following behaviors without modifying the underlying method:
+
+\begin{enumerate}
+    \item \textit{Exponential Backoff Retries}: On catching a specified set of exceptions (e.g., \texttt{HardwareTimeoutError}), the operation is retried up to \texttt{retry\_count} times with a delay that grows exponentially: \(\text{delay} = \text{base\_delay} \cdot (\text{backoff\_factor})^{\text{attempt}}\).
+    \item \textit{Circuit Breaker}: If the failure rate for a given backend exceeds a threshold within a time window, the circuit breaker opens, immediately failing subsequent requests for a cooldown period. This prevents cascading failures from overwhelming the system.
+    \item \textit{Fallback to CPU}: If all retries are exhausted and the operation is not already running on the CPU, the decorator automatically invokes a CPU-based fallback implementation. This guarantees that higher APEIRON layers never experience a hard failure due to hardware unavailability.
+    \item \textit{Structured Logging and Metrics}: Each failure and retry is logged with contextual information (backend, operation, layer ID). Prometheus counters track total errors and retries per operation.
+\end{enumerate}
+
+The decorator can be configured per method or globally via the \texttt{ErrorHandlingConfig} dataclass.
+
+\subsection{Exception Hierarchy}
+
+APEIRON-Core defines a rich hierarchy of hardware-specific exceptions, all inheriting from \texttt{HardwareError}. This allows the error-handling decorator to distinguish between recoverable errors (e.g., \texttt{HardwareTimeoutError}) and fatal errors (e.g., \texttt{HardwareNotAvailableError}). Each exception carries contextual metadata (backend name, operation, error code) that is logged and exported to monitoring systems.
+
+\subsection{Prometheus Metrics}
+
+When the optional \texttt{prometheus\_client} package is installed, the HAL exports real-time metrics:
+
+\begin{itemize}
+    \item \texttt{apeiron\_hardware\_errors\_total}: Counter of errors by operation, error type, and layer ID.
+    \item \texttt{apeiron\_hardware\_retries\_total}: Counter of retry attempts.
+    \item \texttt{apeiron\_hardware\_calls\_duration\_seconds}: Histogram of operation latency by operation, layer ID, and status (success/error).
+\end{itemize}
+
+These metrics provide deep observability into the health and performance of the hardware substrate, a critical requirement for any autonomous system that must self-diagnose and adapt.

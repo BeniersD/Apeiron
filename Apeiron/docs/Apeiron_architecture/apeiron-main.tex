@@ -1,0 +1,129 @@
+\documentclass[11pt,twoside]{article}
+
+% =============================================================================
+% PACKAGES
+% =============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[expansion=false]{microtype}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{apeiron.bib}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs, multirow, longtable}
+\usepackage{caption, subcaption}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, decorations.pathreplacing, matrix, calc, patterns}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{stmaryrd}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{adjustbox}
+\usepackage[most]{tcolorbox}
+\onehalfspacing
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
+
+% =============================================================================
+% THEOREM ENVIRONMENTS
+% =============================================================================
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{axiom}[theorem]{Axiom}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% =============================================================================
+% CUSTOM COMMANDS
+% =============================================================================
+\newcommand{\Apeiron}{\textsc{Apeiron}}
+\newcommand{\Obs}{\mathcal{O}}
+\newcommand{\Rel}{\mathcal{R}}
+\newcommand{\Func}{\mathcal{F}}
+\newcommand{\StSpace}{\mathcal{S}}
+\newcommand{\Cat}{\mathcal{C}}
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Pos}{\mathbf{Pos}}
+\newcommand{\Meas}{\mathbf{Meas}}
+\newcommand{\Bool}{\mathbf{Bool}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\comp}{\circ}
+\newcommand{\decomp}{\Delta}
+\newcommand{\atomicity}{\alpha}
+\newcommand{\meta}{\mathcal{M}}
+\newcommand{\pluriverse}{\mathbb{P}}
+\newcommand{\world}{\mathcal{W}}
+\newcommand{\op}{^{\mathrm{op}}}
+\newcommand{\colim}{\mathrm{colim}}
+\newcommand{\liminv}{\varprojlim}
+
+% =============================================================================
+% TITLE AND AUTHOR
+% =============================================================================
+\title{\huge \textbf{Apeiron: Autonomous Knowledge Genesis from First Principles} \\
+\large A Seventeen-Layer Architecture for Non-Anthropocentric Artificial Intelligence}
+
+\author{
+    David Beniers \\
+    \small \textit{Independent Researcher, Antwerp, Belgium} \\
+    \small \texttt{david.beniers@telenet.be}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{Sections/00_abstract.tex}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{Sections/01_introduction.tex}
+\input{Sections/02_related_work.tex}
+\input{Sections/03_research_questions.tex}
+\input{Sections/04_foundations.tex}
+\input{Sections/05_axioms.tex}
+\input{Sections/06_architecture_overview.tex}
+\input{Sections/07_layers_cluster1.tex}
+\input{Sections/08_layers_cluster2.tex}
+\input{Sections/09_layers_cluster3.tex}
+\input{Sections/10_layers_cluster4.tex}
+\input{Sections/11_examples.tex}
+\input{Sections/12_validation.tex}
+\input{Sections/13_complexity.tex}
+\input{Sections/14_ethics.tex}
+\input{Sections/14b_status_and_roadmap.tex}
+\input{Sections/15_discussion.tex}
+\input{sections/99_layer_summary_table.tex}
+\input{Sections/16_conclusion.tex}
+
+\section*{Acknowledgments}
+The author thanks the open-source community for the libraries that made this work possible.
+
+\appendix
+\input{Sections/Appendices/A_proofs.tex}
+\input{Sections/Appendices/B_algorithms.tex}
+\input{Sections/Appendices/C_glossary.tex}
+\input{sections/Appendices/D_axiom_justifications.tex}
+
+\printbibliography
+
+\listoffigures
+
+\end{document}

@@ -1,0 +1,82 @@
+\section{Thermodynamic Cost Model}
+
+The ThermodynamicCost module injects an energy-aware conscience into the
+system: every computational structure must pass an efficiency check before
+it is allowed to consume resources.
+
+\subsection{Power Measurement}
+
+Power is sampled every second.  CPU power is estimated via psutil:
+\texttt{cpu\_percent * TDP\_cpu / 100.0} (default TDP 65 W).  GPU power
+is read through pynvml when an NVIDIA GPU is present.  FPGA/quantum
+consumption is currently based on datasheet values but will be replaced by
+direct telemetry.  The measurement is encapsulated in a dataclass:
+
+\begin{lstlisting}[language=Python, caption={Energy snapshot}]
+@dataclass(slots=True)
+class EnergySnapshot:
+    timestamp: float
+    power_watts: float
+    energy_joules: float
+    temperature_c: Optional[float] = None
+    cpu_percent: Optional[float] = None
+    gpu_percent: Optional[float] = None
+    source: EnergySource = EnergySource.UNCERTAIN
+    co2_g_per_kwh: float = 0.0
+\end{lstlisting}
+
+\subsection{Efficiency Criterion}
+
+The information value $I \in [0,1]$ of a computational structure is 
+supplied by the \texttt{ComplexityProvider} interface.  In the context
+of the \Apeiron{} Framework, the provider is Layer~10 (Global Coherence
+Evaluation), which reports the normalised entropy of the global
+coherence tensor as a proxy for informational utility.
+A structure that reduces the system's internal entropy
+(i.e., resolves inconsistencies or creates novel, stable regularities)
+receives a high~$I$, while one that merely replicates existing knowledge
+receives a low~$I$.
+
+Given a structure $s$ that consumed $\Delta E$ Joules, it is approved iff
+\[
+\frac{I}{\Delta E} \ge \tau_{\mathrm{eff}},
+\]
+where $\tau_{\mathrm{eff}}$ is the current efficiency threshold supplied
+by the AdaptiveThresholds module.  When the system is in \texttt{GREEN}
+priority mode, $\tau_{\mathrm{eff}}$ is doubled.
+
+This criterion implies that, under carbon‑constrained conditions, the
+system may reject genuinely novel but computationally expensive
+hypotheses in favour of cheaper, less informative ones.  The resulting
+tension between environmental responsibility and cognitive completeness
+is not a bug but a deliberate architectural choice: the \Core{} forces
+the agent to justify every Joule it consumes, making the trade‑off
+explicit and auditable.
+
+\begin{lstlisting}[language=Python, caption={Efficiency check}]
+async def evaluate(self, structure_id, computation_time, information_value):
+    energy = self.monitor.measure().power_watts * computation_time
+    threshold = self.adaptive.get("efficiency_threshold")
+    if self.config.priority == CostPriority.GREEN:
+        threshold *= 2.0
+    efficiency = information_value / (energy + 1e-10)
+    approved = efficiency >= threshold
+    # ... log and store structure cost
+    return approved, efficiency
+\end{lstlisting}
+
+\subsection{Energy Budget and Predictive Throttling}
+
+A per-period energy budget (default 3600 J/h) is enforced.  When the budget
+is exhausted, a \texttt{conserve} event is emitted, causing the Adaptive-
+Thresholds module to raise all safety margins and the ChaosDetector to
+increase its sensitivity.  Predictive budgeting uses an exponential moving
+average of consumption per hour to forecast future usage and pre‑emptively
+lower thresholds.
+
+\subsection{Carbon Intensity and \texorpdfstring{CO$_2$}{CO2} Tracking}
+
+Optionally, the Electricity Maps API is queried every 5 min for real‑time
+carbon intensity.  If the API is unavailable, a time‑of‑day heuristic is used
+(based on Netherlands grid data).  All cost decisions are logged with the
+energy source and CO\(_2\) estimate, enabling transparent auditing.

@@ -1,0 +1,24 @@
+\section{Conclusion and future work}\label{sec:concl}
+\subsection*{Scope and limitations}
+The present work formalises only the first layer of the APEIRON hierarchy.
+Extending the categorical semantics to the full seventeen‑layer architecture is a long‑term programme that will require proving adjunctions, handling probabilistic co‑activation, and eventually incorporating continuous dynamics.
+We view the current paper as the necessary algebraic substrate upon which such higher‑order structures can be built.
+The fact that the decomposition operators are implemented using practical proxies (e.g., zlib for Kolmogorov complexity) does not diminish the categorical result: the free category $\mathcal{A}$ is defined relative to any given family of operators, and the separatedness theorem holds for any concrete instantiation.
+Improving the quality of the operators will refine the category, but not invalidate it.
+
+We have presented a rigorous categorical foundation for the multi‑axial atomicity of the APEIRON Framework.
+Defining the Apeiron category as the free category over the decomposition graph and proving that atomicity is equivalent to being a separated object provides a clean, compositional interpretation of the framework's most fundamental layer.
+The inter‑layer functors then extend this compositional structure to the entire architecture.
+
+Future work includes:
+\begin{itemize}
+\item Developing the full categorical semantics for Layers 2–7, proving adjunctions that model emergent behaviour.
+\item Extending the category‑theoretic description to the qualitative dimensions and relational density fields.
+\item Formalising the autopoietic and world‑building layers using higher‑order categorical structures (e.g., monads, comonads).
+\item Incorporating the Coq and Lean proofs of atomicity into a machine‑verified categorical proof assistant.
+\end{itemize}
+
+The present paper lays the categorical groundwork that makes all these steps feasible.
+
+\section*{Acknowledgments}
+The author thanks the anonymous reviewers for their constructive feedback.

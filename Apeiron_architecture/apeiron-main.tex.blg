@@ -1,5 +1,0 @@
-[0] Config.pm:328> INFO - This is Biber 2.21
-[0] Config.pm:331> INFO - Logfile is 'apeiron-main.tex.blg'
-[123] biber-MSWIN64:342> INFO - === 
-[729] Utils.pm:479> ERROR - Cannot find 'apeiron-main.tex.bcf'!
-[729] Biber.pm:137> INFO - ERRORS: 1

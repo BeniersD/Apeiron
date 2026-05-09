@@ -1,0 +1,16 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=2.5cm and 2.0cm,
+    box/.style={draw, rounded corners, minimum width=3.0cm, minimum height=1.0cm, align=center, font=\small},
+    arrow/.style={-{Stealth[length=3mm]}, thick}
+]
+\node[box, fill=green!15] (z3) {Z3\\\footnotesize $\tau=1$: sound, automatic\\\footnotesize (all observable types)};
+\node[box, fill=yellow!15, right=of z3] (lean) {Lean 4 / Coq\\\footnotesize $\tau=\frac{1}{2}$: sound for integers\\\footnotesize (Boolean framework)};
+\node[box, fill=red!15, below=of z3] (sympy) {SymPy\\\footnotesize $\tau=0$: unsound\\\footnotesize (consistency filter)};
+\draw[arrow] (sympy) -- (z3) node[midway, right, font=\footnotesize] {increasing trust};
+\draw[arrow] (lean) -- (z3) node[midway, above, font=\footnotesize] {fully automatic};
+\end{tikzpicture}
+\caption{Prover trust hierarchy for Boolean atomicity. Only provers with $\tau\ge\frac{1}{2}$ appear in certificates.}
+\label{fig:trust_hierarchy}
+\end{figure}

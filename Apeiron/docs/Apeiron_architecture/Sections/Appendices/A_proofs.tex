@@ -1,0 +1,52 @@
+\section{Proofs of Key Propositions}
+\label{app:proofs}
+
+This appendix provides formal proofs for the four foundational propositions underpinning the multi-axial atomicity framework of Layer~1.
+
+\begin{proposition}[Boolean Atomicity]\label{prop:bool-atom}
+For the integer $1$ in the Boolean algebra of natural numbers under the divisibility partial order, $\decomp_{\text{bool}}(1) = \{1\}$.
+\end{proposition}
+
+\begin{proof}
+In the Boolean algebra of natural numbers $\mathbb{N}$ under the divisibility relation, the partial order is defined by $a \le b$ if and only if $a$ divides $b$. The least element is $1$, since $1$ divides every natural number. An atom in a Boolean algebra is a minimal non-zero element: $a \neq 0$ and there exists no $b$ such that $0 < b < a$.
+
+Suppose, for contradiction, that $1$ is not an atom. Then there exists some $x \in \mathbb{N}$ such that $1 < x < 1$. The condition $1 < x$ means $1$ divides $x$ and $1 \neq x$, which implies $x \ge 2$. The condition $x < 1$ means $x$ divides $1$ and $x \neq 1$. Since the only divisors of $1$ are $1$ itself, this forces $x = 1$, contradicting $x \ge 2$. Therefore, no such $x$ exists, and $1$ is an atom.
+\end{proof}
+
+\begin{proposition}[Measure Atomicity]\label{prop:meas-atom}
+For the counting measure $\mu$ on a singleton set $A = \{1\}$, $\decomp_{\text{meas}}(A) = \{A\}$.
+\end{proposition}
+
+\begin{proof}
+Let $(X, \Sigma, \mu)$ be a measure space where $X = \{1\}$, $\Sigma = \{\emptyset, \{1\}\}$, and $\mu$ is the counting measure defined by $\mu(\emptyset) = 0$ and $\mu(\{1\}) = 1$. A set $A \in \Sigma$ is an atom for $\mu$ if $\mu(A) > 0$ and for every measurable $B \subseteq A$, either $\mu(B) = 0$ or $\mu(B) = \mu(A)$.
+
+For $A = \{1\}$, we have $\mu(A) = 1 > 0$. The only measurable subsets of $A$ are $B = \emptyset$ and $B = \{1\}$. For $B = \emptyset$, $\mu(B) = 0$. For $B = \{1\}$, $\mu(B) = 1 = \mu(A)$. In neither case do we obtain a measurable subset with measure strictly between $0$ and $\mu(A)$. Thus, $A$ is an atom for $\mu$, and the decomposition operator correctly returns the singleton set containing $A$.
+\end{proof}
+
+\begin{proposition}[Categorical Zero Object]\label{prop:cat-atom}
+In the category $\mathbf{Set}_*$ of pointed sets, the singleton $\{*\}$ is a zero object.
+\end{proposition}
+
+\begin{proof}
+A pointed set is a pair $(X, x_0)$ where $X$ is a set and $x_0 \in X$ is a distinguished base point. A morphism $f: (X, x_0) \to (Y, y_0)$ is a function $f: X \to Y$ such that $f(x_0) = y_0$.
+
+Let $I = (\{*\}, *)$ be the singleton pointed set. We show that $I$ is both initial and terminal in $\mathbf{Set}_*$.
+
+\textit{Initiality:} For any pointed set $(X, x_0)$, there is exactly one morphism $f: I \to (X, x_0)$, namely the function defined by $f(*) = x_0$. This function preserves the base point trivially, and no other function from $\{*\}$ to $X$ exists.
+
+\textit{Terminality:} For any pointed set $(X, x_0)$, there is exactly one morphism $g: (X, x_0) \to I$, namely the constant function $g(x) = *$ for all $x \in X$. This function preserves the base point because $g(x_0) = *$, and no other function from $X$ to $\{*\}$ exists.
+
+Since $I$ is both initial and terminal, it is a zero object in $\mathbf{Set}_*$. In the \Apeiron{} Framework, observables equipped with a designated base point can be modeled as objects in this category, and the singleton observable satisfies the zero-object criterion for categorical atomicity.
+\end{proof}
+
+\begin{proposition}[Information Atomicity]\label{prop:info-atom}
+For a sufficiently long repetitive string $s$ consisting of a single character repeated $n$ times, the Kolmogorov complexity satisfies $K(s) \le \log_2 n + c$ for some constant $c$, and consequently the atomicity score $\atomicity_{\text{info}}(s) \approx 1$.
+\end{proposition}
+
+\begin{proof}
+Let $s = a^n$ be a string consisting of the character $a$ repeated $n$ times. A program that outputs $s$ can be written as a loop that prints $a$ exactly $n$ times. The length of such a program is dominated by the encoding of $n$, which requires $\lceil\log_2 n\rceil$ bits, plus a constant number of bits for the loop logic and the character $a$. Thus, $K(s) \le \log_2 n + c$ for some fixed constant $c$ independent of $n$.
+
+The atomicity score is defined as $\atomicity_{\text{info}}(s) = \max(0, 1 - \frac{|zlib(s)|}{|s|})$, where $|zlib(s)|$ is the length of the zlib-compressed representation. For large $n$, the compression ratio $|zlib(s)| / |s|$ approaches $0$, since the repetitive pattern is highly compressible. Therefore, $1 - |zlib(s)|/|s| \approx 1$.
+
+For ultra-short strings ($n < 10$), the zlib compression overhead (headers, checksums) can exceed the length of the uncompressed data, leading to an artificially low score. This is a known limitation of the proxy measure, not a theoretical falsification. For sufficiently long inputs, the score correctly approaches 1.0, confirming that the observable is information-theoretically atomic.
+\end{proof}

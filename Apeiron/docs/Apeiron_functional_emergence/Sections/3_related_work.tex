@@ -1,0 +1,18 @@
+\section{Related Work}
+The categorical formalisation of the APEIRON Framework builds on several strands of research.
+
+\noindent\textbf{Applied category theory in AI.}
+Baez and Stay~\cite{Baez2011} introduced a categorical framework for quantum protocols; Fong and Spivak~\cite{Fong2019} demonstrated how monoidal categories can structure data and algorithms.
+Our inter‑layer functors are directly inspired by their compositionality principles.
+Gavranovi{\'c} et al.~\cite{Gavranovic2024} recently proposed a categorical deep learning program in which neural architectures are represented as functors; the APEIRON functor \(\mathbf{D}\) is a simpler instance of the same philosophy.
+
+\textbf{Categorical semantics of graphs.}
+The category of directed graphs we use is a classic example of a presheaf topos~\cite{MacLane}.
+The functor \(\mathbf{D}\) itself is a variant of the reachability or sub‑object functor found in many categorical models of computation.
+
+\textbf{Formal verification of foundational AI properties.}
+The broader APEIRON project~\cite{Beniers2026Apeiron} employs a multi‑prover architecture to certify atomicity; our work provides the categorical glue that connects the provers of Layer~1 to the graph‑based algorithms of Layer~2.
+The idea of using functorial translations to guarantee property preservation across abstraction levels echoes the DeepSpec project~\cite{Deepspec2016} and the seL4 verification~\cite{Klein2009}, though applied to a cognitive rather than an operating‑system architecture.
+
+\textbf{Decomposition graphs in knowledge representation.}
+In ontology engineering, decomposition hierarchies are commonly used to represent part‑whole relations; our work gives a formal categorical semantics to such structures in the context of autonomous knowledge genesis.

@@ -1,0 +1,19 @@
+\section{Introduction}\label{sec:intro}
+Contemporary artificial intelligence systems inherit human categories, biases, and temporalities through training data and architectural design.
+The APEIRON Framework~\cite{Beniers2026Apeiron} proposes a radically different paradigm: a seventeen‑layer architecture whose foundational units --- so‑called \emph{Ultimate Observables} --- are constructed from first principles without any anthropocentric prior.
+Crucially, an observable is declared \emph{atomic} (and thus irreducible) only if it is simultaneously recognised as such by four independent mathematical frameworks: Boolean algebra, measure theory, category theory, and information theory.
+This \emph{multi‑axial atomicity} guarantees robustness that no single perspective can provide.
+
+The original exposition of the framework sketched an appealing categorical picture: the four axes of atomicity correspond to projections of a single \emph{Apeiron category}, and the condition of multi‑axial atomicity is equivalent to the observable being a separated object in that category.
+The goal of this paper is to make that picture mathematically precise.
+We construct the Apeiron category explicitly, prove the separated‑object characterisation (Theorem~\ref{th:separated}), and then show how the same categorical language encapsulates the functorial translations between the layers.
+The abstract results are supplemented by a reference implementation that verifies the category‑theoretic properties on a representative set of observables.
+
+The paper is organised as follows.
+\S~\ref{sec:related} discusses related work.
+\S~\ref{sec:prelim} recalls the necessary background on the APEIRON atomicity frameworks.
+\S~\ref{sec:cat_def} defines the Apeiron category and its morphisms.
+\S~\ref{sec:separated} states and proves the main theorem.
+\S~\ref{sec:functorial} sketches the network of inter‑layer functors.
+\S~\ref{sec:impl} describes the Python verification and presents the experimental results.
+\S~\ref{sec:concl} concludes with an outlook on future categorical work.

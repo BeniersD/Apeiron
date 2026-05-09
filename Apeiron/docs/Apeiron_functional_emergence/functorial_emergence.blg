@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: functorial_emergence.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: alpha.bst
+Reallocating 'name_of_file' (item size: 1) to 21 items.
+Database file #1: functorial_emergence.bib
+Warning--empty institution in Beniers2026Apeiron
+Warning--empty institution in Beniers2026Categorical
+You've used 8 entries,
+            2543 wiz_defined-function locations,
+            604 strings with 5964 characters,
+and the built_in function-call counts, 3238 in all, are:
+= -- 306
+> -- 185
+< -- 6
++ -- 66
+- -- 64
+* -- 220
+:= -- 555
+add.period$ -- 26
+call.type$ -- 8
+change.case$ -- 60
+chr.to.int$ -- 7
+cite$ -- 10
+duplicate$ -- 126
+empty$ -- 209
+format.name$ -- 74
+if$ -- 647
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 7
+newline$ -- 46
+num.names$ -- 24
+pop$ -- 67
+preamble$ -- 1
+purify$ -- 67
+quote$ -- 0
+skip$ -- 106
+stack$ -- 0
+substring$ -- 116
+swap$ -- 23
+text.length$ -- 6
+text.prefix$ -- 4
+top$ -- 0
+type$ -- 56
+warning$ -- 2
+while$ -- 26
+width$ -- 10
+write$ -- 106
+(There were 2 warnings)

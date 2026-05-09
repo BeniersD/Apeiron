@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows.meta, positioning, fit, backgrounds, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{booktabs, multirow, longtable}
+\usepackage{caption, subcaption}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{lmodern}
+
+% NIEUW: voor betere plaatsing van figuren en listings
+\usepackage{float}          % voor [H] optie
+\usepackage{placeins}       % voor \FloatBarrier
+
+\onehalfspacing
+
+% Code listing style
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    showstringspaces=false,
+    tabsize=2,
+    language=Python,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    float=htbp,             % zorgt dat listings als floats worden behandeld
+}
+
+% Custom commands
+\newcommand{\Apeiron}{\textsc{Apeiron}}
+\newcommand{\HAL}{\textsc{Apeiron-Core}}
+
+\title{\huge \textbf{A Multi-Backend Hardware Abstraction Layer for Non-Anthropocentric AI} }
+
+\author{
+    David Beniers \\
+    \small \textit{Independent Researcher, Antwerp, Belgium} \\
+    \small \texttt{david.beniers@telenet.be}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{Hardware/00_abstract}
+\tableofcontents
+\newpage
+
+\input{Hardware/01_introduction}
+\FloatBarrier
+\input{Hardware/02_related_work}
+\FloatBarrier
+\input{Hardware/03_architecture}
+\FloatBarrier
+\input{Hardware/04_cpu_backend}
+\FloatBarrier
+\input{Hardware/05_cuda_backend}
+\FloatBarrier
+\input{Hardware/06_fpga_backend}
+\FloatBarrier
+\input{Hardware/07_quantum_backend}
+\FloatBarrier
+\input{Hardware/08_error_handling}
+\FloatBarrier
+\input{Hardware/09_configuration}
+\FloatBarrier
+\input{Hardware/10_evaluation}
+\FloatBarrier
+\input{Hardware/11_discussion}
+\FloatBarrier
+\input{Hardware/12_conclusion}
+\FloatBarrier
+
+\appendix
+\input{Hardware/13_appendix}
+
+\printbibliography
+
+\end{document}

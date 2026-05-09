@@ -1,0 +1,44 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Background: The \textsc {Apeiron}{} Framework and Multi-Axial Atomicity}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The \textsc {Apeiron}{} Framework}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Multi-Axial Atomicity}{5}{subsection.2.2}%
+\contentsline {section}{\numberline {3}The Multi-Prover Verification Framework}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Overview of \texttt {self\_proving.py}}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Translation Semantics and Prover Encodings}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Formal Specification of Multi-Axial Atomicity}{7}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Encoding Across Provers}{8}{subsubsection.3.2.2}%
+\contentsline {paragraph}{SymPy.}{8}{section*.4}%
+\contentsline {paragraph}{Z3.}{8}{section*.5}%
+\contentsline {paragraph}{Lean 4 and Coq.}{9}{section*.6}%
+\contentsline {subsubsection}{\numberline {3.2.3}Limitations of the Translation Layer}{9}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Theorem Generation}{10}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}SymPy (Logical Simplification)}{10}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Z3 (SMT Solving)}{10}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Lean~4 and Coq (Interactive Proof Assistants)}{10}{subsubsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.4}Prover Invocation and Verification}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Certificate Export}{11}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Caching and Thread Safety}{11}{subsection.3.6}%
+\contentsline {section}{\numberline {4}Experimental Validation}{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Multi‑Prover Benchmark}{13}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Prover Soundness Verification}{15}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Z3 Correctness}{15}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Lean and Coq Inspection}{15}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Trust Hierarchy}{15}{subsubsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.3}Certificate Generation}{16}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Scalability}{16}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Discussion}{17}{section.5}%
+\contentsline {subsection}{\numberline {5.1}A Trust Hierarchy for Multi‑Prover Verification}{17}{subsection.5.1}%
+\contentsline {paragraph}{Trusted Computing Base.}{17}{section*.10}%
+\contentsline {subsection}{\numberline {5.2}Comparative Analysis of Theorem Provers}{17}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Translation Semantics and the Semantic Gap}{17}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Toward an AST‑Based Translation Layer}{18}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}An AST‑Based Translation Model}{19}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Scalability and Compositional Verification}{19}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Implications for AI Alignment}{20}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.8}Limitations and Future Work}{20}{subsection.5.8}%
+\contentsline {section}{\numberline {6}Related Work}{21}{section.6}%
+\contentsline {paragraph}{Formal Verification of AI Systems.}{21}{section*.13}%
+\contentsline {paragraph}{Multi-Prover and Cross-Verification.}{21}{section*.14}%
+\contentsline {paragraph}{Certified Programming and Proof Assistants.}{21}{section*.15}%
+\contentsline {paragraph}{AI Alignment via Formal Constraints.}{21}{section*.16}%
+\contentsline {section}{\numberline {7}Conclusion}{22}{section.7}%

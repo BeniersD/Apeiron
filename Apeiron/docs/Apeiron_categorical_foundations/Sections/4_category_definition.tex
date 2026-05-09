@@ -1,0 +1,28 @@
+\section{The Apeiron category}\label{sec:cat_def}
+
+\subsection{Objects}
+The objects of the Apeiron category $\mathcal{A}$ are the Ultimate Observables $\mathcal{O}$ themselves.
+Each observable $o$ carries a value $v_o$, a type $t_o\in\{\text{\tt DISCRETE},\text{\tt CONTINUOUS},\dots\}$, and a meta‑specification that determines how the decomposition operators are weighted.
+
+\subsection{Morphisms as decomposition paths}
+For each framework $f \in \{\text{Boolean}, \text{Measure}, \text{Categorical}, \text{Information}\}$,
+let $\Delta_f : \mathcal{O} \to \mathcal{P}(\mathcal{O})$ be the corresponding decomposition operator.
+Define a directed multigraph $\mathcal{G}$ with vertex set $\mathcal{O}$ and an edge $X \xrightarrow{f} p$ for every $f$ and every $p \in \Delta_f(X)$ such that $\Delta_f(X) \neq \{X\}$.
+The Apeiron category $\mathcal{A}$ is the **free category** on $\mathcal{G}$.
+Concretely, a morphism $X \to Y$ in $\mathcal{A}$ is a finite (possibly empty) sequence of edges
+\[
+X = X_0 \xrightarrow{f_1} X_1 \xrightarrow{f_2} \cdots \xrightarrow{f_k} X_k = Y,
+\]
+where each $f_i$ is one of the four frameworks.
+The empty sequence at $X$ serves as the identity morphism $\mathrm{id}_X$.
+Composition is concatenation of paths.
+
+The following lemma links atomicity to the categorical structure and will be crucial for the main theorem.
+
+\begin{lemma}\label{lem:atomic_separated}
+An object $o \in \mathcal{A}$ is multi‑axially atomic (i.e. $\Delta_f(o) = \{o\}$ for all $f$) if and only if there are no edges leaving $o$ in $\mathcal{G}$; equivalently, the only morphism out of $o$ is the identity.
+\end{lemma}
+\begin{proof}
+If $\Delta_f(o) = \{o\}$ for all $f$, then there are no decomposition edges from $o$, hence no non‑trivial path can start at $o$.
+Conversely, if there are no non‑identity morphisms out of $o$, then in particular there are no decomposition edges, which forces $\Delta_f(o) = \{o\}$ for every $f$.
+\end{proof}

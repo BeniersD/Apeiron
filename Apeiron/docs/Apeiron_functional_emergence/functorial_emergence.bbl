@@ -1,0 +1,53 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{KEH{\etalchar{+}}09}
+
+\bibitem[Ben26a]{Beniers2026Apeiron}
+David Beniers.
+\newblock Apeiron: Autonomous knowledge genesis from first principles -- a
+  seventeen-layer architecture for non-anthropocentric artificial intelligence.
+\newblock Technical report, 2026.
+\newblock Preprint.
+
+\bibitem[Ben26b]{Beniers2026Categorical}
+David Beniers.
+\newblock Categorical foundations of the apeiron framework: Multi-axial
+  atomicity as a separated object and the functorial network of layers.
+\newblock Technical report, 2026.
+\newblock Preprint.
+
+\bibitem[BS11]{Baez2011}
+John~C. Baez and Mike Stay.
+\newblock Physics, topology, logic and computation: A rosetta stone.
+\newblock {\em New Structures for Physics}, pages 95--172, 2011.
+
+\bibitem[Con16]{Deepspec2016}
+The~DeepSpec Consortium.
+\newblock Deepspec: The science of deep specification.
+\newblock \url{https://deepspec.org}, 2016.
+
+\bibitem[FS19]{Fong2019}
+Brendan Fong and David~I. Spivak.
+\newblock {\em An Invitation to Applied Category Theory: Seven Sketches in
+  Compositionality}.
+\newblock Cambridge University Press, 2019.
+
+\bibitem[GLD{\etalchar{+}}24]{Gavranovic2024}
+Bruno Gavranovi{\'c}, Paul Lessard, Andrew Dudzik, Tamara von Glehn, Joao G.~M.
+  Araujo, and Petar Veli\v{c}kovi{\'c}.
+\newblock Categorical deep learning: An algebraic theory of architectures.
+\newblock {\em arXiv preprint arXiv:2402.15332}, 2024.
+
+\bibitem[KEH{\etalchar{+}}09]{Klein2009}
+Gerwin Klein, Kevin Elphinstone, Gernot Heiser, June Andronick, David Cock,
+  Philip Derrin, Dhammika Elkaduwe, Kai Engelhardt, Rafal Kolanski, Michael
+  Norrish, Thomas Sewell, Harvey Tuch, and Simon Winwood.
+\newblock sel4: Formal verification of an os kernel.
+\newblock In {\em Proceedings of the 22nd ACM Symposium on Operating Systems
+  Principles (SOSP)}, pages 207--220, 2009.
+
+\bibitem[Lan98]{MacLane}
+Saunders~Mac Lane.
+\newblock {\em Categories for the Working Mathematician}.
+\newblock Springer, 2 edition, 1998.
+
+\end{thebibliography}

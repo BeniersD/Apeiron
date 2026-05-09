@@ -1,0 +1,122 @@
+\documentclass{ou-report}
+\citestyle{agu}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem,xcolor}
+\usepackage{tikz}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[english]{babel}                     % Engels i.p.v. Nederlands
+\usepackage[justification=centering]{caption}
+\usepackage{graphicx,float}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    citecolor  = black,
+    linkcolor  = black,
+    urlcolor   = black
+}                                                % Geen rode kaders
+\usepackage{tensor}
+\usepackage{mathptmx, mathrsfs}
+\usepackage{tikz-qtree, tikz-qtree-compat}
+\usetikzlibrary{trees, shadows, arrows.meta, positioning, fit, backgrounds, calc, patterns}
+\usepackage{forest}
+\usepackage{geometry}
+\usepackage{array, makecell, multirow}
+\usepackage{subcaption}
+\usepackage{pgfplots}
+\usepackage{adjustbox}
+\usepackage{mathtools}
+\usepackage{extarrows}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+
+% ---- Custom commands (uit Apeiron) ----
+\newcommand{\Apeiron}{\textsc{Apeiron}}
+\newcommand{\Obs}{\mathcal{O}}
+\newcommand{\Rel}{\mathcal{R}}
+\newcommand{\Func}{\mathcal{F}}
+\newcommand{\StSpace}{\mathcal{S}}
+\newcommand{\Cat}{\mathcal{C}}
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Pos}{\mathbf{Pos}}
+\newcommand{\Meas}{\mathbf{Meas}}
+\newcommand{\Bool}{\mathbf{Bool}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\comp}{\circ}
+\newcommand{\decomp}{\Delta}
+\newcommand{\atomicity}{\alpha}
+\newcommand{\meta}{\mathcal{M}}
+\newcommand{\pluriverse}{\mathbb{P}}
+\newcommand{\world}{\mathcal{W}}
+\newcommand{\op}{^{\mathrm{op}}}
+\newcommand{\colim}{\mathrm{colim}}
+\newcommand{\liminv}{\varprojlim}
+
+% ---- Theorems (worden al in ou-report.cls gedefinieerd, maar we vullen aan) ----
+\newtheorem{axiom}{Axiom}[chapter]
+\newtheorem{conjecture}{Conjecture}[chapter]
+
+% ---- Titel en auteur (worden in title.tex gebruikt) ----
+\title[Apeiron: Autonomous Knowledge Genesis from First Principles]
+      {Apeiron: Autonomous Knowledge Genesis from First Principles \\
+       \large A Seventeen-Layer Architecture for Non-Anthropocentric Artificial Intelligence}
+\author{David Beniers}
+
+\begin{document}
+
+% ---- Titelpagina ----
+\input{title}
+
+\frontmatter
+\pagenumbering{roman}
+
+% ---- Samenvatting / Abstract ----
+\input{summary}
+
+\tableofcontents
+\newpage
+
+\mainmatter
+\pagenumbering{arabic}
+
+% ---- Hoofdstukken (elk in eigen map) ----
+\input{Chapters/01_Introduction/Introduction}
+\input{Chapters/02_RelatedWork/RelatedWork}
+\input{Chapters/03_ResearchQuestions/ResearchQuestions}
+\input{Chapters/04_Foundations/Foundations}
+\input{Chapters/05_Axioms/Axioms}
+\input{Chapters/06_ArchitectureOverview/ArchitectureOverview}
+\input{Chapters/07_Layers_Cluster1/Cluster1}
+\input{Chapters/08_Layers_Cluster2/Cluster2}
+\input{Chapters/09_Layers_Cluster3/Cluster3}
+\input{Chapters/10_Layers_Cluster4/Cluster4}
+\input{Chapters/11_Examples/Examples}
+\input{Chapters/12_Validation/Validation}
+\input{Chapters/13_Complexity/Complexity}
+\input{Chapters/14_Ethics/Ethics}
+\input{Chapters/15_Discussion/Discussion}
+\input{Chapters/16_Conclusion/Conclusion}
+
+% ---- Bibliografie ----
+\backmatter
+\bibliographystyle{apalike}
+\bibliography{apeiron}
+
+% ---- Lijsten ----
+\listoffigures
+\listoftables
+
+% ---- Appendices ----
+\appendix
+\renewcommand\chaptername{Appendix}
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+\begin{subappendices}
+    \renewcommand\thesection{\Alph{chapter}.\arabic{section}}
+    \setcounter{chapter}{1}
+    \input{Appendices/Appendix_A}
+    \input{Appendices/Appendix_B}
+    \input{Appendices/Appendix_C}
+\end{subappendices}
+
+\end{document}

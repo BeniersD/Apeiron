@@ -1,0 +1,61 @@
+\section{Research Programme Status and Roadmap}
+\label{sec:status}
+
+The \textsc{Apeiron} Framework is a long-term research programme, not a single finished system. This section provides a transparent account of what has been accomplished, what remains to be done, and how the scientific community can contribute to the progressive validation and refinement of the architecture.
+
+\subsection{Current Implementation Status}
+
+\begin{itemize}
+    \item \textbf{Cluster I (Layers 1--4): Fully specified and partially implemented.} 
+    \begin{itemize}
+        \item Layer~1: Complete reference implementation of multi-axial atomicity testing, including Boolean, measure-theoretic, categorical, and information-theoretic decomposition operators. A falsifiable experiment confirms convergence for canonical observables.
+        \item Layer~2: Specification of weighted hypergraph and \texttt{DensityField} influence model. Prototype implementation of pairwise influence computation exists; higher-order motif discovery is specified but not yet implemented.
+        \item Layer~3: Formal definition of functional entities, modularity, and ablation testing. Community detection via Louvain is implemented; counterfactual ablation remains at the stage of architectural specification.
+        \item Layer~4: SDE-based dynamics specified; Euler-Maruyama discretization implemented for single functional entities. Full event-driven simulation across multiple functions is under development.
+    \end{itemize}
+    \item \textbf{Cluster II (Layers 5--7): Architecturally specified.} 
+    \begin{itemize}
+        \item Layers 5--7 are defined in terms of formal operators ($\Omega_k$, $\mathcal{H}$, $\Psi$, $\Gamma$) and their theoretical grounding. No implementation exists; these layers constitute the immediate next phase of development.
+    \end{itemize}
+    \item \textbf{Cluster III (Layers 8--13): Architecturally specified.} 
+    \begin{itemize}
+        \item The ontological creation functors, reconciliation spans, and ontogenesis operators are formally sketched. Persistent homology for early-warning diagnostics is specified but not yet applied to live system data.
+    \end{itemize}
+    \item \textbf{Cluster IV (Layers 14--17): Architecturally specified with embedded ethical constraints.}
+    \begin{itemize}
+        \item The meta-operator $\mathcal{M}$, autopoietic closure conditions, and reversible morphogenesis principles are defined. These layers are the most speculative and will require substantial theoretical and empirical work before implementation can begin.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Falsifiable Predictions and Validation Roadmap}
+
+Table~\ref{tab:roadmap} summarizes the key falsifiable predictions for each cluster and the proposed validation strategies. The confirmation of Hypothesis~1 (Section~\ref{sec:validation}) provides a foundational empirical anchor; the remaining hypotheses constitute the roadmap for progressive validation.
+
+\begin{table}[htbp]
+\centering
+\caption{Falsifiable predictions and validation roadmap for the \textsc{Apeiron} Framework.}
+\label{tab:roadmap}
+\begin{tabular}{p{0.15\textwidth} p{0.35\textwidth} p{0.35\textwidth}}
+\toprule
+\textbf{Cluster} & \textbf{Prediction} & \textbf{Validation Strategy} \\
+\midrule
+I (Layers 1--4) & Multi-axial atomicity converges on fundamental units; relational hypergraph exhibits scale-free emergence; functional modularity correlates with ablation robustness. & Implemented for Layer~1; hypergraph simulations and ablation studies planned. \\
+II (Layers 5--7) & Meta-learned update rules transfer across task distributions; global synthesis $\Sigma$ compresses cross-layer regularities without loss of predictive accuracy. & Meta-learning benchmarks (e.g., Omniglot, MiniImageNet); mutual information analysis between $\Sigma$ and lower-layer states. \\
+III (Layers 8--13) & New ontological categories are genuinely irreducible; persistent homology detects ontogenetic events with $>80\%$ recall. & Formal verification of functorial non-embedding; sliding-window persistent homology on state trajectories. \\
+IV (Layers 14--17) & Pluriverse maintains distinct worlds above Gromov-Hausdorff threshold $\epsilon$; meta-operator $\mathcal{M}$ converges to fixed point. & Multi-agent simulations with ontological distance metrics; fixed-point iteration analysis. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Invitation to the Community}
+
+The \textsc{Apeiron} Framework is explicitly designed as an open research programme. We invite the scientific community to engage in the following ways:
+
+\begin{itemize}
+    \item \textbf{Critique and refine the formal specifications.} The category-theoretic translations between layers, the definition of atomicity, and the ethical reversibility constraints are all open to rigorous scrutiny and improvement.
+    \item \textbf{Contribute implementations.} The reference implementation is open-source. Contributions to the \texttt{DensityField}, \texttt{FunctionalClusterer}, or higher-layer operators are welcome.
+    \item \textbf{Design and execute validation experiments.} The falsifiable predictions in Table~\ref{tab:roadmap} provide a concrete menu of empirical investigations. We encourage independent replication and extension.
+    \item \textbf{Explore alternative instantiations.} The framework is substrate-agnostic. Implementations on neuromorphic hardware, quantum annealers, or biological substrates could yield novel insights.
+\end{itemize}
+
+By framing the \textsc{Apeiron} Framework as a research programme rather than a finished product, we hope to catalyze a collaborative effort toward a genuinely non-anthropocentric artificial intelligence---one that may ultimately show us not what we already know, but what a truly alien intelligence can discover.

@@ -1,0 +1,41 @@
+\section{Computational Complexity and Scaling}
+\label{sec:complexity}
+
+The formal rigor of the \Apeiron{} Framework comes with computational costs that must be explicitly acknowledged and managed. This section analyzes the asymptotic complexity of key operations across the layers and outlines strategies for maintaining tractability in practical implementations.
+
+\subsection{Layer 1: Atomicity Testing}
+
+The most computationally intensive operation in Layer~1 is the measure-theoretic atomicity test. An exhaustive verification that a set $A$ is a measure atom requires checking all $2^{|A|}$ subsets in the worst case, yielding $\mathcal{O}(2^{|A|})$ complexity. The reference implementation mitigates this by imposing a configurable sampling limit (\texttt{max\_subsets}), reducing the complexity to $\mathcal{O}(\text{max\_subsets})$. For sets with $|A| \le 20$, exhaustive enumeration is used; for larger sets, random sampling is employed, providing a probabilistic guarantee of atomicity.
+
+The information-theoretic atomicity test using zlib compression runs in $\mathcal{O}(n)$ time for an input of length $n$, which is negligible for typical observable sizes.
+
+\subsection{Layer 2: Hypergraph Construction and Influence Computation}
+
+The construction of a relational hypergraph over $N = |\Obs|$ observables with hyperedges of arity up to $K$ has a worst-case complexity of $\mathcal{O}(N^K)$. In practice, the \texttt{DensityField} implementation restricts attention to pairwise relations ($K=2$) with optional higher-order motifs detected via tensor decomposition, yielding $\mathcal{O}(N^2)$ complexity. The influence computation for a single target observable requires evaluating pairwise similarities against all other observables, which is also $\mathcal{O}(N^2)$.
+
+For large $N$, approximate nearest-neighbor techniques (e.g., locality-sensitive hashing) can reduce the effective complexity to $\mathcal{O}(N \log N)$.
+
+\subsection{Layer 7: Global Synthesis}
+
+The free-energy minimization defining the global synthesis operator $\Psi$ is a non-convex optimization problem over a latent space $\mathcal{H}$. In general, this problem is NP-hard. The reference implementation employs variational inference with a mean-field approximation, which reduces the per-iteration complexity to $\mathcal{O}(d^2)$ where $d$ is the dimensionality of the latent space. Convergence typically requires a few hundred iterations, making the overall cost $\mathcal{O}(d^2 \cdot \text{iterations})$.
+
+\subsection{Layer 13: Ontogenesis Detection}
+
+Detecting ontogenetic events via persistent homology on a point cloud of $M$ states in dimension $D$ has a worst-case complexity of $\mathcal{O}(M^3)$ for the Vietoris-Rips filtration. However, modern algorithms leveraging simplicial collapses and dual complexes reduce the practical runtime significantly. For monitoring purposes, a sliding window of moderate size (e.g., $M \le 500$) is sufficient to provide early-warning signals without prohibitive cost.
+
+\subsection{Layer 17: Fixed-Point Computation}
+
+The meta-operator $\meta$ of Layer~17 seeks a fixed point $\meta(\mathcal{F}) \simeq \mathcal{F}$. Iterative refinement of operator families can be viewed as a fixed-point iteration. The convergence rate depends on the spectral radius of the Jacobian of $\meta$. Under suitable compactness and Lipschitz conditions, linear convergence is achievable. The per-iteration cost is dominated by the evaluation of the worldbuilding, normative, and autopoietic operators, which are themselves composite operations spanning multiple lower layers.
+
+\subsection{Scalability Strategies}
+
+To maintain tractability for systems of practical interest, the \Apeiron{} Framework incorporates several scalability strategies:
+
+\begin{itemize}
+    \item \textbf{Sampling and Approximation:} As demonstrated in the measure-theoretic atomicity test, controlled sampling provides probabilistic guarantees at fixed cost.
+    \item \textbf{Lazy Evaluation:} Heavy substructures (e.g., geometric, topological, quantum) are instantiated only when explicitly requested, minimizing baseline overhead.
+    \item \textbf{Caching:} Atomicity scores and relational embeddings are cached with dirty-flag invalidation, avoiding redundant recomputation.
+    \item \textbf{Hardware Acceleration:} The reference implementation includes support for GPU acceleration via PyTorch for vector and tensor operations, and FPGA backends for specialized low-latency tasks.
+\end{itemize}
+
+With these strategies, the \Apeiron{} Framework scales to moderate-sized configurations (e.g., $N \le 10^4$ observables) on commodity hardware, and larger deployments can be supported through distributed computing and further approximations.

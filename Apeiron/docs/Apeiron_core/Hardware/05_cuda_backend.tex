@@ -1,0 +1,45 @@
+\newpage
+\section{CUDA/GPU Backend}
+
+The CUDA backend provides GPU acceleration for all continuous field operations using PyTorch. It is designed as a drop-in replacement for the CPU backend: the public API is identical, and all GPU-specific code is encapsulated behind the \texttt{HardwareBackend} interface. When a CUDA-capable GPU is not available, the factory automatically falls back to the CPU backend, ensuring graceful degradation.
+
+\subsection{Tensor Operations on GPU}
+
+All fields are represented as PyTorch tensors residing on the GPU. The \texttt{create\_continuous\_field} method generates a random tensor directly on the device, avoiding costly CPU-GPU transfers during initialization. The \texttt{field\_update} method performs the same linear combination and noise addition as the CPU backend, but executes entirely within the CUDA graph:
+
+\begin{lstlisting}[language=Python]
+with torch.no_grad():
+    v_new = v_tensor * 0.95 + h_tensor * 0.05
+    t_new = t_tensor * 0.97 + h_tensor * 0.03
+    h_new = f_tensor * 0.01 * torch.randn_like(f_tensor) * np.sqrt(dt)
+    h_new = h_new / torch.norm(h_new)
+\end{lstlisting}
+
+PyTorch's \texttt{torch.randn\_like} and \texttt{torch.norm} are highly optimized for GPU execution, often achieving speedups of \(10\times - 50\times\) over their CPU counterparts for large field dimensions.
+
+\subsection{Memory Management and Tensor Cores}
+
+The backend configures PyTorch's CUDA memory allocator to respect the \texttt{memory\_fraction} parameter, preventing out-of-memory errors when multiple processes share the GPU. When \texttt{use\_tensor\_cores} is enabled, PyTorch automatically utilizes Tensor Cores on Volta and newer architectures for matrix multiplications, accelerating the \texttt{measure\_coherence} operation which computes a Gram matrix of field vectors:
+
+\begin{equation}
+\mathrm{coherence} = \frac{\sum_{i,j}\langle\mathbf{f}_i,\mathbf{f}_j\rangle - N}{N(N - 1)}
+\end{equation}
+
+This operation is implemented as a single matrix multiplication \(\mathbf{F}\mathbf{F}^\top\), where \(\mathbf{F}\) is the matrix of stacked field vectors, fully leveraging the GPU's parallel architecture. We observed that for dimensions \(>2048\), enabling tensor cores reduces \texttt{measure\_coherence} latency by an additional \(1.8\times\) compared to standard CUDA cores (Section~10.2).
+
+\subsection{Lazy Tensor Creation and Caching}
+
+Analogous to the CPU backend, the CUDA backend maintains a \texttt{field\_hash} dictionary for \(O(1)\) field lookups. When a field is encountered for the first time, a new GPU tensor is allocated and cached. Subsequent operations reuse the existing tensor, eliminating redundant allocation and host-to-device transfers. The \texttt{\_get\_or\_create\_tensor} method encapsulates this logic:
+
+\newpage
+\begin{lstlisting}[language=Python, caption={Lazy tensor allocation with caching.}]
+def _get_or_create_tensor(self, array: np.ndarray) -> int:
+    fid = self.get_field_id(array)
+    if fid is not None:
+        return fid
+    tensor = torch.from_numpy(array.astype(np.float32)).to(self.device)
+    fid = self._next_id
+    self.fields[fid] = tensor
+    self.field_data[fid] = array.copy()
+    return fid
+\end{lstlisting}

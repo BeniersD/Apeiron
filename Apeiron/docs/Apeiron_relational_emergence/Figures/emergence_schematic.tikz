@@ -1,0 +1,9 @@
+\begin{tikzpicture}[node distance=1.5cm, auto]
+  \node[draw, minimum width=2.5cm, minimum height=1cm] (a) {Time series};
+  \node[draw, minimum width=2.5cm, minimum height=1cm, right of=a, xshift=2cm] (b) {Sliding windows};
+  \node[draw, minimum width=2.5cm, minimum height=1cm, right of=b, xshift=2cm] (c) {Adjacency matrix};
+  \node[draw, minimum width=2.5cm, minimum height=1cm, right of=c, xshift=2cm] (d) {Louvain clusters};
+  \draw[->, thick] (a) -- (b);
+  \draw[->, thick] (b) -- (c);
+  \draw[->, thick] (c) -- (d);
+\end{tikzpicture}

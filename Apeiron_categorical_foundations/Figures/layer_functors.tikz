@@ -1,4 +1,0 @@
-\begin{tikzcd}
-\mathcal{C}_1 \arrow[r, "F_{1}"] \arrow[dr, bend right, "G_{1}"'] & \mathcal{C}_2 \arrow[r, "F_{2}"] & \mathcal{C}_3 \arrow[r, "F_{3}"] & \dots \\
-& \mathcal{C}_4 \arrow[ur, bend right, "G_{3}"'] & &
-\end{tikzcd}

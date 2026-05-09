@@ -1,0 +1,19 @@
+\section{Preliminaries}
+We briefly recall the definitions of the Apeiron category \(\mathcal{A}\) and the decomposition graph \(\mathcal{G}\) from~\cite{Beniers2026Categorical}.
+
+\begin{definition}[Decomposition operators]
+For each atomicity framework \(f \in \{\text{Boolean},\text{Measure},\text{Categorical},\text{Information}\}\) there is a decomposition operator \(\Delta_f : \mathcal{O} \to \mathcal{P}(\mathcal{O})\).
+An observable \(o\) is \emph{atomic with respect to \(f\)} if \(\Delta_f(o) = \{o\}\); it is \emph{multi‑axially atomic} if this holds for all four frameworks.
+\end{definition}
+
+\begin{definition}[Decomposition graph]
+The decomposition graph \(\mathcal{G}\) has vertex set \(\mathcal{O}\) and, for each \(o\) and each \(p \in \Delta_f(o)\) with \(p \neq o\), a directed edge \(o \xrightarrow{f} p\).
+\end{definition}
+
+\begin{definition}[Apeiron category]
+The Apeiron category \(\mathcal{A}\) is the free category on \(\mathcal{G}\); its objects are observables, and morphisms are finite (possibly empty) paths of decomposition steps.
+Composition is concatenation.
+\end{definition}
+
+An observable \(o\) is called \emph{separated} in \(\mathcal{A}\) if the only morphism out of \(o\) is the identity.
+Equivalently, \(o\) is multi‑axially atomic.

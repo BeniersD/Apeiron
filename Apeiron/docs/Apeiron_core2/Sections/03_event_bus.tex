@@ -1,0 +1,123 @@
+\section{The Event Bus}
+
+The EventBus is the nervous system of the \Core{}.  It implements a
+publish-subscribe message bus with persistent storage, dead-letter queues,
+and replay capability.  All other modules register as subscribers to
+specific event types, ensuring full decoupling.
+
+\subsection{API and Configuration}
+
+The bus exposes a minimal asynchronous API:
+
+\begin{lstlisting}[language=Python, caption={EventBus core API}]
+# Emitting an event
+event_id = await bus.emit(
+    "chaos_state_changed",          # event_type
+    {"state": "diverging"},         # data
+    source="chaos_detector",        # source module
+    priority=EventPriority.HIGH,
+    ttl=30.0,                       # time-to-live in seconds
+    metadata={"layer": "core"}
+)
+
+# Subscribing to an event type
+bus.subscribe(
+    "chaos_state_changed",
+    callback=my_callback,
+    filter_func=lambda ev: ev.data["state"] == "critical",
+    retry_policy=RetryPolicy(max_retries=3, backoff_factor=2.0)
+)
+\end{lstlisting}
+
+Configuration is managed via the \texttt{EventBusConfig} dataclass:
+
+\begin{lstlisting}[language=Python, caption={EventBus configuration}]
+@dataclass(frozen=True)
+class EventBusConfig:
+    node_id: str = "node_1"
+    max_history: int = 10000
+    max_queue_size: int = 10000
+    batch_size: int = 10
+    enable_persistence: bool = True
+    persistence_path: str = "events.db"
+    enable_distributed: bool = False
+    distributed_backend: str = "redis"
+    serializer: str = "json"
+    enable_encryption: bool = False
+    enable_compression: bool = False
+    retry_policy: RetryPolicy = RetryPolicy()
+    circuit_breaker: CircuitBreakerConfig = CircuitBreakerConfig()
+\end{lstlisting}
+
+\subsection{Persistence and Event Sourcing}
+
+When persistence is enabled, every event is written to an aiosqlite database
+before being placed in the queue.  This ensures that no event is ever lost,
+even in the event of a crash.  A separate \emph{event sourcing log} records
+each state mutation as an append-only fact, enabling full audit trails and
+deterministic replay.  Replay is implemented as a generator that streams
+events from the database in chronological order. To prevent I/O wait from becoming a bottleneck at high throughput,
+the SQLite store operates in \texttt{WAL} (Write‑Ahead Logging) mode
+and all writes are performed asynchronously via \texttt{aiosqlite},
+allowing the main event loop to continue processing without blocking.
+When persistence is enabled, the bus internally buffers events and
+flushes them to disk in configurable batches.  In streaming scenarios
+that require the absolute highest throughput, the in‑memory backend
+remains the recommended choice; the persistent store can then be kept
+as a separate, asynchronously updated audit trail, ensuring that event
+sourcing guarantees are never compromised. 
+Under extreme back‑pressure the internal buffer can grow temporarily,
+but no events are lost: the circuit breaker and dead‑letter mechanisms
+ensure that the system either processes, retries, or safely archives
+every message.
+
+\subsection{Fault Tolerance}
+
+Each subscriber is wrapped with a \emph{retry policy} (exponential backoff)
+and a \emph{circuit breaker}.  The circuit breaker transitions through
+\texttt{CLOSED}, \texttt{OPEN}, and \texttt{HALF\_OPEN} states based on
+failure counts and a configurable timeout (Figure~\ref{fig:circuit}).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    state/.style={draw, rounded corners, minimum width=2cm, minimum height=0.8cm, align=center, font=\small},
+    arrow/.style={-{Stealth[length=4mm]}, thick}
+]
+\node[state, fill=green!20] (closed) {CLOSED};
+\node[state, fill=red!20, right=of closed] (open) {OPEN};
+\node[state, fill=yellow!20, below=of open] (half) {HALF\_OPEN};
+\draw[arrow] (closed) -- node[above] {fail count $\ge$ threshold} (open);
+\draw[arrow] (open) -- node[right] {timeout} (half);
+\draw[arrow] (half) -- node[left] {success} (closed);
+\draw[arrow] (half) -- node[above, sloped] {failure} (open);
+\end{tikzpicture}
+\caption{Circuit breaker state machine.}
+\label{fig:circuit}
+\end{figure}
+
+Failed events are moved to a \emph{dead-letter queue} after all retries are
+exhausted.  An operator can inspect the dead-letter queue via
+\texttt{bus.get\_dead\_letter()} and retry them with
+\texttt{bus.retry\_dead\_letter()}.
+
+\subsection{Scalability and Large Payloads}
+
+The event bus is optimised for high‑throughput control messages (typical
+payload $< 1$ kB).  For large binary objects such as tensor data, the
+recommended pattern is \emph{pass‑by‑reference}: events carry a file
+path, shared‑memory handle, or object store identifier, while the bulk
+data is transferred out‑of‑band.  This keeps the bus responsive and
+avoids serialisation overhead.
+
+When CPU‑bound subscribers are required, the bus can be deployed in a
+multi‑process configuration using Redis or Kafka backends, effectively
+bypassing the Global Interpreter Lock (GIL).  The in‑memory backend
+remains appropriate for single‑agent deployments where all components
+reside within the same process.
+
+\subsection{Prometheus Metrics}
+
+An optional Prometheus exporter is built in.  When enabled, it exposes
+counters for total events, failed deliveries, and a histogram of
+processing latency, allowing integration with standard monitoring stacks.

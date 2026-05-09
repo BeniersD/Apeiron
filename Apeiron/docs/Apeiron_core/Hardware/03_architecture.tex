@@ -1,0 +1,97 @@
+\newpage
+\section{Architecture}
+
+APEIRON-Core is designed around the pluggable factory pattern. The central orchestration is performed by the \texttt{HardwareFactory} singleton, which manages a registry of available backends, handles their initialization and caching, and selects the optimal backend based on configurable priorities and real-time health metrics. Figure~\ref{fig:architecture} illustrates the high-level architecture.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance = 1.0cm and 1.8cm,
+    box/.style = {draw, rounded corners, minimum width=2.8cm, minimum height=0.9cm, align=center, fill=blue!5, font=\small},
+    backend/.style = {draw, rounded corners, minimum width=2.2cm, minimum height=0.8cm, align=center, fill=green!5, font=\small},
+    arrow/.style = {-{Stealth[length=3mm]}, thick},
+    dasharrow/.style = {arrow, dashed},
+    every label/.style = {font=\small\ttfamily}
+]
+
+% Top layer: Higher APEIRON Layers
+\node[box, fill=gray!15] (higher) {Higher APEIRON Layers\\{\footnotesize(Layers 1--4)}};
+
+% Factory and Registry row
+\node[box, below left=1.5cm and 1.2cm of higher] (factory) {HardwareFactory\\{\footnotesize(Singleton)}};
+\node[box, below right=1.5cm and 1.2cm of higher] (registry) {BackendRegistry\\{\footnotesize(Prioritized list)}};
+
+% Config below registry
+\node[box, fill=yellow!10, below=of registry] (config) {HardwareConfig\\{\footnotesize(Pydantic)}};
+
+% Backends matrix
+\matrix[below=of factory, column sep=0.6cm, row sep=0.4cm] (backends) {
+    \node[backend] (cpu) {CPU Backend\\(NumPy)}; &
+    \node[backend] (cuda) {CUDA Backend\\(PyTorch)}; &
+    \node[backend] (fpga) {FPGA Backend\\(PYNQ)}; &
+    \node[backend] (quantum) {Quantum Backend\\(Qiskit)}; \\
+};
+
+% Dashed box around backends
+\node[draw, dashed, inner sep=0.4cm, fit=(backends), label={[anchor=north west]north west:{\texttt{HardwareBackend} (ABC)}}] (interface) {};
+
+% Arrows
+\draw[arrow] (higher.south) -- ++(0,-0.5) -| (factory.north);
+\draw[arrow] (higher.south) -- ++(0,-0.5) -| (registry.north);
+\draw[arrow] (factory.east) -- (registry.west) node[midway, above, font=\footnotesize] {queries};
+\draw[arrow] (factory.south) -- ++(0,-0.5) -| (cpu.north);
+\draw[arrow] (factory.south) -- ++(0,-0.5) -| (cuda.north);
+\draw[arrow] (factory.south) -- ++(0,-0.5) -| (fpga.north);
+\draw[arrow] (factory.south) -- ++(0,-0.5) -| (quantum.north);
+\draw[arrow] (registry.south) -- (config.north);
+\draw[dasharrow] (config.north west) -- ++(0,+0.75) -| (factory.south west); 
+
+% Fallback arrows
+\draw[arrow, red, bend left=15] (fpga.south) to node[below, sloped, font=\footnotesize] {fallback} (cpu.south);
+\draw[arrow, red, bend left=25] (quantum.south) to node[below, sloped, font=\footnotesize] {fallback} (cpu.south);
+
+\end{tikzpicture}
+\caption{High-level architecture of APEIRON-Core. The \texttt{HardwareFactory} manages a \texttt{BackendRegistry} and a \texttt{HardwareConfig}. All concrete backends implement the abstract \texttt{HardwareBackend} interface. Arrows indicate data/control flow.}
+\label{fig:architecture}
+\end{figure}
+
+\subsection{The HardwareBackend Interface}
+
+All backends inherit from the abstract base class \texttt{HardwareBackend}, which enforces a uniform contract:
+
+\begin{lstlisting}[language=Python, caption={The \texttt{HardwareBackend} abstract interface.}, label={lst:interface}, float=htbp]
+class HardwareBackend(ABC):
+    @abstractmethod
+    def initialize(self, config: Dict[str, Any]) -> bool: ...
+    @abstractmethod
+    def create_continuous_field(self, dimensions: int) -> np.ndarray: ...
+    @abstractmethod
+    def field_update(self, field: np.ndarray, dt: float, ...) -> Dict: ...
+    @abstractmethod
+    def compute_interference(self, a: np.ndarray, b: np.ndarray) -> float: ...
+    @abstractmethod
+    def find_stable_patterns(self, fields: List[np.ndarray], threshold: float) -> List[Dict]: ...
+    @abstractmethod
+    def measure_coherence(self, fields: List[np.ndarray]) -> float: ...
+\end{lstlisting}
+
+This interface encapsulates the core operations required by APEIRON's foundational layers: the creation and evolution of continuous fields, the measurement of interference between fields, the detection of stable relational patterns, and the global coherence metric. By programming against this interface, higher APEIRON layers remain entirely agnostic to the underlying hardware.
+
+\subsection{Backend Registry and Lifecycle}
+
+The \texttt{BackendRegistry} is a singleton that maintains a prioritized list of available backends. Each backend is described by a \texttt{BackendInfo} dataclass containing its name, implementing class, priority, required Python packages, and runtime metrics. The registry lazily verifies package availability via \texttt{importlib}, ensuring that only backends with satisfied dependencies are presented for selection.
+
+Backend initialization is thread-safe and supports configurable timeouts. The factory employs a \texttt{ThreadPoolExecutor} to parallelize initialization, and caches successfully initialized backends with a TTL. A health-check mechanism periodically validates backend responsiveness and updates a health score used to prioritize backends during auto-selection.
+
+\subsection{Low-Overhead Abstraction}
+
+A key design principle of APEIRON-Core is minimal abstraction overhead: the cost introduced by the HAL should be negligible compared to the raw hardware operation. We achieve this through:
+
+\begin{itemize}
+    \item Lazy imports: Heavy dependencies (PyTorch, Qiskit, PYNQ) are imported only when the corresponding backend is first requested.
+    \item Vectorized operations: The CPU backend uses NumPy's optimized BLAS routines; the CUDA backend uses PyTorch's tensor operations.
+    \item Caching: Field IDs and atomicity scores are cached with \(O(1)\) hash-based lookups, eliminating redundant computation.
+    \item Zero-copy tensor sharing: Where possible, we avoid host–device transfers by maintaining canonical tensor representations.
+\end{itemize}
+
+Empirically, we find that the HAL introduces a median overhead of less than 1.8\% on CPU and 2.3\% on GPU for field dimensions \(>10^4\) (Section~10.3). While not strictly ``zero,'' this overhead is well within the noise floor of modern heterogeneous systems and does not impede the self-optimization loops of higher APEIRON layers.

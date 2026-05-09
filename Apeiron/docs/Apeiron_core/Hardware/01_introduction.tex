@@ -1,0 +1,25 @@
+\newpage
+\section{Introduction}
+
+The APEIRON framework~\cite{beniers2026apeiron} proposes a radical departure from contemporary AI: an autonomous system that constructs knowledge from first principles, unburdened by human categories, temporalities, or causal assumptions. Realizing this vision requires not only novel algorithms for knowledge representation and emergence but also a fundamental rethinking of the computational substrate itself. A non-anthropocentric intelligence must be able to harness any available physical resource—from classical CPUs to quantum processing units—without being hard-coded to a specific vendor's ecosystem. It must self-optimize its resource usage, gracefully degrade in the face of hardware failures, and account for the thermodynamic cost of its own cognition. Existing hardware abstraction layers, while powerful within their niches, are either too narrow in scope (e.g., deep learning accelerators) or lack the introspection and self-optimization capabilities required by an autonomous knowledge system.
+
+This paper introduces APEIRON-Core, a comprehensive hardware abstraction layer (HAL) engineered to meet these stringent requirements. It provides a unified, low-overhead interface to four distinct computational backends:
+
+\begin{itemize}
+    \item CPU: A highly optimized NumPy backend with \(O(1)\) field caching and multi-threading.
+    \item CUDA: A PyTorch-based GPU backend for massively parallel tensor operations.
+    \item FPGA: A PYNQ-driven backend for Xilinx FPGAs, leveraging DMA and fixed-point arithmetic.
+    \item Quantum: A Qiskit-based backend supporting both statevector simulation and (optionally) real IBM Quantum hardware.
+\end{itemize}
+
+The contributions of this work are threefold:
+
+\begin{enumerate}
+    \item A unified, pluggable architecture centered around a singleton \texttt{HardwareFactory} that automatically detects available hardware, selects the optimal backend based on configurable priorities and health metrics, and caches initialized backends for rapid reuse. This design enables higher APEIRON layers to execute continuous field operations without any knowledge of the underlying hardware.
+    \item Comprehensive error handling and observability. All backend operations are wrapped in a declarative error-handling decorator that provides exponential backoff, circuit breaker patterns, and automatic fallback to a CPU reference implementation. Native Prometheus integration exports real-time metrics on operation latency, cache hit rates, and error counts, enabling deep introspection into system health.
+    \item Thermodynamic cost accounting. A novel energy monitor tracks power consumption (via PSUTIL and NVML) and optionally queries the Electricity Maps API for real-time carbon intensity. Every computational structure evaluated by the system is approved or rejected based on an efficiency threshold (information value per Joule), embedding an ethical resource constraint directly into the fabric of the architecture.
+\end{enumerate}
+
+In addition, this paper provides the first comprehensive performance characterization of a HAL spanning classical, reconfigurable, and quantum backends. Through a suite of microbenchmarks and a representative workload derived from APEIRON's field dynamics, we quantify the abstraction tax, demonstrate per-backend speedups, and validate the energy-aware throttling mechanism.
+
+The remainder of this paper is organized as follows. Section~2 surveys related work in hardware abstraction for AI. Section~3 provides a high-level overview of the APEIRON-Core architecture and the factory pattern. Sections~4, 5, 6, and~7 detail the implementation of each individual backend. Section~8 describes the unified error-handling and observability framework. Section~9 covers the configuration system. Section~10 presents experimental benchmarks across all backends. We discuss limitations and future directions in Section~11 and conclude in Section~12.

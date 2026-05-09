@@ -1,0 +1,18 @@
+\section{Properties of \(\mathbf{D}\)}\label{sec:properties}
+
+\begin{lemma}[Separated objects]\label{lem:separated_map}
+If \(o\) is separated in \(\mathcal{A}\) (i.e.\ multi‑axially atomic), then \(\mathcal{L}(o) = \{o\}\) and consequently \(\mathbf{D}(o)\) consists of the single vertex \(o\) with no edges.
+\end{lemma}
+\begin{proof}
+If \(o\) is separated, there are no decomposition edges leaving \(o\). Hence the only vertex reachable from \(o\) is \(o\) itself.
+\end{proof}
+
+\begin{lemma}[Union of decomposition graphs]\label{lem:union}
+Let \(S \subset \mathcal{O}\) be a finite set of observables.
+Then the union of the vertex sets of \(\{\mathbf{D}(o)\}_{o \in S}\) equals the set of all observables that can be reached from at least one element of \(S\) via a decomposition path.
+\end{lemma}
+\begin{proof}
+This is immediate from the definition of \(\mathcal{L}(o)\).
+\end{proof}
+
+The functor \(\mathbf{D}\) is not full, but the separatedness property is the essential structural link between atomicity in Layer~1 and the graphical representation: atomic observables are precisely the isolated vertices of the decomposition graph.
