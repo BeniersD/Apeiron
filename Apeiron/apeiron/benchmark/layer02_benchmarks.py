@@ -12,14 +12,14 @@ prestaties van de algoritmen in Layer 2. Het ondersteunt:
 - Integratie met pytest-benchmark (optioneel)
 
 Gebruik:
-    from apeiron.layers.layer02_relational.benchmarks import BenchmarkSuite
+    from from apeiron.benchmark.layer02_benchmarks import BenchmarkSuite
     suite = BenchmarkSuite()
     suite.run_all()
     suite.save_results('benchmark_results.json')
     suite.plot_results()
 
 Of via command line:
-    python -m apeiron.layers.layer02_relational.benchmarks [--plot] [--save]
+    python -m from apeiron.benchmark.layer02_benchmarks [--plot] [--save]
 
 Integratie met pytest-benchmark:
     In een pytest-testbestand kun je de suite als volgt gebruiken:

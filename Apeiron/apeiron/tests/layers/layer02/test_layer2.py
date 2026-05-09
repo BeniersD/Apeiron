@@ -47,7 +47,7 @@ def create_test_graph():
 
 def create_test_hypergraph():
     """Return een kleine hypergraaf voor testdoeleinden."""
-    from apeiron.layers.layer02_relational.hypergraph_relations import Hypergraph
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
     hg = Hypergraph()
     hg.add_hyperedge("e1", {1,2,3}, weight=1.0)
     hg.add_hyperedge("e2", {2,3,4}, weight=0.8)
@@ -83,7 +83,7 @@ def test_adjacency_matrix_import():
 def test_spectral_graph_analysis_basic():
     pytest.importorskip("networkx")
     pytest.importorskip("scipy")
-    from apeiron.layers.layer02_relational.adjacency_matrix import (
+    from apeiron.layers.layer02_relational.spectral import (
         SpectralGraphAnalysis, SpectralType
     )
     G = create_test_graph()
@@ -102,7 +102,7 @@ def test_spectral_graph_analysis_basic():
 def test_dynamic_spectral_analysis_basic():
     pytest.importorskip("networkx")
     pytest.importorskip("scipy")
-    from apeiron.layers.layer02_relational.adjacency_matrix import (
+    from apeiron.layers.layer02_relational.spectral import (
         DynamicSpectralAnalysis, SpectralType
     )
     G = create_test_graph()
@@ -116,7 +116,7 @@ def test_dynamic_spectral_analysis_basic():
 
 def test_spectral_database_basic():
     pytest.importorskip("sqlite3")
-    from apeiron.layers.layer02_relational.adjacency_matrix import SpectralDatabase
+    from apeiron.layers.layer02_relational.spectral import SpectralDatabase
     db = SpectralDatabase(db_type='sqlite', connection_string=':memory:')
     db._create_sqlite_tables()
     evals = np.array([1.0, 2.0, 3.0])
@@ -145,7 +145,7 @@ def test_hypergraph_basic():
 
 def test_quantum_graph_basic():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.hypergraph_relations import QuantumGraph
+    from apeiron.layers.layer02_relational.quantum_graph import QuantumGraph
     G = create_test_graph()
     qg = QuantumGraph(graph=G)
     qg.edge_amplitudes[(0,1)] = 1.0 + 0.5j
@@ -156,7 +156,7 @@ def test_quantum_graph_basic():
 def test_hypergraph_rl_basic():
     pytest.importorskip("gym")
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.hypergraph_relations import HypergraphEnv, RLAgent
+    from apeiron.layers.layer02_relational.hypergraph import HypergraphEnv, RLAgent
     hg = create_test_hypergraph()
     env = HypergraphEnv(hg, target=4, max_steps=10)
     agent = RLAgent(env)
@@ -167,7 +167,7 @@ def test_hypergraph_rl_basic():
 
 def test_hypergraph_database_basic():
     pytest.importorskip("sqlite3")
-    from apeiron.layers.layer02_relational.hypergraph_relations import HypergraphDatabase
+    from apeiron.layers.layer02_relational.hypergraph import HypergraphDatabase
     hg = create_test_hypergraph()
     db = HypergraphDatabase(db_type='sqlite', connection_string=':memory:')
     db.store_hypergraph("test", hg)
@@ -177,7 +177,7 @@ def test_hypergraph_database_basic():
 
 def test_hypergraph_dashboard_basic():
     pytest.importorskip("dash")
-    from apeiron.layers.layer02_relational.hypergraph_relations import create_hypergraph_dashboard
+    from apeiron.layers.layer02_relational.hypergraph import create_hypergraph_dashboard
     hg = create_test_hypergraph()
     app = create_hypergraph_dashboard(hg)
     assert app is not None
@@ -240,7 +240,7 @@ def test_relations_import():
     assert hasattr(relations, 'Layer2_Relational_Ultimate')
 
 def test_relational_category_basic():
-    from apeiron.layers.layer02_relational.relations import RelationalCategory
+    from apeiron.layers.layer02_relational.relations_core import RelationalCategory
     cat = RelationalCategory()
     cat.add_object("A")
     cat.add_object("B")
@@ -252,7 +252,7 @@ def test_relational_category_basic():
     assert comp is not None or True
 
 def test_ultimate_relation_basic():
-    from apeiron.layers.layer02_relational.relations import UltimateRelation, RelationType
+    from apeiron.layers.layer02_relational.relations_core import UltimateRelation, RelationType
     rel = UltimateRelation(
         id="test",
         source_id="obs1",
@@ -266,7 +266,7 @@ def test_ultimate_relation_basic():
 
 def test_layer2_class_basic():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.relations import Layer2_Relational_Ultimate, RelationType
+    from apeiron.layers.layer02_relational.relations_core import Layer2_Relational_Ultimate, RelationType
     layer2 = Layer2_Relational_Ultimate()
     rel = layer2.create_relation("obs1", "obs2", RelationType.SYMMETRIC, weight=0.5)
     assert rel.id in layer2.relations
@@ -276,7 +276,7 @@ def test_layer2_class_basic():
 def test_monad_associativity():
     """Test de associativiteit van de monad‑compositie in de categorische setting."""
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.relations import RelationalCategory
+    from apeiron.layers.layer02_relational.relations_core import RelationalCategory
     # Maak een eenvoudige categorie met objecten en morfismen
     cat = RelationalCategory()
     cat.add_object("X")
@@ -298,7 +298,7 @@ def test_monad_associativity():
 def test_lr_coefficients():
     """Test de berekening van lineaire regressiecoëfficiënten in compute_relations."""
     pytest.importorskip("sklearn")
-    from apeiron.layers.layer02_relational.relations import compute_relations
+    from apeiron.layers.layer02_relational.relations_core import compute_relations
     registry = create_test_registry()
     # compute_relations zou een lijst van relaties moeten teruggeven
     rels = compute_relations(registry, method='linear_regression')
@@ -310,7 +310,7 @@ def test_lr_coefficients():
 
 def test_compute_relations():
     """Test de algemene aanroep van compute_relations."""
-    from apeiron.layers.layer02_relational.relations import compute_relations
+    from apeiron.layers.layer02_relational.relations_core import compute_relations
     registry = create_test_registry()
     rels = compute_relations(registry)
     assert isinstance(rels, list)
@@ -328,7 +328,7 @@ def test_benchmarks_import():
     assert hasattr(benchmarks, 'BenchmarkSuite')
 
 def test_benchmark_suite_basic():
-    from apeiron.layers.layer02_relational.benchmarks import BenchmarkSuite
+    from apeiron.benchmark.layer02_benchmarks import BenchmarkSuite
     suite = BenchmarkSuite()
     @suite.register(name="dummy")
     def dummy_bench(param):
@@ -353,7 +353,7 @@ def test_dashboard_figures_basic():
     pytest.importorskip("plotly")
     pytest.importorskip("networkx")
     from apeiron.layers.layer02_relational import dashboard
-    from apeiron.layers.layer02_relational.adjacency_matrix import SpectralGraphAnalysis
+    from apeiron.layers.layer02_relational.spectral import SpectralGraphAnalysis
     G = create_test_graph()
     sa = SpectralGraphAnalysis(G)
     fig = dashboard.figure_spectrum(sa)
@@ -692,35 +692,35 @@ def test_quantum_error_correction_import():
 
 def test_repetition_code_basic():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational.quantum_error_correction import RepetitionCode
+    from apeiron.layers.layer02_relational.quantum_structs import RepetitionCode
     code = RepetitionCode(n=3)
     enc = code.encode_circuit()
     assert enc.num_qubits == 3
 
 def test_shor_code_syndrome():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational.quantum_error_correction import ShorCode
+    from apeiron.layers.layer02_relational.quantum_structs import ShorCode
     code = ShorCode()
     circ = code.syndrome_measurement_circuit()
     assert circ.num_qubits == 9 + 8  # code + ancillas
 
 def test_five_qubit_code_syndrome():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational.quantum_error_correction import FiveQubitCode
+    from apeiron.layers.layer02_relational.quantum_structs import FiveQubitCode
     code = FiveQubitCode()
     circ = code.syndrome_measurement_circuit()
     assert circ.num_qubits == 5 + 4
 
 def test_steane_code_syndrome():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational.quantum_error_correction import SteaneCode
+    from apeiron.layers.layer02_relational.quantum_structs import SteaneCode
     code = SteaneCode()
     circ = code.syndrome_measurement_circuit()
     assert circ.num_qubits == 7 + 6
 
 def test_lookup_table_decoder():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational.quantum_error_correction import FiveQubitCode, LookupTableDecoder
+    from apeiron.layers.layer02_relational.quantum_structs import FiveQubitCode, LookupTableDecoder
     code = FiveQubitCode()
     decoder = LookupTableDecoder(code, max_weight=1)
     # Test with a known syndrome
@@ -734,7 +734,7 @@ def test_lookup_table_decoder():
 def test_surface_code_memory_experiment():
     pytest.importorskip("stim")
     pytest.importorskip("pymatching")
-    from apeiron.layers.layer02_relational.quantum_error_correction import SurfaceCode
+    from apeiron.layers.layer02_relational.quantum_structs import SurfaceCode
     code = SurfaceCode(distance=3)
     # Run a very short experiment to check it doesn't crash
     error_rate = code.run_memory_experiment(num_rounds=2, noise=0.001, shots=10)
@@ -753,7 +753,7 @@ def test_quiver_moduli_import():
     assert hasattr(quiver_moduli, 'harder_narasimhan_filtration')
 
 def test_stability_condition_basic():
-    from apeiron.layers.layer02_relational.quiver_moduli import StabilityCondition
+    from apeiron.layers.layer02_relational.quiver import StabilityCondition
     theta = StabilityCondition({1: 1, 2: -1})
     dim = {1: 2, 2: 2}
     val = theta(dim)
@@ -761,8 +761,8 @@ def test_stability_condition_basic():
 
 def test_subrepresentations():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.quiver_moduli import subrepresentations
-    from apeiron.layers.layer02_relational.relations import Quiver, QuiverRepresentation
+    from apeiron.layers.layer02_relational.quiver import subrepresentations
+    from apeiron.layers.layer02_relational.relations_core import Quiver, QuiverRepresentation
     q = Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
@@ -783,10 +783,10 @@ def test_subrepresentations():
 
 def test_harder_narasimhan_filtration():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.quiver_moduli import (
+    from apeiron.layers.layer02_relational.quiver import (
         StabilityCondition, harder_narasimhan_filtration
     )
-    from apeiron.layers.layer02_relational.relations import Quiver, QuiverRepresentation
+    from apeiron.layers.layer02_relational.relations_core import Quiver, QuiverRepresentation
     q = Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
@@ -808,10 +808,10 @@ def test_harder_narasimhan_filtration():
 def test_stability_with_nonzero_theta():
     """Test dat een representatie stabiel is met een niet‑triviale theta‑vector."""
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.quiver_moduli import (
+    from apeiron.layers.layer02_relational.quiver import (
         StabilityCondition, is_stable
     )
-    from apeiron.layers.layer02_relational.relations import Quiver, QuiverRepresentation
+    from apeiron.layers.layer02_relational.relations_core import Quiver, QuiverRepresentation
     q = Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
@@ -837,7 +837,7 @@ def test_derived_categories_import():
     assert hasattr(derived_categories, 'ChainMap')
 
 def test_chain_complex_basic():
-    from apeiron.layers.layer02_relational.derived_categories import ChainComplex
+    from apeiron.layers.layer02_relational.category import ChainComplex
     d1 = np.array([[1,0,0],[0,1,0]])
     d2 = np.array([[1,0],[0,0],[0,1]])
     C = ChainComplex([d1, d2])
@@ -856,8 +856,8 @@ def test_model_categories_import():
     assert hasattr(model_categories, 'ChainComplexesModelCategory')
 
 def test_chain_complexes_model_basic():
-    from apeiron.layers.layer02_relational.model_categories import ChainComplexesModelCategory
-    from apeiron.layers.layer02_relational.derived_categories import ChainComplex, ChainMap
+    from apeiron.layers.layer02_relational.category import ChainComplexesModelCategory
+    from apeiron.layers.layer02_relational.category import ChainComplex, ChainMap
     model = ChainComplexesModelCategory()
     C = ChainComplex([])
     id_map = ChainMap(C, C, [])
@@ -880,7 +880,7 @@ def test_graph_self_supervised_basic():
     pytest.importorskip("torch_geometric")
     import torch
     from torch_geometric.data import Data
-    from apeiron.layers.layer02_relational.graph_self_supervised import (
+    from apeiron.layers.layer02_relational.hypergraph import (
         GCNEncoder, GraphCL, node_dropping
     )
     edge_index = torch.tensor([[0,1,1,2],[1,0,2,1]], dtype=torch.long)
@@ -897,7 +897,7 @@ def test_layer1_registry_to_pyg_data():
     """Test de conversie van registry naar PyG Data object."""
     pytest.importorskip("torch")
     pytest.importorskip("torch_geometric")
-    from apeiron.layers.layer02_relational.graph_self_supervised import layer1_registry_to_pyg_data
+    from apeiron.layers.layer02_relational.graph_rl import layer1_registry_to_pyg_data
     registry = create_test_registry()
     var_names = list(registry['observables'].keys())
     data_obj = layer1_registry_to_pyg_data(
@@ -912,7 +912,7 @@ def test_layer1_registry_to_pyg_data():
 def test_atomicity_aware_dgi_loss():
     """Test de atomicity‑aware DGI loss functie."""
     pytest.importorskip("torch")
-    from apeiron.layers.layer02_relational.graph_self_supervised import atomicity_aware_dgi_loss
+    from apeiron.layers.layer02_relational.graph_rl import atomicity_aware_dgi_loss
     import torch
     pos = torch.randn(10, 8)
     neg = torch.randn(10, 8)
@@ -935,7 +935,7 @@ def test_graphql_api_import():
 
 def test_graphql_schema_basic():
     pytest.importorskip("strawberry")
-    from apeiron.layers.layer02_relational.graphql_api import schema
+    from apeiron.infrastructure.api.graphql import schema
     assert hasattr(schema, 'query_type')
     assert hasattr(schema, 'mutation_type')
 
@@ -950,8 +950,8 @@ def test_database_integration_import():
     assert hasattr(database_integration, 'SQLiteBackend')
 
 def test_sqlite_backend_basic():
-    from apeiron.layers.layer02_relational.database_integration import SQLiteBackend, DatabaseManager
-    from apeiron.layers.layer02_relational.relations import UltimateRelation, RelationType
+    from apeiron.infrastructure.database import SQLiteBackend, DatabaseManager
+    from apeiron.layers.layer02_relational.relations_core import UltimateRelation, RelationType
     backend = SQLiteBackend(":memory:")
     mgr = DatabaseManager(backend)
     import asyncio
@@ -972,7 +972,7 @@ def test_sqlite_backend_basic():
 
 def test_save_load_layer1_registry():
     """Test het opslaan en laden van een Layer 1 registry in database."""
-    from apeiron.layers.layer02_relational.database_integration import SQLiteBackend, DatabaseManager
+    from from apeiron.infrastructure.database import SQLiteBackend, DatabaseManager
     backend = SQLiteBackend(":memory:")
     mgr = DatabaseManager(backend)
     import asyncio
@@ -990,7 +990,7 @@ def test_save_resonance_graph():
     """Test het opslaan van een resonantiegraaf in Neo4j (indien beschikbaar)."""
     pytest.importorskip("neo4j")
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.database_integration import Neo4jBackend, DatabaseManager
+    from apeiron.infrastructure.database import Neo4jBackend, DatabaseManager
     import networkx as nx
     # Skip test if no Neo4j running; we'll use a dummy connection that will fail gracefully
     backend = Neo4jBackend("bolt://localhost:7687", "neo4j", "password")
@@ -1076,7 +1076,7 @@ def test_quantum_ml_import():
 
 def test_quantum_kernel_basic():
     pytest.importorskip("pennylane")
-    from apeiron.layers.layer02_relational.quantum_ml import QuantumKernel
+    from apeiron.optional.quantum_ml import QuantumKernel
     kernel = QuantumKernel(n_qubits=2, encoding='angle')
     X = np.random.randn(3,2)
     K = kernel.kernel_matrix(X)
@@ -1084,7 +1084,7 @@ def test_quantum_kernel_basic():
 
 def test_data_reuploading_classifier():
     pytest.importorskip("pennylane")
-    from apeiron.layers.layer02_relational.quantum_ml import DataReuploadingClassifier
+    from apeiron.optional.quantum_ml import DataReuploadingClassifier
     X = np.random.randn(5,2)
     y = np.random.randint(0,2, size=5)
     clf = DataReuploadingClassifier(n_qubits=2, n_layers=2, steps=5)
@@ -1095,7 +1095,7 @@ def test_data_reuploading_classifier():
 def test_qgan():
     pytest.importorskip("pennylane")
     pytest.importorskip("torch")
-    from apeiron.layers.layer02_relational.quantum_ml import QGAN
+    from apeiron.optional.quantum_ml import QGAN
     X = np.random.randn(20,2)  # 2D data
     qgan = QGAN(n_qubits=2, n_latent=2, epochs=2, batch_size=5)
     qgan.fit(X)
@@ -1136,7 +1136,7 @@ def test_spectral_embedding_component():
     pytest.importorskip("dash")
     pytest.importorskip("plotly")
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.adjacency_matrix import SpectralGraphAnalysis
+    from apeiron.layers.layer02_relational.spectral import SpectralGraphAnalysis
     from apeiron.layers.layer02_relational.visualization_dash import SpectralEmbeddingComponent
     G = create_test_graph()
     sa = SpectralGraphAnalysis(G)
@@ -1157,7 +1157,7 @@ def test_quantum_graph_component():
     pytest.importorskip("dash")
     pytest.importorskip("plotly")
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.hypergraph_relations import QuantumGraph
+    from apeiron.layers.layer02_relational.hypergraph import QuantumGraph
     from apeiron.layers.layer02_relational.visualization_dash import QuantumGraphComponent
     G = create_test_graph()
     qg = QuantumGraph(graph=G)
@@ -1184,7 +1184,7 @@ def test_dashboard_builder():
     from apeiron.layers.layer02_relational.visualization_dash import (
         SpectralEmbeddingComponent, create_interactive_dashboard
     )
-    from apeiron.layers.layer02_relational.adjacency_matrix import SpectralGraphAnalysis
+    from apeiron.layers.layer02_relational.spectral import SpectralGraphAnalysis
     G = create_test_graph()
     sa = SpectralGraphAnalysis(G)
     comp = SpectralEmbeddingComponent("test", sa, dim=2)
@@ -1271,8 +1271,8 @@ def test_layer1_layer2_integration():
     # Gebruik discretize_from_registry uit probabilistic_models
     pytest.importorskip("sklearn")  # voor KBinsDiscretizer
     from apeiron.layers.layer02_relational.probabilistic_models import discretize_from_registry
-    from apeiron.layers.layer02_relational.graph_self_supervised import layer1_registry_to_pyg_data
-    from apeiron.layers.layer02_relational.relations import compute_relations
+    from apeiron.layers.layer02_relational.graph_rl import layer1_registry_to_pyg_data
+    from apeiron.layers.layer02_relational.relations_core import compute_relations
     import torch
 
     registry = create_test_registry()

@@ -1,6 +1,6 @@
 ﻿"""
-DATABASE – ULTIMATE IMPLEMENTATION
-==================================
+DATABASE – IMPLEMENTATION
+=========================
 This module provides a unified interface for storing and loading Layer 2 objects
 (UltimateRelation, Hypergraph, TopologicalNetworkAnalysis, etc.) in various databases.
 
@@ -232,7 +232,8 @@ class DatabaseBackend(ABC):
     @abstractmethod
     async def close(self):
         """Close the connection."""
-        pass
+        passf
+
 
     @abstractmethod
     async def store_relation(self, relation: 'UltimateRelation'):
@@ -362,20 +363,22 @@ class SQLiteBackend(DatabaseBackend):
             self.conn.close()
 
     async def store_relation(self, relation):
-        data = pickle.dumps(relation)
+        data = pickle.dumps(relation.to_dict())
         cursor = self.conn.cursor()
         cursor.execute(
             "INSERT OR REPLACE INTO relations (id, data, created_at) VALUES (?, ?, ?)",
-            (relation.id, data, datetime.utcnow())
+            (relation.id, data, datetime.utcnow()),
         )
         self.conn.commit()
 
     async def load_relation(self, relation_id):
+        from apeiron.layers.layer02_relational.relations_core import UltimateRelation
+
         cursor = self.conn.cursor()
         cursor.execute("SELECT data FROM relations WHERE id = ?", (relation_id,))
         row = cursor.fetchone()
         if row:
-            return pickle.loads(row[0])
+            return UltimateRelation.from_dict(pickle.loads(row[0]))
         return None
 
     async def store_hypergraph(self, hypergraph, name):
@@ -778,7 +781,7 @@ if HAS_NEO4J:
                 record = await result.single()
                 if record:
                     data = json.loads(record["data"], object_hook=decode_numpy)
-                    from .relations import UltimateRelation
+                    from apeiron.layers.layer02_relational.relations_core import UltimateRelation
                     return UltimateRelation.from_dict(data)
                 return None
 
@@ -895,7 +898,7 @@ if HAS_NEO4J:
                     data = data_map.get(rid)
                     if data:
                         obj_dict = json.loads(data, object_hook=decode_numpy)
-                        from .relations import UltimateRelation
+                        from apeiron.layers.layer02_relational.relations_core import UltimateRelation
                         result_list.append(UltimateRelation.from_dict(obj_dict))
                     else:
                         result_list.append(None)
@@ -1007,7 +1010,7 @@ if HAS_MONGO:
             doc = await self.db.relations.find_one({'_id': relation_id})
             if doc:
                 doc.pop('_id')
-                from .relations import UltimateRelation
+                from apeiron.layers.layer02_relational.relations_core import UltimateRelation
                 return UltimateRelation.from_dict(doc)
             return None
 
@@ -1092,7 +1095,7 @@ if HAS_MONGO:
                 if doc:
                     doc_copy = doc.copy()
                     doc_copy.pop('_id')
-                    from .relations import UltimateRelation
+                    from apeiron.layers.layer02_relational.relations_core import UltimateRelation
                     result.append(UltimateRelation.from_dict(doc_copy))
                 else:
                     result.append(None)
@@ -1556,7 +1559,7 @@ async def demo():
     logging.basicConfig(level=logging.INFO)
 
     # Create a dummy relation (requires actual classes)
-    from .relations import UltimateRelation, RelationType
+    from apeiron.layers.layer02_relational.relations_core import UltimateRelation, RelationType
     rel = UltimateRelation(
         id="rel123",
         source_id="obs1",

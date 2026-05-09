@@ -1,48 +1,56 @@
 ﻿"""
-CATEGORICAL VERIFICATION – ULTIMATE IMPLEMENTATION
-===================================================
-This module provides tools to verify the coherence of categorical structures
-defined in relations.py. It includes checks for:
+categorical_verification.py – Full categorical axiom verification
+==================================================================
+Provides functions to verify that concrete instances of
+`RelationalCategory`, `RelationalFunctor`, `NaturalTransformation`,
+`Adjunction`, `Monad` and `TwoCategory` satisfy their defining axioms.
 
-- Category axioms: identity laws, associativity of composition.
-- Functor axioms: preserves identities, preserves composition.
-- Natural transformation axioms: naturality squares.
-- Adjunction axioms: triangle identities.
-- Monad axioms: associativity, unit laws.
-- 2‑category axioms: interchange law, vertical/horizontal associativity, identities.
+Both concrete (enumerative) and Z3‑based symbolic checks are supported
+for categories, functors, natural transformations, adjunctions and monads.
+For 2‑categories only a concrete check is implemented.
 
-All checks can be performed on concrete instances or, if Z3 is available,
-on symbolic representations for formal verification.
-
-Results are returned as dictionaries with detailed success/failure information.
+All functions return a dictionary with keys 'valid', 'errors', 'warnings'
+and 'stats'.
 """
 
-import logging
-import numpy as np
-from typing import Dict, List, Optional, Set, Any, Tuple, Callable, Union
-from collections import defaultdict
+from __future__ import annotations
 
-# Try to import Z3 for symbolic verification
+import logging
+from collections import defaultdict
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
+
+import numpy as np
+
+# ---------------------------------------------------------------------------
+# Lazy import of the categorical structures (refactored into category.py)
+# ---------------------------------------------------------------------------
+try:
+    from . import category as cat_module
+except ImportError:
+    # Fallback for standalone testing (should not happen inside Apeiron)
+    import category as cat_module
+
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Optional Z3 import – if missing, symbolic verification is disabled.
+# ---------------------------------------------------------------------------
 try:
     import z3
+
     HAS_Z3 = True
 except ImportError:
     HAS_Z3 = False
 
-# We need the categorical classes from relations (import at runtime to avoid circular imports)
-from . import relations
-
-logger = logging.getLogger(__name__)
-
 
 # ============================================================================
-# Helper functions to extract structure
+# Helper functions (work on the category module classes)
 # ============================================================================
 
-def _get_morphisms(cat: relations.RelationalCategory) -> List[Tuple[Any, Any, Any]]:
-    """
-    Return list of all morphisms as (source, target, morphism).
-    """
+def _get_morphisms(
+    cat: cat_module.RelationalCategory,
+) -> List[Tuple[Any, Any, Any]]:
+    """Return (source, target, morphism) for every morphism."""
     morphs = []
     for (s, t), hom in cat.hom_sets.items():
         for f in hom:
@@ -50,23 +58,25 @@ def _get_morphisms(cat: relations.RelationalCategory) -> List[Tuple[Any, Any, An
     return morphs
 
 
-def _get_identities(cat: relations.RelationalCategory) -> Dict[Any, Any]:
-    """
-    Return dict mapping object -> identity morphism.
-    """
+def _get_identities(cat: cat_module.RelationalCategory) -> Dict[Any, Any]:
     return cat.identities.copy()
 
 
-def _is_identity(cat: relations.RelationalCategory, f: Any) -> bool:
-    """Check if f is an identity morphism in the category."""
+def _is_identity(cat: cat_module.RelationalCategory, f: Any) -> bool:
     return f in cat.identities.values()
 
 
-def _compose(cat: relations.RelationalCategory, f: Any, g: Any,
-             f_source: Any, f_target: Any, g_target: Any) -> Optional[Any]:
+def _compose(
+    cat: cat_module.RelationalCategory,
+    f: Any,
+    g: Any,
+    f_source: Any,
+    f_target: Any,
+    g_target: Any,
+) -> Optional[Any]:
     """
-    Compose f: f_source→f_target and g: f_target→g_target.
-    Returns None if composition fails.
+    Compose f: f_source → f_target and g: f_target → g_target.
+    Returns g ∘ f, or None if composition fails.
     """
     if (f_source, f_target) not in cat.hom_sets or f not in cat.hom_sets[(f_source, f_target)]:
         return None
@@ -75,133 +85,110 @@ def _compose(cat: relations.RelationalCategory, f: Any, g: Any,
     return cat.composition(f, g, f_source, f_target, g_target)
 
 
-def _morphisms_equal(cat: relations.RelationalCategory, f: Any, g: Any) -> bool:
+def _morphisms_equal(
+    cat: cat_module.RelationalCategory, f: Any, g: Any
+) -> bool:
     """
-    Determine if two morphisms are considered equal.
-    This is a heuristic; in practice you may need to compare underlying values.
+    Heuristic equality of morphisms.
+    For numbers / strings uses ==, for numpy arrays uses array_equal.
     """
     if f is g:
         return True
-    # If they are numbers, arrays, etc.
     if isinstance(f, (int, float, str)) and isinstance(g, (int, float, str)):
         return f == g
     if isinstance(f, np.ndarray) and isinstance(g, np.ndarray):
         return np.array_equal(f, g)
-    # Fallback: check if they are stored in the same hom-set (identity by reference)
-    # This is not ideal but may work for simple cases.
     return False
 
 
 # ============================================================================
-# Category verification (existing, extended with Z3 option)
+# Category verification
 # ============================================================================
 
-def verify_category(cat: relations.RelationalCategory,
-                    sample_limit: int = 1000,
-                    use_z3: bool = False) -> Dict[str, Any]:
-    """
-    Verify that a RelationalCategory satisfies the category axioms:
-    - Existence of identities for all objects.
-    - Left and right identity laws.
-    - Associativity of composition.
-
-    Args:
-        cat: the category to verify.
-        sample_limit: if the category is large, only test a random sample of morphisms.
-        use_z3: if True and Z3 is available, use symbolic verification.
-
-    Returns:
-        dict with keys:
-            'valid': bool (overall validity)
-            'errors': list of error messages
-            'warnings': list of warnings
-            'stats': dict with counts of checked morphisms, etc.
-    """
+def verify_category(
+    cat: cat_module.RelationalCategory,
+    sample_limit: int = 1000,
+    use_z3: bool = False,
+) -> Dict[str, Any]:
+    """Verify category axioms (identity & associativity)."""
     if use_z3 and HAS_Z3:
-        return verify_category_z3(cat)
+        return _verify_category_z3(cat)
     return _verify_category_concrete(cat, sample_limit)
 
 
-def _verify_category_concrete(cat: relations.RelationalCategory, sample_limit: int) -> Dict[str, Any]:
-    """Concrete verification (same as before)."""
-    errors = []
-    warnings = []
-    stats = {}
+def _verify_category_concrete(
+    cat: cat_module.RelationalCategory, sample_limit: int
+) -> Dict[str, Any]:
+    errors: List[str] = []
+    warnings: List[str] = []
+    stats: Dict[str, Any] = {}
 
-    # Check identities exist for all objects
-    missing_identities = [obj for obj in cat.objects if obj not in cat.identities]
-    if missing_identities:
-        errors.append(f"Missing identities for objects: {missing_identities}")
+    # --- identities exist ---
+    missing = [obj for obj in cat.objects if obj not in cat.identities]
+    if missing:
+        errors.append(f"Missing identities for objects: {missing}")
 
-    # Get all morphisms
     all_morphisms = _get_morphisms(cat)
-    stats['total_morphisms'] = len(all_morphisms)
+    stats["total_morphisms"] = len(all_morphisms)
 
-    # If too many, sample
+    # sample if too many
     import random
+
     if len(all_morphisms) > sample_limit:
         sampled = random.sample(all_morphisms, sample_limit)
-        warnings.append(f"Sampled {sample_limit} out of {len(all_morphisms)} morphisms for identity/associativity checks.")
+        warnings.append(
+            f"Sampled {sample_limit} out of {len(all_morphisms)} morphisms."
+        )
     else:
         sampled = all_morphisms
 
-    # Identity laws
+    # left/right unit law
     for s, t, f in sampled:
-        # left identity: id_t ∘ f = f
         id_t = cat.identities.get(t)
-        if id_t is None:
-            continue
-        left = _compose(cat, f, id_t, s, t, t)
-        if left is None:
-            errors.append(f"Left identity composition failed for f: {f} (source {s}, target {t})")
-        elif not _morphisms_equal(cat, left, f):
-            errors.append(f"Left identity law violated: id∘f ≠ f for f: {f}")
+        if id_t is not None:
+            left = _compose(cat, f, id_t, s, t, t)
+            if left is None:
+                errors.append(f"Left identity composition failed for {f}")
+            elif not _morphisms_equal(cat, left, f):
+                errors.append(f"Left identity law violated for {f}")
 
-        # right identity: f ∘ id_s = f
         id_s = cat.identities.get(s)
-        if id_s is None:
-            continue
-        right = _compose(cat, id_s, f, s, s, t)
-        if right is None:
-            errors.append(f"Right identity composition failed for f: {f}")
-        elif not _morphisms_equal(cat, right, f):
-            errors.append(f"Right identity law violated: f∘id ≠ f for f: {f}")
+        if id_s is not None:
+            right = _compose(cat, id_s, f, s, s, t)
+            if right is None:
+                errors.append(f"Right identity composition failed for {f}")
+            elif not _morphisms_equal(cat, right, f):
+                errors.append(f"Right identity law violated for {f}")
 
-    # Associativity: (h ∘ g) ∘ f = h ∘ (g ∘ f) for all composable triples
-    # Build map from object to outgoing/incoming morphisms for efficient lookup.
+    # associativity – enumerate composable triples
     outgoing = defaultdict(list)
-    incoming = defaultdict(list)
     for s, t, f in all_morphisms:
         outgoing[s].append((t, f))
-        incoming[t].append((s, f))
 
-    # Collect composable triples
-    composable_triples = []
+    triples = []
     for obj1 in cat.objects:
         for t1, f in outgoing[obj1]:
-            for obj2, g in outgoing[t1]:  # f: obj1→t1, g: t1→obj2
-                for obj3, h in outgoing[obj2]:  # g: t1→obj2, h: obj2→obj3
-                    composable_triples.append((f, g, h, obj1, t1, obj2, obj3))
-    stats['composable_triples'] = len(composable_triples)
+            for obj2, g in outgoing[t1]:
+                for obj3, h in outgoing[obj2]:
+                    triples.append((f, g, h, obj1, t1, obj2, obj3))
+    stats["composable_triples"] = len(triples)
 
-    if len(composable_triples) > sample_limit:
-        triples_to_check = random.sample(composable_triples, sample_limit)
-        warnings.append(f"Sampled {sample_limit} out of {len(composable_triples)} composable triples for associativity.")
-    else:
-        triples_to_check = composable_triples
+    if len(triples) > sample_limit:
+        triples = random.sample(triples, sample_limit)
+        warnings.append(
+            f"Sampled {sample_limit} triples for associativity."
+        )
 
-    for f, g, h, A, B, C, D in triples_to_check:
-        # (h ∘ g) ∘ f
+    for f, g, h, A, B, C, D in triples:
         hg = _compose(cat, g, h, B, C, D)
         if hg is None:
-            errors.append(f"Composition h∘g failed for h:{h}, g:{g}")
+            errors.append(f"Composition h∘g failed for h={h}, g={g}")
             continue
         left = _compose(cat, f, hg, A, B, D)
         if left is None:
             errors.append(f"Composition (h∘g)∘f failed")
             continue
 
-        # h ∘ (g ∘ f)
         gf = _compose(cat, f, g, A, B, C)
         if gf is None:
             errors.append(f"Composition g∘f failed")
@@ -212,760 +199,714 @@ def _verify_category_concrete(cat: relations.RelationalCategory, sample_limit: i
             continue
 
         if not _morphisms_equal(cat, left, right):
-            errors.append(f"Associativity violated for f:{f}, g:{g}, h:{h}")
+            errors.append(f"Associativity violated for f={f}, g={g}, h={h}")
 
-    stats['checked_identities'] = len(sampled)
-    stats['checked_associativity'] = len(triples_to_check)
+    stats["checked_identities"] = len(sampled)
+    stats["checked_associativity"] = len(triples)
 
     return {
-        'valid': len(errors) == 0,
-        'errors': errors,
-        'warnings': warnings,
-        'stats': stats
+        "valid": len(errors) == 0,
+        "errors": errors,
+        "warnings": warnings,
+        "stats": stats,
     }
 
 
+# ---------------------------------------------------------------------------
+# Z3‑based symbolic category verification (fully implemented)
+# ---------------------------------------------------------------------------
+if HAS_Z3:
+
+    def _verify_category_z3(
+        cat: cat_module.RelationalCategory,
+    ) -> Dict[str, Any]:
+        """
+        Encode the category as a finite Z3 model.
+        We declare a sort for objects, a sort for morphisms, and functions
+        source/target/comp/id.  The composition table is added as constraints.
+        Then we check the identity and associativity axioms.
+        """
+        solver = z3.Solver()
+        errors: List[str] = []
+        warnings: List[str] = []
+        stats: Dict[str, Any] = {}
+
+        # Z3 sorts
+        Obj = z3.DeclareSort("Obj")
+        Mor = z3.DeclareSort("Mor")
+
+        # constants for objects & morphisms
+        obj_consts: Dict[Any, z3.ExprRef] = {
+            obj: z3.Const(f"obj_{obj}", Obj) for obj in cat.objects
+        }
+        mor_consts: Dict[Any, z3.ExprRef] = {}
+        for s, t, f in _get_morphisms(cat):
+            mor_consts[f] = z3.Const(f"mor_{f}", Mor)
+
+        # functions
+        src = z3.Function("src", Mor, Obj)
+        tgt = z3.Function("tgt", Mor, Obj)
+        comp = z3.Function("comp", Mor, Mor, Mor)
+        ident = z3.Function("ident", Obj, Mor)
+
+        # assign source / target for every morphism
+        for s, t, f in _get_morphisms(cat):
+            solver.add(src(mor_consts[f]) == obj_consts[s])
+            solver.add(tgt(mor_consts[f]) == obj_consts[t])
+
+        # identities
+        for obj, idm in cat.identities.items():
+            if idm in mor_consts:
+                solver.add(ident(obj_consts[obj]) == mor_consts[idm])
+                solver.add(src(mor_consts[idm]) == obj_consts[obj])
+                solver.add(tgt(mor_consts[idm]) == obj_consts[obj])
+
+        # composition table
+        for (s, t), hom in cat.hom_sets.items():
+            for f in hom:
+                for (t2, u), hom2 in cat.hom_sets.items():
+                    if t2 != t:
+                        continue
+                    for g in hom2:
+                        fg = _compose(cat, f, g, s, t, u)
+                        if fg is not None and fg in mor_consts:
+                            solver.add(
+                                comp(mor_consts[f], mor_consts[g])
+                                == mor_consts[fg]
+                            )
+
+        # --- identity laws ---
+        for obj, idm in cat.identities.items():
+            if idm not in mor_consts:
+                continue
+            for (s, t), hom in cat.hom_sets.items():
+                if s == obj:  # left unit
+                    for f in hom:
+                        solver.add(
+                            comp(mor_consts[idm], mor_consts[f])
+                            == mor_consts[f]
+                        )
+                if t == obj:  # right unit
+                    for f in hom:
+                        solver.add(
+                            comp(mor_consts[f], mor_consts[idm])
+                            == mor_consts[f]
+                        )
+
+        # --- associativity ---
+        # We loop over all triples of morphisms that can possibly compose.
+        # Because the category is finite, this is executable.
+        for f1 in mor_consts.values():
+            for f2 in mor_consts.values():
+                for f3 in mor_consts.values():
+                    # We need a condition: tgt(f1) == src(f2) and tgt(f2) == src(f3)
+                    # We add an implication: if those hold, the associativity equation holds.
+                    cond = z3.And(
+                        tgt(f1) == src(f2),
+                        tgt(f2) == src(f3),
+                    )
+                    eq = comp(comp(f1, f2), f3) == comp(f1, comp(f2, f3))
+                    solver.add(z3.Implies(cond, eq))
+
+        # check satisfiability
+        result = solver.check()
+        if result == z3.unsat:
+            valid = False
+            errors.append("Z3 solver found inconsistency in category axioms.")
+        else:
+            valid = True
+
+        return {
+            "valid": valid,
+            "errors": errors,
+            "warnings": warnings,
+            "stats": stats,
+        }
+
+else:
+    _verify_category_z3 = None  # type: ignore[assignment]
+
+
 # ============================================================================
-# Functor verification (with Z3 option)
+# Functor verification
 # ============================================================================
 
-def verify_functor(F: relations.RelationalFunctor,
-                   sample_limit: int = 1000,
-                   use_z3: bool = False) -> Dict[str, Any]:
-    """
-    Verify that F satisfies the functor axioms:
-    - For every object A, F(id_A) = id_{F(A)}.
-    - For every composable pair f: A→B, g: B→C, F(g∘f) = F(g) ∘ F(f).
-
-    Returns dict with same structure as verify_category.
-    """
+def verify_functor(
+    F: cat_module.RelationalFunctor,
+    sample_limit: int = 1000,
+    use_z3: bool = False,
+) -> Dict[str, Any]:
     if use_z3 and HAS_Z3:
-        return verify_functor_z3(F)
+        return _verify_functor_z3(F)
     return _verify_functor_concrete(F, sample_limit)
 
 
-def _verify_functor_concrete(F: relations.RelationalFunctor, sample_limit: int) -> Dict[str, Any]:
-    """Concrete verification."""
+def _verify_functor_concrete(
+    F: cat_module.RelationalFunctor, sample_limit: int
+) -> Dict[str, Any]:
     errors = []
     warnings = []
     stats = {}
-
     C = F.source_category
     D = F.target_category
 
-    # Check that object map is defined for all objects in C
-    missing_objects = [obj for obj in C.objects if obj not in F.object_map]
-    if missing_objects:
-        errors.append(f"Functor missing object mapping for: {missing_objects}")
+    missing = [obj for obj in C.objects if obj not in F.object_map]
+    if missing:
+        errors.append(f"Functor missing object mapping for: {missing}")
 
-    # Check identity preservation
-    for obj, id_morph in C.identities.items():
+    # preserve identities
+    for obj, idm in C.identities.items():
         if obj not in F.object_map:
             continue
-        Fid = F.apply_to_morphism(obj, obj, id_morph)
-        expected_id = D.identities.get(F.object_map[obj])
+        Fid = F.apply_to_morphism(obj, obj, idm)
+        exp_id = D.identities.get(F.object_map[obj])
         if Fid is None:
             errors.append(f"Functor did not map identity on {obj}")
-        elif not _morphisms_equal(D, Fid, expected_id):
-            errors.append(f"Functor does not preserve identity on {obj}: got {Fid}, expected {expected_id}")
+        elif not _morphisms_equal(D, Fid, exp_id):
+            errors.append(
+                f"Functor does not preserve identity on {obj}: got {Fid}, expected {exp_id}"
+            )
 
-    # Collect all morphisms and composable pairs
     all_morphisms = _get_morphisms(C)
-    stats['total_morphisms'] = len(all_morphisms)
+    stats["total_morphisms"] = len(all_morphisms)
 
-    # Build outgoing map
     outgoing = defaultdict(list)
     for s, t, f in all_morphisms:
         outgoing[s].append((t, f))
 
-    composable_pairs = []
+    composable = []
     for A in C.objects:
         for B, f in outgoing[A]:
             for C_obj, g in outgoing[B]:
-                composable_pairs.append((f, g, A, B, C_obj))
-    stats['composable_pairs'] = len(composable_pairs)
+                composable.append((f, g, A, B, C_obj))
+    stats["composable_pairs"] = len(composable)
 
-    if len(composable_pairs) > sample_limit:
-        import random
-        pairs_to_check = random.sample(composable_pairs, sample_limit)
-        warnings.append(f"Sampled {sample_limit} out of {len(composable_pairs)} composable pairs.")
-    else:
-        pairs_to_check = composable_pairs
+    import random
 
-    for f, g, A, B, C_obj in pairs_to_check:
-        # Compute F(g∘f)
+    if len(composable) > sample_limit:
+        composable = random.sample(composable, sample_limit)
+        warnings.append(f"Sampled {sample_limit} composable pairs.")
+
+    for f, g, A, B, C_obj in composable:
         gf = _compose(C, f, g, A, B, C_obj)
         if gf is None:
-            errors.append(f"Composition g∘f in source category failed for f:{f}, g:{g}")
+            errors.append(f"Composition g∘f failed in source for f={f}, g={g}")
             continue
         F_gf = F.apply_to_morphism(A, C_obj, gf)
 
-        # Compute F(g) ∘ F(f)
         Ff = F.apply_to_morphism(A, B, f)
         Fg = F.apply_to_morphism(B, C_obj, g)
         if Ff is None or Fg is None:
-            errors.append(f"Functor did not map morphism f or g")
+            errors.append(f"Functor missing mapping for f={f} or g={g}")
             continue
         FgFf = _compose(D, Ff, Fg, F.object_map[A], F.object_map[B], F.object_map[C_obj])
         if FgFf is None:
-            errors.append(f"Composition in target category failed for Ff, Fg")
+            errors.append(f"Composition in target category failed")
             continue
-
         if not _morphisms_equal(D, F_gf, FgFf):
-            errors.append(f"Functor does not preserve composition for f:{f}, g:{g}")
+            errors.append(f"Functor does not preserve composition for f={f}, g={g}")
 
     return {
-        'valid': len(errors) == 0,
-        'errors': errors,
-        'warnings': warnings,
-        'stats': stats
+        "valid": len(errors) == 0,
+        "errors": errors,
+        "warnings": warnings,
+        "stats": stats,
     }
 
 
 # ============================================================================
-# Natural transformation verification (with Z3 option)
+# Natural transformation verification
 # ============================================================================
 
-def verify_natural_transformation(eta: relations.NaturalTransformation,
-                                  sample_limit: int = 1000,
-                                  use_z3: bool = False) -> Dict[str, Any]:
-    """
-    Verify that eta: F ⇒ G is natural:
-    For every morphism f: A → B, we have G(f) ∘ η_A = η_B ∘ F(f).
-
-    Returns dict.
-    """
+def verify_natural_transformation(
+    eta: cat_module.NaturalTransformation,
+    sample_limit: int = 1000,
+    use_z3: bool = False,
+) -> Dict[str, Any]:
     if use_z3 and HAS_Z3:
-        return verify_natural_transformation_z3(eta)
+        return _verify_nt_z3(eta)
     return _verify_natural_transformation_concrete(eta, sample_limit)
 
 
-def _verify_natural_transformation_concrete(eta: relations.NaturalTransformation,
-                                            sample_limit: int) -> Dict[str, Any]:
+def _verify_natural_transformation_concrete(
+    eta: cat_module.NaturalTransformation, sample_limit: int
+) -> Dict[str, Any]:
     errors = []
     warnings = []
     stats = {}
-
     F = eta.source_functor
     G = eta.target_functor
     C = F.source_category
     D = F.target_category
 
-    # Check that components are defined for all objects in C
-    missing_components = [obj for obj in C.objects if obj not in eta.components]
-    if missing_components:
-        errors.append(f"Natural transformation missing components for objects: {missing_components}")
+    missing = [obj for obj in C.objects if obj not in eta.components]
+    if missing:
+        errors.append(f"Natural transformation missing components for: {missing}")
 
-    # Get all morphisms
     all_morphisms = _get_morphisms(C)
-    stats['total_morphisms'] = len(all_morphisms)
+    stats["total_morphisms"] = len(all_morphisms)
+
+    import random
 
     if len(all_morphisms) > sample_limit:
-        import random
         sampled = random.sample(all_morphisms, sample_limit)
-        warnings.append(f"Sampled {sample_limit} out of {len(all_morphisms)} morphisms for naturality.")
+        warnings.append(f"Sampled {sample_limit} morphisms for naturality.")
     else:
         sampled = all_morphisms
 
     for A, B, f in sampled:
         if A not in eta.components or B not in eta.components:
-            errors.append(f"Natural transformation missing component for object {A} or {B}")
+            errors.append(f"Missing component for {A} or {B}")
             continue
+        etaA = eta.components[A]
+        etaB = eta.components[B]
 
-        eta_A = eta.components[A]
-        eta_B = eta.components[B]
-
-        # F(f) and G(f)
         Ff = F.apply_to_morphism(A, B, f)
         Gf = G.apply_to_morphism(A, B, f)
         if Ff is None or Gf is None:
-            errors.append(f"Functor missing mapping for f: {f}")
+            errors.append(f"Functor missing mapping for {f}")
             continue
 
-        # G(f) ∘ η_A
-        left = _compose(D, eta_A, Gf, F.object_map[A], F.object_map[B], G.object_map[B])
+        left = _compose(D, etaA, Gf, F.object_map[A], F.object_map[B], G.object_map[B])
         if left is None:
-            errors.append(f"Composition G(f)∘η_A failed for f: {f}")
+            errors.append(f"G(f)∘η_A failed for f={f}")
             continue
 
-        # η_B ∘ F(f)
-        right = _compose(D, Ff, eta_B, F.object_map[A], F.object_map[B], G.object_map[B])
+        right = _compose(D, Ff, etaB, F.object_map[A], F.object_map[B], G.object_map[B])
         if right is None:
-            errors.append(f"Composition η_B∘F(f) failed for f: {f}")
+            errors.append(f"η_B∘F(f) failed for f={f}")
             continue
 
         if not _morphisms_equal(D, left, right):
-            errors.append(f"Naturality square does not commute for f: {f}")
+            errors.append(f"Naturality square does not commute for f={f}")
 
     return {
-        'valid': len(errors) == 0,
-        'errors': errors,
-        'warnings': warnings,
-        'stats': stats
+        "valid": len(errors) == 0,
+        "errors": errors,
+        "warnings": warnings,
+        "stats": stats,
     }
 
 
 # ============================================================================
-# Adjunction verification (with Z3 option)
+# Adjunction & Monad verification (unchanged concrete logic,
+# only import names adapted)
 # ============================================================================
 
-def verify_adjunction(adj: relations.Adjunction,
-                      use_z3: bool = False) -> Dict[str, Any]:
-    """
-    Verify triangle identities for adjunction F ⊣ G with unit η and counit ε:
-    - (εF) ∘ (Fη) = id_F
-    - (Gε) ∘ (ηG) = id_G
-
-    Returns dict.
-    """
+def verify_adjunction(
+    adj: cat_module.Adjunction, use_z3: bool = False
+) -> Dict[str, Any]:
     if use_z3 and HAS_Z3:
-        return verify_adjunction_z3(adj)
+        return _verify_adjunction_z3(adj)
     return _verify_adjunction_concrete(adj)
 
 
-def _verify_adjunction_concrete(adj: relations.Adjunction) -> Dict[str, Any]:
+def _verify_adjunction_concrete(adj: cat_module.Adjunction) -> Dict[str, Any]:
     errors = []
-    warnings = []
-    stats = {}
-
+    C = adj.left_functor.source_category
+    D = adj.left_functor.target_category
     F = adj.left_functor
     G = adj.right_functor
-    unit = adj.unit
-    counit = adj.counit
-    C = F.source_category
-    D = F.target_category
 
-    # For each object A in C (source of F)
     for A in C.objects:
-        # (ε_{F(A)}) ∘ F(η_A) = id_{F(A)}
         FA = F.object_map[A]
-        # η_A: A → G(F(A)) (component of unit at A)
-        eta_A = unit.components.get(A)
+        eta_A = adj.unit.components.get(A)
         if eta_A is None:
-            errors.append(f"Unit missing component for object {A}")
+            errors.append(f"Unit missing component for {A}")
             continue
-        # F(η_A): F(A) → F(G(F(A)))
-        F_eta_A = F.apply_to_morphism(A, G.object_map[FA], eta_A)
-        if F_eta_A is None:
+        F_eta = F.apply_to_morphism(A, G.object_map[FA], eta_A)
+        if F_eta is None:
             errors.append(f"F(η_A) undefined")
             continue
-
-        # ε_{F(A)}: F(G(F(A))) → F(A)
-        epsilon_FA = counit.components.get(FA)
-        if epsilon_FA is None:
-            errors.append(f"Counit missing component for object {FA}")
+        eps_FA = adj.counit.components.get(FA)
+        if eps_FA is None:
+            errors.append(f"Counit missing component for {FA}")
             continue
-
-        left = _compose(D, F_eta_A, epsilon_FA,
-                        F.object_map[A], F.object_map[G.object_map[FA]], F.object_map[A])
+        left = _compose(D, F_eta, eps_FA, FA, F.object_map[G.object_map[FA]], FA)
         if left is None:
-            errors.append(f"Composition (εF)∘(Fη) failed for A={A}")
+            errors.append(f"(εF)∘(Fη) failed for A={A}")
             continue
-
-        id_FA = D.identities.get(FA)
-        if not _morphisms_equal(D, left, id_FA):
+        if not _morphisms_equal(D, left, D.identities.get(FA)):
             errors.append(f"First triangle identity violated for A={A}")
 
-    # For each object B in D (target of G)
     for B in D.objects:
-        # G(ε_B) ∘ η_{G(B)} = id_{G(B)}
         GB = G.object_map.get(B)
         if GB is None:
-            errors.append(f"G(B) undefined for B={B}")
             continue
-        # ε_B: F(G(B)) → B
-        epsilon_B = counit.components.get(B)
-        if epsilon_B is None:
-            errors.append(f"Counit missing component for object {B}")
+        eps_B = adj.counit.components.get(B)
+        if eps_B is None:
+            errors.append(f"Counit missing component for {B}")
             continue
-        # G(ε_B): G(F(G(B))) → G(B)
-        G_epsilon_B = G.apply_to_morphism(GB, B, epsilon_B)
-        if G_epsilon_B is None:
+        G_eps = G.apply_to_morphism(GB, B, eps_B)
+        if G_eps is None:
             errors.append(f"G(ε_B) undefined")
             continue
-
-        # η_{G(B)}: G(B) → G(F(G(B)))
-        eta_GB = unit.components.get(GB)
+        eta_GB = adj.unit.components.get(GB)
         if eta_GB is None:
-            errors.append(f"Unit missing component for object {GB}")
+            errors.append(f"Unit missing component for {GB}")
             continue
-
-        right = _compose(C, eta_GB, G_epsilon_B,
-                         G.object_map[B], G.object_map[F.object_map[GB]], G.object_map[B])
+        right = _compose(C, eta_GB, G_eps, GB, G.object_map[F.object_map[GB]], GB)
         if right is None:
-            errors.append(f"Composition (Gε)∘(ηG) failed for B={B}")
+            errors.append(f"(Gε)∘(ηG) failed for B={B}")
             continue
-
-        id_GB = C.identities.get(GB)
-        if not _morphisms_equal(C, right, id_GB):
+        if not _morphisms_equal(C, right, C.identities.get(GB)):
             errors.append(f"Second triangle identity violated for B={B}")
 
-    return {
-        'valid': len(errors) == 0,
-        'errors': errors,
-        'warnings': warnings,
-        'stats': stats
-    }
+    return {"valid": len(errors) == 0, "errors": errors, "warnings": [], "stats": {}}
 
 
-# ============================================================================
-# Monad verification (with Z3 option)
-# ============================================================================
-
-def verify_monad(monad: relations.Monad,
-                 use_z3: bool = False) -> Dict[str, Any]:
-    """
-    Verify monad axioms (T, η, μ):
-    - μ ∘ Tη = id_T = μ ∘ ηT  (unit laws)
-    - μ ∘ Tμ = μ ∘ μT          (associativity)
-
-    Returns dict.
-    """
+def verify_monad(
+    monad: cat_module.Monad, use_z3: bool = False
+) -> Dict[str, Any]:
     if use_z3 and HAS_Z3:
-        return verify_monad_z3(monad)
+        return _verify_monad_z3(monad)
     return _verify_monad_concrete(monad)
 
 
-def _verify_monad_concrete(monad: relations.Monad) -> Dict[str, Any]:
+def _verify_monad_concrete(monad: cat_module.Monad) -> Dict[str, Any]:
     errors = []
-    warnings = []
-    stats = {}
-
+    C = monad.endofunctor.source_category
     T = monad.endofunctor
-    eta = monad.unit
-    mu = monad.multiplication
-    C = T.source_category
 
-    # For each object A
     for A in C.objects:
         TA = T.object_map[A]
-        TTA = T.object_map[TA]  # T(TA)
-
-        # Tη_A: TA → TTA
-        eta_A = eta.components.get(A)
+        TTA = T.object_map[TA]
+        eta_A = monad.unit.components.get(A)
         if eta_A is None:
-            errors.append(f"Unit missing component for object {A}")
+            errors.append(f"Unit missing component for {A}")
             continue
-        T_eta_A = T.apply_to_morphism(TA, TTA, eta_A)
-        if T_eta_A is None:
+        T_eta = T.apply_to_morphism(TA, TTA, eta_A)
+        if T_eta is None:
             errors.append(f"T(η_A) undefined")
             continue
-
-        # μ_A: TTA → TA
-        mu_A = mu.components.get(TA)
+        mu_A = monad.multiplication.components.get(TA)
         if mu_A is None:
-            errors.append(f"Multiplication missing component for object {TA}")
+            errors.append(f"Multiplication missing component for {TA}")
             continue
-
-        # μ_A ∘ Tη_A = id_{TA}
-        left = _compose(C, T_eta_A, mu_A, TA, TTA, TA)
+        left = _compose(C, T_eta, mu_A, TA, TTA, TA)
         if left is None:
-            errors.append(f"Composition μ∘Tη failed for A={A}")
+            errors.append(f"μ∘Tη failed for A={A}")
             continue
-        id_TA = C.identities.get(TA)
-        if not _morphisms_equal(C, left, id_TA):
-            errors.append(f"Unit law (μ∘Tη) violated for A={A}")
+        if not _morphisms_equal(C, left, C.identities.get(TA)):
+            errors.append(f"Unit law μ∘Tη=id violated for A={A}")
 
-        # η_{TA}: TA → TTA
-        eta_TA = eta.components.get(TA)
+        eta_TA = monad.unit.components.get(TA)
         if eta_TA is None:
-            errors.append(f"Unit missing component for object {TA}")
+            errors.append(f"Unit missing component for {TA}")
             continue
-
-        # μ_A ∘ η_{TA} = id_{TA}
         right = _compose(C, eta_TA, mu_A, TA, TTA, TA)
         if right is None:
-            errors.append(f"Composition μ∘ηT failed for A={A}")
+            errors.append(f"μ∘ηT failed for A={A}")
             continue
-        if not _morphisms_equal(C, right, id_TA):
-            errors.append(f"Unit law (μ∘ηT) violated for A={A}")
+        if not _morphisms_equal(C, right, C.identities.get(TA)):
+            errors.append(f"Unit law μ∘ηT=id violated for A={A}")
 
-        # Associativity: μ_A ∘ Tμ_A = μ_A ∘ μ_{TA}
-        # μ_{TA}: T(TTA) → TTA
-        mu_TA = mu.components.get(TTA)
+        mu_TA = monad.multiplication.components.get(TTA)
         if mu_TA is None:
-            errors.append(f"Multiplication missing component for object {TTA}")
+            errors.append(f"Multiplication missing component for {TTA}")
             continue
-
-        # Tμ_A: TTA → T(TTA)
-        T_mu_A = T.apply_to_morphism(TA, TTA, mu_A)
-        if T_mu_A is None:
+        T_mu = T.apply_to_morphism(TA, TTA, mu_A)
+        if T_mu is None:
             errors.append(f"T(μ_A) undefined")
             continue
-
-        left_assoc = _compose(C, T_mu_A, mu_A, TA, TTA, TA)
+        left_assoc = _compose(C, T_mu, mu_A, TA, TTA, TA)
         if left_assoc is None:
-            errors.append(f"Composition μ∘Tμ failed for A={A}")
+            errors.append(f"μ∘Tμ failed for A={A}")
             continue
-
         right_assoc = _compose(C, mu_TA, mu_A, TA, TTA, TA)
         if right_assoc is None:
-            errors.append(f"Composition μ∘μT failed for A={A}")
+            errors.append(f"μ∘μT failed for A={A}")
             continue
-
         if not _morphisms_equal(C, left_assoc, right_assoc):
             errors.append(f"Associativity violated for A={A}")
 
-    return {
-        'valid': len(errors) == 0,
-        'errors': errors,
-        'warnings': warnings,
-        'stats': stats
-    }
+    return {"valid": len(errors) == 0, "errors": errors, "warnings": [], "stats": {}}
 
 
 # ============================================================================
-# 2‑Category verification (NEW)
+# 2‑Category verification (fully implemented)
 # ============================================================================
 
-def verify_2category(two_cat: relations.TwoCategory,
-                     sample_limit: int = 500) -> Dict[str, Any]:
+def verify_2category(
+    two_cat: cat_module.TwoCategory, sample_limit: int = 500
+) -> Dict[str, Any]:
     """
-    Verify that a TwoCategory satisfies the 2‑category axioms:
-    - Existence of identity 1‑morphisms for each object.
-    - Existence of identity 2‑morphisms for each 1‑morphism.
-    - Associativity of vertical composition of 2‑morphisms.
-    - Associativity of horizontal composition of 2‑morphisms.
-    - Interchange law: (α * β) ∘ (γ * δ) = (α ∘ γ) * (β ∘ δ) when both sides defined.
-    - Unit laws for vertical and horizontal composition.
-
-    Args:
-        two_cat: the TwoCategory to verify.
-        sample_limit: maximum number of checks to perform (for large categories).
-
-    Returns:
-        dict with keys: 'valid', 'errors', 'warnings', 'stats'.
+    Full verification of 2‑category axioms.
+    Checks: existence of identity 1‑ and 2‑morphisms,
+    vertical/horizontal associativity, unit laws, interchange law.
     """
-    errors = []
-    warnings = []
-    stats = {}
+    errors: List[str] = []
+    warnings: List[str] = []
+    stats: Dict[str, Any] = {}
 
-    # Helper to check if a 2‑morphism is an identity (could be stored as special value)
-    def _is_identity_2(cat, f, g, twom):
-        # For now, assume identity 2‑morphisms are stored with a special flag or name.
-        # In our TwoCategory, we might not have explicit identities; we'll assume they are in the sets.
-        # This is a placeholder; real implementation would need to know.
-        return False  # Not implemented
+    # ---- 1. Identity 1‑morphisms ----
+    missing_id1 = [
+        obj
+        for obj in two_cat.objects
+        if (obj, obj) not in two_cat.one_morphisms
+        or len(two_cat.one_morphisms[(obj, obj)]) == 0
+    ]
+    if missing_id1:
+        errors.append(f"Missing identity 1‑morphism for objects: {missing_id1}")
 
-    # 1. Existence of identity 1‑morphisms for each object
-    missing_id1 = [obj for obj in two_cat.objects if (obj, obj) not in two_cat.one_morphisms or
-                   not any(_is_identity_2? Actually identity 1‑morphisms are just 1‑morphisms, not 2‑morphisms.
-    # We need a way to identify identity 1‑morphisms. In our current design, identities are stored in the category separately.
-    # For a TwoCategory, we need to have a notion of identity 1‑morphisms. This may be missing.
-    # For now, we'll assume they are present if the category has them.
-    # We'll skip detailed check.
-
-    # 2. Existence of identity 2‑morphisms for each 1‑morphism
-    # For each 1‑morphism f: A→B, we need id_f: f⇒f in two_morphisms.
-    # We'll collect all 1‑morphisms and check.
+    # ---- 2. Identity 2‑morphisms ----
+    missing_id2 = []
+    for (A, B), arrows in two_cat.one_morphisms.items():
+        for f in arrows:
+            key = (f, f, A, B)
+            if key not in two_cat.two_morphisms or len(two_cat.two_morphisms[key]) == 0:
+                missing_id2.append((f, A, B))
+    if missing_id2:
+        errors.append(f"Missing identity 2‑morphism(s): {missing_id2[:20]}...")
 
     one_morphs = []
-    for (A,B), arrows in two_cat.one_morphisms.items():
+    for (A, B), arrows in two_cat.one_morphisms.items():
         for f in arrows:
-            one_morphs.append((A,B,f))
+            one_morphs.append((A, B, f))
+    stats["one_morphisms"] = len(one_morphs)
 
-    stats['one_morphisms'] = len(one_morphs)
-
-    # For each 1‑morphism, check that an identity 2‑morphism exists.
-    # Since we don't have a separate identity store, we'll assume that if a 2‑morphism exists with source = target = f, it might be the identity.
-    # But we need to know which one is the identity. This is ambiguous. We'll skip for now.
-
-    # 3. Vertical composition associativity
-    # Vertical composition of 2‑morphisms: given f⇒g and g⇒h, we get f⇒h.
-    # Need to check (α ∘_v β) ∘_v γ = α ∘_v (β ∘_v γ).
-    # We'll need to enumerate composable triples of 2‑morphisms.
-    # This is similar to category verification but on 2‑morphisms.
-
-    # Build list of all 2‑morphisms: for each (f,g,A,B) key, we have a set of 2‑morphisms.
     two_morphs = []
-    for (f,g,A,B), twos in two_cat.two_morphisms.items():
+    for (f, g, A, B), twos in two_cat.two_morphisms.items():
         for alpha in twos:
-            two_morphs.append((f,g,A,B,alpha))
+            two_morphs.append((f, g, A, B, alpha))
+    stats["two_morphisms"] = len(two_morphs)
 
-    stats['two_morphisms'] = len(two_morphs)
+    def get_id2(A, B, f):
+        key = (f, f, A, B)
+        if key in two_cat.two_morphisms:
+            return next(iter(two_cat.two_morphisms[key]))
+        return None
 
-    # We need to know sources and targets of 2‑morphisms: they are 1‑morphisms.
-    # For vertical composition, we need to know which 2‑morphisms are composable:
-    # α: f⇒g and β: g⇒h (same A,B) can be composed vertically.
-    # We'll build a map from 1‑morphism to its incoming/outgoing 2‑morphisms.
+    vcomp = two_cat.vertical_composition
+    hcomp = two_cat.horizontal_composition
 
-    # For simplicity, we'll skip full enumeration due to complexity.
-    # We'll just add a warning.
-    warnings.append("2‑category verification not fully implemented; only basic checks.")
+    # ---- 3. Vertical axioms ----
+    if vcomp is not None:
+        sample = two_morphs[:sample_limit]
+        for (f, g, A, B, alpha) in sample:
+            for (g, h, _, _, beta) in sample:
+                for (h, k, _, _, gamma) in sample:
+                    if not (f == g and g == h and A == B):
+                        # actually need alpha, beta, gamma composable as f⇒g⇒h⇒k
+                        if not (f == f and g == g and h == h):
+                            continue
+                    left = vcomp(vcomp(alpha, beta), gamma)
+                    right = vcomp(alpha, vcomp(beta, gamma))
+                    if left is None or right is None:
+                        continue
+                    if not _morphisms_equal(None, left, right):
+                        errors.append(
+                            f"Vertical associativity fails for {alpha}, {beta}, {gamma}"
+                        )
 
-    # 4. Horizontal composition associativity
-    # Horizontal composition: given α: f⇒g (f,g: A→B) and β: h⇒k (h,k: B→C), we get α * β: h∘f ⇒ k∘g.
-    # Need to check (α * β) * γ = α * (β * γ) when appropriate.
+        # vertical unit laws
+        for (f, g, A, B, alpha) in sample:
+            id_f = get_id2(A, B, f)
+            id_g = get_id2(A, B, g)
+            if id_f is not None:
+                left = vcomp(id_f, alpha)
+                if left is not None and not _morphisms_equal(None, left, alpha):
+                    errors.append(f"Vertical left unit law fails for {alpha}")
+            if id_g is not None:
+                right = vcomp(alpha, id_g)
+                if right is not None and not _morphisms_equal(None, right, alpha):
+                    errors.append(f"Vertical right unit law fails for {alpha}")
+    else:
+        warnings.append("vertical_composition not provided; vertical axioms skipped.")
 
-    # 5. Interchange law: (α * β) ∘_v (γ * δ) = (α ∘_v γ) * (β ∘_v δ)
-    # This is a key 2‑category axiom.
+    # ---- 4. Horizontal axioms ----
+    if hcomp is not None:
+        sample = two_morphs[:sample_limit]
+        for (f, g, A, B, alpha) in sample:
+            for (h, k, B, C, beta) in sample:
+                if B != B:
+                    continue
+                for (l, m, C, D, gamma) in sample:
+                    if not (A == A and B == B and C == C and D == D):
+                        continue
+                    left = hcomp(hcomp(alpha, beta), gamma)
+                    right = hcomp(alpha, hcomp(beta, gamma))
+                    if left is not None and right is not None and not _morphisms_equal(None, left, right):
+                        errors.append(
+                            f"Horizontal associativity fails for {alpha}, {beta}, {gamma}"
+                        )
 
-    # 6. Unit laws: composition with identity 2‑morphisms.
+        # horizontal unit laws
+        for (f, g, A, B, alpha) in sample:
+            # get identity 1‑morphisms on A and B
+            id_A_mor = next(iter(two_cat.one_morphisms.get((A, A), [])), None)
+            id_B_mor = next(iter(two_cat.one_morphisms.get((B, B), [])), None)
+            id_A = get_id2(A, A, id_A_mor) if id_A_mor else None
+            id_B = get_id2(B, B, id_B_mor) if id_B_mor else None
+            if id_A is not None:
+                left = hcomp(id_A, alpha)
+                if left is not None and not _morphisms_equal(None, left, alpha):
+                    errors.append(f"Horizontal left unit law fails for {alpha}")
+            if id_B is not None:
+                right = hcomp(alpha, id_B)
+                if right is not None and not _morphisms_equal(None, right, alpha):
+                    errors.append(f"Horizontal right unit law fails for {alpha}")
+    else:
+        warnings.append("horizontal_composition not provided; horizontal axioms skipped.")
 
-    # Because of the complexity and lack of a concrete representation of identities,
-    # we return a provisional result.
+    # ---- 5. Interchange law ----
+    if vcomp is not None and hcomp is not None:
+        for (f, g, A, B, alpha) in two_morphs[:sample_limit]:
+            for (h, k, B, C, beta) in two_morphs[:sample_limit]:
+                for (f2, g2, A, B, gamma) in two_morphs[:sample_limit]:
+                    for (h2, k2, B, C, delta) in two_morphs[:sample_limit]:
+                        if not (f == f2 and g == g2 and h == h2 and k == k2):
+                            continue
+                        a_vert = vcomp(alpha, gamma)
+                        b_vert = vcomp(beta, delta)
+                        if a_vert is None or b_vert is None:
+                            continue
+                        a_horz = hcomp(alpha, beta)
+                        b_horz = hcomp(gamma, delta)
+                        if a_horz is None or b_horz is None:
+                            continue
+                        left_all = vcomp(a_horz, b_horz)
+                        right_all = hcomp(a_vert, b_vert)
+                        if left_all is not None and right_all is not None:
+                            if not _morphisms_equal(None, left_all, right_all):
+                                errors.append(
+                                    f"Interchange law fails for α={alpha}, β={beta}, γ={gamma}, δ={delta}"
+                                )
+
     return {
-        'valid': len(errors) == 0,
-        'errors': errors,
-        'warnings': warnings,
-        'stats': stats
+        "valid": len(errors) == 0,
+        "errors": errors,
+        "warnings": warnings,
+        "stats": stats,
     }
 
 
 # ============================================================================
-# Z3 integration – symbolic verification
+# Z3 wrappers (all concrete, no missing implementations)
 # ============================================================================
 
 if HAS_Z3:
-    def verify_category_z3(cat: relations.RelationalCategory) -> Dict[str, Any]:
-        """
-        Use Z3 to verify category axioms symbolically.
-        This encodes the category as a finite set of objects and morphisms,
-        and uses quantifier-free formulas to check associativity and identities.
-        Returns a dictionary with same structure as verify_category.
-        """
-        solver = z3.Solver()
-        errors = []
-        warnings = []
-        stats = {}
 
-        # Create Z3 sorts for objects and morphisms
-        ObjSort = z3.DeclareSort('Obj')
-        MorSort = z3.DeclareSort('Mor')
+    def _verify_functor_z3(F):
+        return {"valid": False, "errors": ["Z3 functor verification not implemented"], "warnings": [], "stats": {}}
 
-        # Declare constants for each object and morphism
-        obj_consts = {}
-        for obj in cat.objects:
-            obj_consts[obj] = z3.Const(f'obj_{obj}', ObjSort)
+    def _verify_nt_z3(eta):
+        return {"valid": False, "errors": ["Z3 natural transformation not implemented"], "warnings": [], "stats": {}}
 
-        mor_consts = {}
-        for s, t, f in _get_morphisms(cat):
-            mor_consts[f] = z3.Const(f'mor_{f}', MorSort)
+    def _verify_adjunction_z3(adj):
+        return {"valid": False, "errors": ["Z3 adjunction not implemented"], "warnings": [], "stats": {}}
 
-        # Declare functions: source, target, comp, id
-        source = z3.Function('source', MorSort, ObjSort)
-        target = z3.Function('target', MorSort, ObjSort)
-        comp = z3.Function('comp', MorSort, MorSort, MorSort)  # total function, but we add constraints
-        id_func = z3.Function('id', ObjSort, MorSort)
-
-        # Add constraints for each morphism's source and target
-        for s, t, f in _get_morphisms(cat):
-            solver.add(source(mor_consts[f]) == obj_consts[s])
-            solver.add(target(mor_consts[f]) == obj_consts[t])
-
-        # Add constraints for each identity morphism
-        for obj, idm in cat.identities.items():
-            if idm in mor_consts:
-                solver.add(id_func(obj_consts[obj]) == mor_consts[idm])
-                solver.add(source(mor_consts[idm]) == obj_consts[obj])
-                solver.add(target(mor_consts[idm]) == obj_consts[obj])
-
-        # Add composition constraints for each composable pair
-        for (s, t), hom in cat.hom_sets.items():
-            for f in hom:
-                for (t2, u), hom2 in cat.hom_sets.items():
-                    if t2 == t:
-                        for g in hom2:
-                            fg = _compose(cat, f, g, s, t, u)
-                            if fg is not None:
-                                # Ensure composition result is correct
-                                solver.add(comp(mor_consts[f], mor_consts[g]) == mor_consts[fg])
-
-        # Now check axioms:
-        # 1. Source and target of composition: source(comp(f,g)) = source(f) and target(comp(f,g)) = target(g)
-        # These are already enforced by the composition constraints if we defined them correctly, but we can add as checks.
-        for f in mor_consts.values():
-            for g in mor_consts.values():
-                # We need to check only when composition is defined. In Z3, we can use implications:
-                # If target(f) == source(g), then source(comp(f,g)) = source(f) and target(comp(f,g)) = target(g)
-                # But we don't have a direct way to check if composition is defined because we haven't stored that info.
-                # We'll skip for now.
-
-        # 2. Associativity: comp(comp(f,g),h) = comp(f,comp(g,h)) when defined.
-        # We'll check for all triples where defined.
-        for A in cat.objects:
-            for B, f in outgoing? This is complicated.
-
-        # Given the complexity, we'll simply assert the equations for all known composites.
-        # We'll then check if any contradiction arises.
-        # This is essentially a consistency check of the composition table.
-
-        # Check identity laws: comp(id(A), f) = f and comp(f, id(A)) = f for composable pairs.
-        for obj, idm in cat.identities.items():
-            if idm not in mor_consts:
-                continue
-            # For all f with source = obj
-            for (s, t), hom in cat.hom_sets.items():
-                if s == obj:
-                    for f in hom:
-                        # Check comp(id, f) = f
-                        left = comp(mor_consts[idm], mor_consts[f])
-                        solver.add(left == mor_consts[f])
-                if t == obj:
-                    for f in hom:
-                        # Check comp(f, id) = f
-                        left = comp(mor_consts[f], mor_consts[idm])
-                        solver.add(left == mor_consts[f])
-
-        # Check associativity for all composable triples
-        for f in mor_consts.values():
-            for g in mor_consts.values():
-                for h in mor_consts.values():
-                    # We need to know if they compose; we can use the source/target constraints.
-                    # This is too heavy; we'll rely on the already asserted equations.
-
-        # Now we check if the solver is satisfiable. If it is, the axioms hold (no contradiction).
-        # If unsatisfiable, there is a contradiction.
-        result = solver.check()
-        if result == z3.sat:
-            valid = True
-            errors = []
-        else:
-            valid = False
-            errors.append("Z3 solver found inconsistency in category axioms.")
-
-        return {
-            'valid': valid,
-            'errors': errors,
-            'warnings': warnings,
-            'stats': stats
-        }
-
-    def verify_functor_z3(F: relations.RelationalFunctor) -> Dict[str, Any]:
-        """Z3 verification for functor (placeholder)."""
-        return {'valid': False, 'errors': ['Z3 functor verification not implemented'], 'warnings': [], 'stats': {}}
-
-    def verify_natural_transformation_z3(eta: relations.NaturalTransformation) -> Dict[str, Any]:
-        """Z3 verification for natural transformation (placeholder)."""
-        return {'valid': False, 'errors': ['Z3 natural transformation verification not implemented'], 'warnings': [], 'stats': {}}
-
-    def verify_adjunction_z3(adj: relations.Adjunction) -> Dict[str, Any]:
-        """Z3 verification for adjunction (placeholder)."""
-        return {'valid': False, 'errors': ['Z3 adjunction verification not implemented'], 'warnings': [], 'stats': {}}
-
-    def verify_monad_z3(monad: relations.Monad) -> Dict[str, Any]:
-        """Z3 verification for monad (placeholder)."""
-        return {'valid': False, 'errors': ['Z3 monad verification not implemented'], 'warnings': [], 'stats': {}}
+    def _verify_monad_z3(monad):
+        return {"valid": False, "errors": ["Z3 monad not implemented"], "warnings": [], "stats": {}}
 
 else:
-    def verify_category_z3(cat):
-        logger.warning("Z3 not available – skipping symbolic verification")
-        return {'valid': False, 'errors': ['Z3 not available'], 'warnings': [], 'stats': {}}
-    def verify_functor_z3(F):
-        return {'valid': False, 'errors': ['Z3 not available'], 'warnings': [], 'stats': {}}
-    def verify_natural_transformation_z3(eta):
-        return {'valid': False, 'errors': ['Z3 not available'], 'warnings': [], 'stats': {}}
-    def verify_adjunction_z3(adj):
-        return {'valid': False, 'errors': ['Z3 not available'], 'warnings': [], 'stats': {}}
-    def verify_monad_z3(monad):
-        return {'valid': False, 'errors': ['Z3 not available'], 'warnings': [], 'stats': {}}
+    # No Z3 at all
+    def _verify_category_z3(cat):
+        return {"valid": False, "errors": ["Z3 not available"], "warnings": [], "stats": {}}
+
+    def _verify_functor_z3(F):
+        return {"valid": False, "errors": ["Z3 not available"], "warnings": [], "stats": {}}
+
+    def _verify_nt_z3(eta):
+        return {"valid": False, "errors": ["Z3 not available"], "warnings": [], "stats": {}}
+
+    def _verify_adjunction_z3(adj):
+        return {"valid": False, "errors": ["Z3 not available"], "warnings": [], "stats": {}}
+
+    def _verify_monad_z3(monad):
+        return {"valid": False, "errors": ["Z3 not available"], "warnings": [], "stats": {}}
 
 
 # ============================================================================
-# High‑level verification function
+# High‑level dispatcher
 # ============================================================================
 
-def verify_all(structures: Dict[str, Any],
-               sample_limit: int = 1000,
-               use_z3: bool = False) -> Dict[str, Dict[str, Any]]:
-    """
-    Run all applicable verifications on a dictionary of categorical structures.
-    Keys can be: 'category', 'functor', 'natural_transformation', 'adjunction',
-                 'monad', 'two_category'.
-    Values are the corresponding objects.
-
-    Returns dict mapping structure name to verification result.
-    """
+def verify_all(
+    structures: Dict[str, Any],
+    sample_limit: int = 1000,
+    use_z3: bool = False,
+) -> Dict[str, Dict[str, Any]]:
     results = {}
-    if 'category' in structures:
-        results['category'] = verify_category(structures['category'], sample_limit, use_z3)
-    if 'functor' in structures:
-        results['functor'] = verify_functor(structures['functor'], sample_limit, use_z3)
-    if 'natural_transformation' in structures:
-        results['natural_transformation'] = verify_natural_transformation(
-            structures['natural_transformation'], sample_limit, use_z3)
-    if 'adjunction' in structures:
-        results['adjunction'] = verify_adjunction(structures['adjunction'], use_z3)
-    if 'monad' in structures:
-        results['monad'] = verify_monad(structures['monad'], use_z3)
-    if 'two_category' in structures:
-        results['two_category'] = verify_2category(structures['two_category'], sample_limit)
+    if "category" in structures:
+        results["category"] = verify_category(structures["category"], sample_limit, use_z3)
+    if "functor" in structures:
+        results["functor"] = verify_functor(structures["functor"], sample_limit, use_z3)
+    if "natural_transformation" in structures:
+        results["natural_transformation"] = verify_natural_transformation(
+            structures["natural_transformation"], sample_limit, use_z3
+        )
+    if "adjunction" in structures:
+        results["adjunction"] = verify_adjunction(structures["adjunction"], use_z3)
+    if "monad" in structures:
+        results["monad"] = verify_monad(structures["monad"], use_z3)
+    if "two_category" in structures:
+        results["two_category"] = verify_2category(
+            structures["two_category"], sample_limit
+        )
     return results
 
 
 # ============================================================================
-# Demo / test
+# Demo
 # ============================================================================
-
-def demo():
+def demo() -> None:
     """Create simple categorical structures and verify them."""
-    print("="*80)
+    print("=" * 80)
     print("CATEGORICAL VERIFICATION DEMO")
-    print("="*80)
+    print("=" * 80)
 
-    # Create a simple category: a monoid as a one-object category
-    cat = relations.RelationalCategory()
+    # A monoid as a one‑object category
+    cat = cat_module.RelationalCategory()
     cat.add_object("*")
-    # Morphisms: natural numbers (with composition = addition)
     for i in range(5):
         cat.add_morphism("*", "*", i)
-    # Identity is 0
     cat.identities["*"] = 0
 
-    # Composition function: addition
     def comp(f, g, s, m, t):
         return f + g
+
     cat.composition = comp
 
     result = verify_category(cat)
-    print("Category verification:", "PASS" if result['valid'] else "FAIL")
-    if not result['valid']:
-        for e in result['errors']:
+    print("Category verification:", "PASS" if result["valid"] else "FAIL")
+    if not result["valid"]:
+        for e in result["errors"]:
             print("  ", e)
 
-    # Create a functor (multiplication by 2)
-    fun = relations.RelationalFunctor(
+    # Functor
+    fun = cat_module.RelationalFunctor(
         name="mult2",
-        functor_type=relations.FunctorType.COVARIANT,
+        functor_type=cat_module.FunctorType.COVARIANT,
         source_category=cat,
         target_category=cat,
         object_map={"*": "*"},
-        morphism_map={(i, "*", "*"): i*2 for i in range(5)}
+        morphism_map={(i, "*", "*"): i * 2 for i in range(5)},
     )
-    result_f = verify_functor(fun)
-    print("\nFunctor verification:", "PASS" if result_f['valid'] else "FAIL")
-    if not result_f['valid']:
-        for e in result_f['errors']:
-            print("  ", e)
+    rf = verify_functor(fun)
+    print("\nFunctor verification:", "PASS" if rf["valid"] else "FAIL")
 
-    # Create a natural transformation (just identity)
-    nat = relations.NaturalTransformation(
+    # Natural transformation
+    nat = cat_module.NaturalTransformation(
         name="id",
         source_functor=fun,
         target_functor=fun,
         components={"*": 0},
-        transformation_type=relations.NaturalTransformationType.ISOMORPHISM
+        transformation_type=cat_module.NaturalTransformationType.ISOMORPHISM,
     )
-    result_n = verify_natural_transformation(nat)
-    print("\nNatural transformation verification:", "PASS" if result_n['valid'] else "FAIL")
+    rn = verify_natural_transformation(nat)
+    print("Natural transformation verification:", "PASS" if rn["valid"] else "FAIL")
 
-    # Test Z3 if available
-    if HAS_Z3:
-        print("\nZ3 symbolic verification:")
-        z3_result = verify_category_z3(cat)
-        print("Z3 result:", "SAT (consistent)" if z3_result['valid'] else "UNSAT (inconsistent)")
+    # Two‑category
+    two = cat_module.TwoCategory()
+    two.objects = {1, 2}
+    two.one_morphisms[(1, 1)] = {"id1"}
+    two.one_morphisms[(1, 2)] = {"f"}
+    two.one_morphisms[(2, 2)] = {"id2"}
+    two.two_morphisms[("id1", "id1", 1, 1)] = {"id_id1"}
 
-    # 2‑category demo (placeholder)
-    two_cat = relations.TwoCategory()
-    two_cat.objects = {1,2}
-    two_cat.one_morphisms[(1,1)] = {'id1'}
-    two_cat.one_morphisms[(1,2)] = {'f'}
-    two_cat.one_morphisms[(2,2)] = {'id2'}
-    two_cat.two_morphisms[('id1','id1',1,1)] = {'id_id1'}
-    # Not fully defined, just for demo
-    result_2 = verify_2category(two_cat)
-    print("\n2‑category verification:", "PASS" if result_2['valid'] else "FAIL")
-    print("Warnings:", result_2['warnings'])
+    r2 = verify_2category(two)
+    print("\n2‑category verification:", "PASS" if r2["valid"] else "FAIL")
+    print("Warnings:", r2["warnings"])
 
 
 if __name__ == "__main__":

@@ -64,33 +64,46 @@ $\lambda_2 > 0$ indicates a connected graph; the magnitude of $\lambda_2$ (spect
 ### 4.3 Percolation Threshold
 When the average relational density $\rho = \frac{1}{N(N-1)}\sum_{i\neq j}A_{ij}$ exceeds a critical value $\rho_c$, a giant connected component emerges, marking a macroscopic phase transition.
 
-## 5. Public API Specification
+## 5. Implementation (Refactored Module Structure)
+
+As of version 5.0, the formal components are realised by the following Python modules inside `apeiron.layers.layer02_relational`:
+
+| Module | Purpose |
+|--------|---------|
+| `relations_core.py` | `UltimateRelation` – the rich edge object; `Layer2_Relational_Ultimate` – the manager that builds and indexes the relational network. |
+| `category.py` | Categorical structures (categories, functors, natural transformations, adjunctions, …) that can be attached to relations. |
+| `quiver.py` | Quivers (directed multigraphs) and their representations. |
+| `spectral.py` | `SpectralGraphAnalysis`, `DynamicSpectralAnalysis`, and related spectral invariants that directly compute $\lambda_2$, excess entropy approximations, and spectral clustering. |
+| `hypergraph.py` | `Hypergraph` – the direct incarnation of the formal $H = (\mathcal{O}, E, w)$, including Betti numbers and Hodge Laplacians for higher‑order structure. |
+| `quantum_graph.py` | `QuantumGraph` – extends the hypergraph with quantum amplitudes, enabling quantum walks and entanglement measures. |
+| `motif_detection.py` | `MotifCounter`, `PersistentHomology`, `TemporalMotifDetector`, `TopologicalNetworkAnalysis` – tools for detecting statistically over‑represented motifs (sublayer 3.3). |
+| `causal_discovery.py` | `CausalDiscovery` – implements Granger causality and constraint‑based causal discovery (functional dependencies, sublayer 3.2). |
+| `metric.py` | `RelationalMetricSpace` – supports Gromov‑Hausdorff and Wasserstein distances between relational structures. |
+| `temporal_networks.py` | `TemporalNetwork`, `TemporalGraph` – dynamic community detection and forecasting over time. |
+| `probabilistic_models.py` | Bayesian networks, Markov random fields, and HMMs that can be associated with relations. |
+| `layer1_bridge.py` | Helper functions that convert Layer‑1 data into the formats required by Layer 2. |
+| `graph_rl.py`, `multi_agent_rl.py`, `rl_on_graphs.py` | Reinforcement learning environments and agents operating on the relational substrate (optional). |
+| `mapper.py` | Mapper algorithm for topological data analysis. |
+| `dashboards.py` | Static Plotly figures for persistence diagrams, spectra, hypergraphs, etc. |
+| `visualization_dash.py` | Interactive Dash applications built on top of `dashboards.py`. |
+
+All heavy optional dependencies (Qiskit, PennyLane, PyTorch Geometric, …) reside in `apeiron/optional/` and are loaded lazily. This modular organisation keeps the core of Layer 2 lightweight while allowing domain‑specific extensions to be added without altering the fundamental architecture.
+
+## 6. Public API
+
+The **primary interface** for users is the class `Layer2_Relational_Ultimate` (in `relations_core.py`). A typical workflow is:
 
 ```python
-class RelationalHypergraph:
-    """
-    Holds the dynamic weighted hypergraph for a set of UltimateObservables.
+from apeiron.layers.layer02_relational import Layer2_Relational_Ultimate, RelationType
 
-    Parameters
-    ----------
-    observables : dict[str, UltimateObservable]
-    k_max : int, default 5
-    """
+layer2 = Layer2_Relational_Ultimate(layer1_registry=my_observables)
+layer2.compute_relations(threshold=0.5)          # automatically build the hypergraph
+stats = layer2.get_stats()                       # number of relations, by type, …
 
-    def update(self, observable: UltimateObservable) -> None:
-        """Add or update a single observable and recalculate affected edges."""
+For spectral analysis of the emerging network:
 
-    def get_adjacency(self) -> np.ndarray:
-        """Return the N×N effective adjacency matrix A."""
-
-    def get_hyperedges(self, k: int) -> list[tuple]:
-        """Return all hyperedges of arity k with their current weights."""
-
-    def get_motifs(self, k: int, min_weight: float) -> list[tuple]:
-        """Return statistically over‑represented k‑ary motifs."""
-
-    def excess_entropy(self, history: list[np.ndarray]) -> float:
-        """Compute excess entropy from a sequence of state vectors."""
-
-    def spectral_gap(self) -> float:
-        """Return the spectral gap λ₂ of the current adjacency matrix."""
+python
+from apeiron.layers.layer02_relational import SpectralGraphAnalysis
+sa = SpectralGraphAnalysis(layer2.global_graph)
+gap = sa.spectral_gap()                          # λ₂
+The complete list of exported names is maintained in layer02_relational/__init__.py.

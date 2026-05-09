@@ -1,6 +1,6 @@
 ﻿"""
-QUANTUM MACHINE LEARNING – ULTIMATE IMPLEMENTATION
-===================================================
+QUANTUM MACHINE LEARNING
+========================
 This module provides quantum machine learning algorithms for use within Layer 2.
 It includes:
 
@@ -17,7 +17,10 @@ All features degrade gracefully if required libraries are missing.
 
 import logging
 import numpy as np
+import os
 from typing import Optional, List, Tuple, Dict, Any, Callable, Union
+
+logger = logging.getLogger(__name__)
 
 # ============================================================================
 # OPTIONAL LIBRARIES – ALL HANDLED GRACEFULLY
@@ -26,22 +29,44 @@ from typing import Optional, List, Tuple, Dict, Any, Callable, Union
 # PennyLane
 try:
     import pennylane as qml
-    from pennylane import numpy as pnp
-    from pennylane.optimize import NesterovMomentum, AdamOptimizer
     HAS_PENNYLANE = True
 except ImportError:
     HAS_PENNYLANE = False
 
-# Qiskit
+if HAS_PENNYLANE:
+    try:
+        from pennylane import numpy as pnp
+    except ImportError as e:
+        logger.error("pennylane.numpy import failed: %s", e)
+        raise
+
+    try:
+        # PennyLane ≥ 0.40‑compatibele namen
+        from pennylane.optimize import AdamOptimizer, NesterovMomentumOptimizer as NesterovMomentum
+    except ImportError:
+        # fallback naar oudere naam
+        from pennylane.optimize import AdamOptimizer, NesterovMomentum
+
+# Qiskit (enkel de circuitbibliotheek voor VQC later)
 try:
-    from qiskit import QuantumCircuit, Aer, execute
-    from qiskit.circuit.library import ZZFeatureMap, RealAmplitudes
-    from qiskit_machine_learning.algorithms import QSVC, VQC
-    from qiskit_machine_learning.kernels import FidelityQuantumKernel
-    from qiskit.providers.aer import AerSimulator
-    HAS_QISKIT_ML = True
+    from qiskit.circuit.library import RealAmplitudes
+    HAS_QISKIT_CIRCUITS = True
 except ImportError:
-    HAS_QISKIT_ML = False
+    HAS_QISKIT_CIRCUITS = False
+
+# Qiskit Aer voor de kernel
+try:
+    from qiskit_aer import AerSimulator
+    HAS_QISKIT_AER = True
+except ImportError:
+    HAS_QISKIT_AER = False
+
+# Qiskit transpiler voor optimalisatie
+try:
+    from qiskit import transpile
+    HAS_TRANSPILE = True
+except ImportError:
+    HAS_TRANSPILE = False
 
 # scikit‑learn for SVM and metrics
 try:
@@ -50,6 +75,12 @@ try:
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
+
+try:
+    from qiskit.quantum_info import Statevector
+    HAS_QISKIT = True
+except ImportError:
+    HAS_QISKIT = False
 
 # PyTorch (required for QGAN discriminator and hybrid models)
 try:
@@ -60,9 +91,6 @@ try:
     HAS_TORCH = True
 except ImportError:
     HAS_TORCH = False
-
-logger = logging.getLogger(__name__)
-
 
 # ============================================================================
 # BASE CLASS
@@ -96,6 +124,10 @@ def angle_encoding(x: np.ndarray, wires: List[int]) -> None:
     for i, xi in enumerate(x):
         qml.RY(xi, wires=wires[i])
 
+def angle_encoding_inverse(x: np.ndarray, wires: List[int]) -> None:
+    """Inverse encoding with negative angles (replaces qml.adjoint)."""
+    for i, xi in enumerate(x):
+        qml.RY(-xi, wires=wires[i])
 
 def amplitude_encoding(x: np.ndarray, wires: List[int]) -> None:
     """Encode data into amplitudes of a quantum state (requires normalization)."""
@@ -127,7 +159,6 @@ def observable_to_circuit_input(observable: Any, encoding: str = 'angle', max_fe
     features = []
     # Try to extract qualitative_dims
     if hasattr(observable, 'qualitative_dims') and observable.qualitative_dims:
-        # assume values are numbers
         for v in observable.qualitative_dims.values():
             if isinstance(v, (int, float)):
                 features.append(float(v))
@@ -142,12 +173,10 @@ def observable_to_circuit_input(observable: Any, encoding: str = 'angle', max_fe
     if hasattr(observable, 'atomicity_score') and observable.atomicity_score is not None:
         features.append(float(observable.atomicity_score))
 
-    # If no features found, return random noise (for fallback)
     if len(features) == 0:
         logger.warning("No features found in observable; returning random vector.")
         features = np.random.randn(max_features).tolist()
 
-    # Pad or truncate to max_features
     if len(features) < max_features:
         features = features + [0.0] * (max_features - len(features))
     else:
@@ -157,47 +186,56 @@ def observable_to_circuit_input(observable: Any, encoding: str = 'angle', max_fe
 
 
 # ============================================================================
-# QUANTUM KERNEL (PennyLane)
+# QUANTUM KERNELS
 # ============================================================================
 
+# --- PennyLane kernel ---
 if HAS_PENNYLANE:
     class QuantumKernel:
         """
         Quantum kernel for SVM using PennyLane.
         Computes the kernel matrix via fidelity between encoded states.
-        For angle encoding, the kernel is the fidelity |⟨ψ(x1)|ψ(x2)⟩|², which is a valid quantum kernel.
         """
-        def __init__(self, n_qubits: int, encoding: str = 'angle', device: str = 'default.qubit'):
+        def __init__(self, n_qubits: int, encoding: str = 'angle', device: str = 'auto'):
+            os.environ.setdefault("OMP_NUM_THREADS", str(os.cpu_count()))
+
             self.n_qubits = n_qubits
             self.encoding = encoding
-            self.dev = qml.device(device, wires=n_qubits)
+
+            if device == 'auto':
+                for dev_name in ['lightning.qubit', 'default.qubit']:
+                    try:
+                        qml.device(dev_name, wires=n_qubits)
+                        self.dev = qml.device(dev_name, wires=n_qubits)
+                        break
+                    except Exception:
+                        continue
+                else:
+                    raise RuntimeError("Geen enkel PennyLane‑device beschikbaar")
+            else:
+                self.dev = qml.device(device, wires=n_qubits)
+
             self.kernel_fn = self._build_kernel()
 
         def _build_kernel(self):
             @qml.qnode(self.dev)
             def kernel_circuit(x1, x2):
-                # Encode first vector
                 if self.encoding == 'angle':
                     angle_encoding(x1, range(self.n_qubits))
+                    angle_encoding_inverse(x2, range(self.n_qubits))
                 elif self.encoding == 'amplitude':
                     amplitude_encoding(x1, range(self.n_qubits))
+                    qml.adjoint(lambda: amplitude_encoding(x2, range(self.n_qubits)))
                 else:
                     raise ValueError(f"Unknown encoding: {self.encoding}")
-                # Inverse encoding of second vector
-                qml.adjoint(lambda: (
-                    angle_encoding(x2, range(self.n_qubits)) if self.encoding == 'angle'
-                    else amplitude_encoding(x2, range(self.n_qubits))
-                ))
                 return qml.probs(wires=range(self.n_qubits))
 
             def kernel(x1, x2):
                 probs = kernel_circuit(x1, x2)
-                # Fidelity is probability of |0...0> (first amplitude)
-                return probs[0]
+                return probs[0]   # probability of |00...0⟩
             return kernel
 
         def kernel_matrix(self, X1: np.ndarray, X2: Optional[np.ndarray] = None) -> np.ndarray:
-            """Compute kernel matrix between X1 and X2 (if None, use X1)."""
             if X2 is None:
                 X2 = X1
             n1, n2 = len(X1), len(X2)
@@ -206,11 +244,47 @@ if HAS_PENNYLANE:
                 for j in range(n2):
                     K[i, j] = self.kernel_fn(X1[i], X2[j])
             return K
-
 else:
     class QuantumKernel:
         def __init__(self, *args, **kwargs):
             raise ImportError("PennyLane is required for QuantumKernel")
+
+
+if HAS_QISKIT:
+    from qiskit import QuantumCircuit
+    from qiskit.quantum_info import Statevector
+
+    class QiskitKernel:
+        """Quantum kernel using Qiskit's Statevector (exact)."""
+        def __init__(self, feature_dimension: int, reps: int = 2):
+            self.n_qubits = feature_dimension
+
+        def _evaluate(self, x1, x2):
+            n = self.n_qubits
+            qc = QuantumCircuit(n)
+            # Encode x1
+            for i in range(n):
+                qc.ry(x1[i], i)
+            # Inverse encode x2
+            for i in range(n):
+                qc.ry(-x2[i], i)
+            # Direct de statevector ophalen
+            psi = Statevector.from_instruction(qc)
+            return np.abs(psi[0]) ** 2
+
+        def kernel_matrix(self, X1, X2=None):
+            if X2 is None:
+                X2 = X1
+            n1, n2 = len(X1), len(X2)
+            K = np.zeros((n1, n2))
+            for i in range(n1):
+                for j in range(n2):
+                    K[i, j] = self._evaluate(X1[i], X2[j])
+            return K
+else:
+    class QiskitKernel:
+        def __init__(self, *args, **kwargs):
+            raise ImportError("Qiskit is required for QiskitKernel")
 
 
 # ============================================================================
@@ -220,7 +294,7 @@ else:
 class QSVM(QuantumMLModel):
     """
     Quantum Support Vector Machine using a quantum kernel.
-    Can use either PennyLane kernel (if available) or Qiskit's QSVC.
+    Can use either PennyLane kernel (if available) or Qiskit's own kernel.
     """
     def __init__(self, backend: str = 'pennylane', **kwargs):
         super().__init__()
@@ -236,13 +310,17 @@ class QSVM(QuantumMLModel):
                 raise ImportError("scikit‑learn required for SVM")
             self.kernel = QuantumKernel(**kwargs)
             self.model = SVC(kernel=lambda X, Y: self.kernel.kernel_matrix(X, Y))
+
         elif backend == 'qiskit':
-            if not HAS_QISKIT_ML:
-                raise ImportError("Qiskit Machine Learning required for qiskit backend")
-            # Use Qiskit's QSVC (which uses a quantum kernel)
-            feature_map = ZZFeatureMap(feature_dimension=kwargs.get('n_features', 2), reps=2)
-            self.kernel = FidelityQuantumKernel(feature_map=feature_map)
-            self.model = QSVC(quantum_kernel=self.kernel)
+            if not HAS_QISKIT:
+                raise ImportError("Qiskit is required for qiskit backend")
+            if not HAS_SKLEARN:
+                raise ImportError("scikit‑learn required for SVM")
+            self.kernel = QiskitKernel(
+                feature_dimension=kwargs.get('n_features', 2),
+                reps=kwargs.get('reps', 2)
+            )
+            self.model = SVC(kernel=lambda X, Y: self.kernel.kernel_matrix(X, Y))
         else:
             raise ValueError(f"Unknown backend: {backend}")
 
@@ -255,7 +333,6 @@ class QSVM(QuantumMLModel):
         if not self.is_fitted:
             raise RuntimeError("Model not fitted yet.")
         return self.model.predict(X)
-
 
 # ============================================================================
 # VARIATIONAL QUANTUM CLASSIFIER (standard circuit)
@@ -475,7 +552,7 @@ if HAS_PENNYLANE and HAS_TORCH:
             for i in range(batch_size):
                 out = self.circuit(latent[i], self.weights)
                 outputs.append(torch.stack(out))
-            return torch.stack(outputs)  # (batch_size, n_qubits)
+            return torch.stack(outputs).to(torch.float32)  # (batch_size, n_qubits)
 
 
     class QGAN(QuantumMLModel):
@@ -667,7 +744,7 @@ class QuantumCircuitLearner(QuantumMLModel):
 def check_available():
     """Print which quantum libraries are available."""
     print("PennyLane available:", HAS_PENNYLANE)
-    print("Qiskit ML available:", HAS_QISKIT_ML)
+    print("Qiskit available:", HAS_QISKIT_AER)
     print("scikit‑learn available:", HAS_SKLEARN)
     print("PyTorch available:", HAS_TORCH)
 

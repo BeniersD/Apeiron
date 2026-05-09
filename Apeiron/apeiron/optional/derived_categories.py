@@ -74,10 +74,9 @@ class ChainComplex:
         return None
 
     def dim(self, n: int) -> int:
-        """Dimension of C_n."""
-        if self.degree_min <= n <= self.degree_max:
-            return self.dimensions[n]
-        return 0
+        if n < 0 or n >= len(self.dimensions):
+            return 0
+        return self.dimensions[n]
 
     def is_complex(self, tol: float = 1e-10) -> bool:
         """Check that d_{n-1} ∘ d_n = 0 for all n."""
@@ -470,7 +469,7 @@ class SpectralSequence:
     The class can compute the next page by taking homology.
     """
 
-    def __init__(self, initial_page: Dict[Tuple[int, int], np.ndarray], differential_deg: Tuple[int, int] = (r, 1-r)):
+    def __init__(self, initial_page: Dict[Tuple[int, int], np.ndarray], differential_deg: Tuple[int, int] = (2, -1)):
         """
         Args:
             initial_page: dictionary with keys (p,q) and values the differential d_r: E_r^{p,q} → E_r^{p+r, q-r+1}

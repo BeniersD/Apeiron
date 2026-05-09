@@ -1,6 +1,6 @@
 ﻿"""
-GRAPHQL API – ULTIMATE IMPLEMENTATION
-======================================
+GRAPHQL API
+===========
 This module provides a GraphQL API for Layer 2 (Relational Dynamics) and
 Layer 1 (Observables) using Strawberry (preferred) or Graphene as fallback.
 It allows querying and mutating observables and relations, and includes
@@ -21,6 +21,7 @@ Features:
 import logging
 import json
 import asyncio
+import enum
 from typing import List, Optional, Dict, Any, AsyncGenerator, Set
 
 # ============================================================================
@@ -32,6 +33,7 @@ try:
     import strawberry
     from strawberry.fastapi import GraphQLRouter
     from strawberry.types import Info
+    from strawberry.scalars import JSON
     HAS_STRAWBERRY = True
 except ImportError:
     HAS_STRAWBERRY = False
@@ -49,9 +51,9 @@ if not (HAS_STRAWBERRY or HAS_GRAPHENE):
     raise ImportError("Either strawberry-graphql or graphene must be installed to use the GraphQL API.")
 
 # Imports from layers (assuming correct relative paths)
-from ..layer01_foundational.irreducible_unit import UltimateObservable, ObservabilityType
-from ..layer01_foundational.observables import Layer1_Observables
-from .relations import UltimateRelation, RelationType, Layer2_Relational_Ultimate
+from apeiron.layers.layer01_foundational.irreducible_unit import UltimateObservable, ObservabilityType
+from apeiron.layers.layer01_foundational.observables import Layer1_Observables
+from apeiron.layers.layer02_relational.relations_core import UltimateRelation, RelationType, Layer2_Relational_Ultimate
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +129,7 @@ if HAS_STRAWBERRY:
     # ------------------------------------------------------------------------
 
     @strawberry.enum
-    class GraphQLObservabilityType(strawberry.Enum):
+    class GraphQLObservabilityType(enum.Enum):
         DISCRETE = "discrete"
         CONTINUOUS = "continuous"
         QUANTUM = "quantum"
@@ -140,7 +142,7 @@ if HAS_STRAWBERRY:
         COMPLEX = "complex"
 
     @strawberry.enum
-    class GraphQLRelationType(strawberry.Enum):
+    class GraphQLRelationType(enum.Enum):
         SYMMETRIC = "symmetric"
         DIRECTED = "directed"
         BIDIRECTIONAL = "bidirectional"
@@ -350,7 +352,7 @@ if HAS_STRAWBERRY:
     @strawberry.type
     class Subscription:
         @strawberry.subscription
-        async def relation_events(self, info: Info) -> AsyncGenerator[Dict[str, Any], None]:
+        async def relation_events(self, info: Info) -> AsyncGenerator[JSON, None]:
             """
             Subscribe to real‑time relation events (created, updated, deleted).
             Each event is a dict with keys 'type' and 'data'.
@@ -643,10 +645,10 @@ def run_server(layer1=None, layer2=None, host="0.0.0.0", port=8000):
     appropriate framework (FastAPI + Strawberry or Starlette + Graphene).
     """
     if layer1 is None:
-        from ..layer01_foundational.observables import Layer1_Observables
+        from apeiron.layers.layer01_foundational.observables import Layer1_Observables
         layer1 = Layer1_Observables()
     if layer2 is None:
-        from .relations import Layer2_Relational_Ultimate
+        from apeiron.layers.layer02_relational.relations_core import Layer2_Relational_Ultimate
         layer2 = Layer2_Relational_Ultimate(layer1_registry=layer1.observables)
 
     if HAS_STRAWBERRY:
@@ -685,8 +687,8 @@ def demo():
     print("Press Ctrl+C to stop.")
 
     # Create dummy layer1 and layer2 instances
-    from ..layer01_foundational.observables import Layer1_Observables
-    from .relations import Layer2_Relational_Ultimate
+    from apeiron.layers.layer01_foundational.observables import Layer1_Observables
+    from apeiron.layers.layer02_relational.relations_core import Layer2_Relational_Ultimate
 
     l1 = Layer1_Observables()
     l2 = Layer2_Relational_Ultimate(layer1_registry=l1.observables)

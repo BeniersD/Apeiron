@@ -1,6 +1,6 @@
 ﻿"""
-REINFORCEMENT LEARNING ON GRAPHS – ULTIMATE IMPLEMENTATION
-============================================================
+REINFORCEMENT LEARNING ON GRAPHS
+================================
 This module provides reinforcement learning environments and agents
 for graph‑based tasks. It includes:
 

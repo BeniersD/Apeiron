@@ -14,12 +14,13 @@ including:
 
 All features degrade gracefully if required libraries (qiskit, stim, pymatching) are missing.
 """
-
+from __future__ import annotations
 import logging
 import numpy as np
 from typing import Dict, List, Optional, Tuple, Set, Any, Union
 from abc import ABC, abstractmethod
 import itertools
+
 
 # ============================================================================
 # OPTIONAL LIBRARIES – ALL HANDLED GRACEFULLY
@@ -27,13 +28,15 @@ import itertools
 
 # Qiskit for circuit manipulation and simulation
 try:
-    from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute, Aer
-    from qiskit.providers.aer import AerSimulator
-    from qiskit.quantum_info import Pauli, StabilizerTable, random_clifford
+    from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+    from qiskit_aer import AerSimulator
+    from qiskit.quantum_info import Pauli
+    from qiskit.quantum_info.random import random_clifford
     HAS_QISKIT = True
 except ImportError:
     HAS_QISKIT = False
     QuantumCircuit = None
+
 
 # Stim for fast Clifford simulation and surface code
 try:
@@ -49,6 +52,7 @@ try:
     HAS_PYMATCHING = True
 except ImportError:
     HAS_PYMATCHING = False
+
 
 logger = logging.getLogger(__name__)
 
@@ -836,8 +840,9 @@ def demo():
         print(enc.draw(output='text'))
 
         # Simulate no error
-        backend = Aer.get_backend('qasm_simulator')
-        job = execute(enc, backend, shots=1)
+        backend = AerSimulator()
+        job = backend.run(enc, shots=1)
+
         result = job.result()
         counts = result.get_counts()
         print("Encoded state (should be all zeros or all ones):", counts)

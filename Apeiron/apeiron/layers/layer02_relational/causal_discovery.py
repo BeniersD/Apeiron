@@ -1,6 +1,6 @@
 ﻿"""
-CAUSAL DISCOVERY – ULTIMATE IMPLEMENTATION
-===========================================
+CAUSAL DISCOVERY
+================
 This module provides advanced causal discovery and inference algorithms,
 including constraint‑based, score‑based, and functional causal models.
 It integrates with Layer 2's relational structures (UltimateRelation, etc.)

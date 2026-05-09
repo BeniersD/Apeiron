@@ -17,7 +17,6 @@ Each test uses `pytest.importorskip` for optional libraries, so tests gracefully
 skip when dependencies are missing. The tests focus on basic import and minimal
 functionality to ensure the code is syntactically correct and runs without errors.
 """
-
 import pytest
 import numpy as np
 
@@ -47,7 +46,7 @@ def test_spectral_graph_analysis_basic():
     """Test basic creation and invariants of SpectralGraphAnalysis."""
     pytest.importorskip("networkx")
     pytest.importorskip("scipy")
-    from apeiron.layers.layer02_relational.adjacency_matrix import (
+    from apeiron.layers.layer02_relational.spectral import (
         SpectralGraphAnalysis, SpectralType
     )
     G = create_test_graph()
@@ -77,7 +76,7 @@ def test_hypergraph_relations_import():
 
 
 def test_hypergraph_basic():
-    from apeiron.layers.layer02_relational.hypergraph_relations import Hypergraph
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
     hg = Hypergraph()
     hg.add_hyperedge("e1", {1,2,3}, weight=1.0)
     hg.add_hyperedge("e2", {2,3,4}, weight=0.8)
@@ -134,7 +133,7 @@ def test_relations_import():
 
 
 def test_relational_category_basic():
-    from apeiron.layers.layer02_relational.relations import RelationalCategory
+    from apeiron.layers.layer02_relational.relations_core import RelationalCategory
     cat = RelationalCategory()
     cat.add_object("A")
     cat.add_object("B")
@@ -148,7 +147,7 @@ def test_relational_category_basic():
 
 
 def test_ultimate_relation_basic():
-    from apeiron.layers.layer02_relational.relations import UltimateRelation, RelationType
+    from apeiron.layers.layer02_relational.relations_core import UltimateRelation, RelationType
     rel = UltimateRelation(
         id="test",
         source_id="obs1",
@@ -164,7 +163,7 @@ def test_ultimate_relation_basic():
 
 def test_layer2_class_basic():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.relations import Layer2_Relational_Ultimate, RelationType
+    from apeiron.layers.layer02_relational.relations_core import Layer2_Relational_Ultimate, RelationType
     layer2 = Layer2_Relational_Ultimate()
     rel = layer2.create_relation("obs1", "obs2", RelationType.SYMMETRIC, weight=0.5)
     assert rel.id in layer2.relations
@@ -183,7 +182,7 @@ def test_benchmarks_import():
 
 
 def test_benchmark_suite_basic():
-    from apeiron.layers.layer02_relational.benchmarks import BenchmarkSuite
+    from apeiron.benchmark.layer02_benchmarks import BenchmarkSuite
     suite = BenchmarkSuite()
     # Register a dummy benchmark
     @suite.register(name="dummy")
@@ -210,13 +209,13 @@ def test_dashboard_figure_functions():
     # Test figure creation functions without actually running a server
     pytest.importorskip("plotly")
     from apeiron.layers.layer02_relational import dashboard
-    from apeiron.layers.layer02_relational.adjacency_matrix import SpectralGraphAnalysis
+    from apeiron.layers.layer02_relational.spectral import SpectralGraphAnalysis
     G = create_test_graph()
     sa = SpectralGraphAnalysis(G)
     fig = dashboard.figure_spectrum(sa)
     assert fig is not None
     # Hypergraph figure
-    from apeiron.layers.layer02_relational.hypergraph_relations import Hypergraph
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
     hg = Hypergraph()
     hg.add_hyperedge("e1", {1,2}, 1.0)
     fig_hg = dashboard.figure_hypergraph(hg)
@@ -235,7 +234,7 @@ def test_causal_algorithms_import():
 
 def test_causal_discovery_basic():
     pytest.importorskip("causallearn")
-    from apeiron.layers.layer02_relational.causal_algorithms import CausalDiscovery
+    from apeiron.layers.layer02_relational.causal_discovery import CausalDiscovery
     # Generate synthetic data
     data, true_graph = CausalDiscovery.generate_linear_gaussian(100, 5, seed=42)
     cd = CausalDiscovery(data, variable_names=[f"X{i}" for i in range(5)])
@@ -317,7 +316,7 @@ def test_hall_algebra_import():
 
 
 def test_hall_algebra_basic():
-    from apeiron.layers.layer02_relational.hall_algebra import JordanHallAlgebra, Partition
+    from apeiron.layers.layer02_relational.hypergraph import JordanHallAlgebra, Partition
     hall = JordanHallAlgebra(max_part_size=3)
     basis = hall.basis()
     assert len(basis) > 0
@@ -376,7 +375,7 @@ def test_quantum_error_correction_import():
 
 def test_repetition_code_basic():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational.quantum_error_correction import RepetitionCode
+    from apeiron.layers.layer02_relational.quantum_structs import RepetitionCode
     code = RepetitionCode(n=3)
     enc = code.encode_circuit()
     assert enc.num_qubits == 3
@@ -393,7 +392,7 @@ def test_quiver_moduli_import():
 
 
 def test_stability_condition_basic():
-    from apeiron.layers.layer02_relational.quiver_moduli import StabilityCondition
+    from apeiron.layers.layer02_relational.quiver import StabilityCondition
     theta = StabilityCondition({1: 1, 2: -1})
     dim = {1: 2, 2: 2}
     val = theta(dim)
@@ -411,7 +410,7 @@ def test_derived_categories_import():
 
 
 def test_chain_complex_basic():
-    from apeiron.layers.layer02_relational.derived_categories import ChainComplex
+    from apeiron.layers.layer02_relational.category import ChainComplex
     d1 = np.array([[1,0,0],[0,1,0]])
     d2 = np.array([[1,0],[0,0],[0,1]])
     C = ChainComplex([d1, d2])
@@ -431,8 +430,8 @@ def test_model_categories_import():
 
 
 def test_chain_complexes_model_basic():
-    from apeiron.layers.layer02_relational.model_categories import ChainComplexesModelCategory
-    from apeiron.layers.layer02_relational.derived_categories import ChainComplex, ChainMap
+    from apeiron.layers.layer02_relational.category import ChainComplexesModelCategory
+    from apeiron.layers.layer02_relational.category import ChainComplex, ChainMap
     model = ChainComplexesModelCategory()
     C = ChainComplex([])  # empty complex
     id_map = ChainMap(C, C, [])
@@ -458,7 +457,7 @@ def test_graph_self_supervised_basic():
     pytest.importorskip("torch_geometric")
     import torch
     from torch_geometric.data import Data
-    from apeiron.layers.layer02_relational.graph_self_supervised import (
+    from apeiron.layers.layer02_relational.graph_rl import (
         GCNEncoder, GraphCL, node_dropping
     )
     # Create a simple graph
@@ -485,7 +484,7 @@ def test_graphql_api_import():
 
 def test_graphql_schema_basic():
     pytest.importorskip("strawberry")
-    from apeiron.layers.layer02_relational.graphql_api import schema
+    from apeiron.infrastructure.api.graphql import schema
     # Just check that the schema has query and mutation
     assert hasattr(schema, 'query_type')
     assert hasattr(schema, 'mutation_type')
