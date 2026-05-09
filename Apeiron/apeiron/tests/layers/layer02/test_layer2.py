@@ -74,10 +74,9 @@ def create_test_registry():
 # ============================================================================
 # adjacency_matrix
 # ============================================================================
-
-def test_adjacency_matrix_import():
-    from apeiron.layers.layer02_relational import adjacency_matrix
-    assert hasattr(adjacency_matrix, 'SpectralGraphAnalysis')
+def test_spectral_analysis_import():
+    from apeiron.layers.layer02_relational import spectral
+    assert hasattr(spectral, 'SpectralGraphAnalysis')
 
 def test_spectral_graph_analysis_basic():
     pytest.importorskip("networkx")
@@ -554,12 +553,12 @@ def test_category_verification_basic():
 # ============================================================================
 
 def test_hall_algebra_import():
-    from apeiron.layers.layer02_relational import hall_algebra
+    from apeiron.optional.hall_algebra import hall_algebra
     assert hasattr(hall_algebra, 'HallAlgebra')
     assert hasattr(hall_algebra, 'JordanHallAlgebra')
 
 def test_hall_algebra_basic():
-    from apeiron.layers.layer02_relational.causal_discovery import JordanHallAlgebra, Partition
+    from apeiron.optional.hall_algebra import JordanHallAlgebra, Partition
     hall = JordanHallAlgebra(max_part_size=3)
     basis = hall.basis()
     assert len(basis) > 0
@@ -745,14 +744,14 @@ def test_surface_code_memory_experiment():
 # ============================================================================
 
 def test_quiver_moduli_import():
-    from apeiron.layers.layer02_relational import quiver_moduli
+    from apeiron.optional import quiver_moduli
     assert hasattr(quiver_moduli, 'StabilityCondition')
     assert hasattr(quiver_moduli, 'ModuliSpace')
     assert hasattr(quiver_moduli, 'subrepresentations')
     assert hasattr(quiver_moduli, 'harder_narasimhan_filtration')
 
 def test_stability_condition_basic():
-    from apeiron.layers.layer02_relational.quiver import StabilityCondition
+    from apeiron.optional.quiver_moduli import StabilityCondition
     theta = StabilityCondition({1: 1, 2: -1})
     dim = {1: 2, 2: 2}
     val = theta(dim)
@@ -760,8 +759,8 @@ def test_stability_condition_basic():
 
 def test_subrepresentations():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.quiver import subrepresentations
-    from apeiron.layers.layer02_relational.relations_core import Quiver, QuiverRepresentation
+    from apeiron.optional.quiver_moduli import subrepresentations
+    from apeiron.optional.quiver_moduli import Quiver, QuiverRepresentation
     q = Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
@@ -782,10 +781,10 @@ def test_subrepresentations():
 
 def test_harder_narasimhan_filtration():
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.quiver import (
+    from apeiron.optional.quiver_moduli import (
         StabilityCondition, harder_narasimhan_filtration
     )
-    from apeiron.layers.layer02_relational.relations_core import Quiver, QuiverRepresentation
+    from apeiron.layers.layer02_relational.quiver import Quiver, QuiverRepresentation
     q = Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
@@ -807,10 +806,10 @@ def test_harder_narasimhan_filtration():
 def test_stability_with_nonzero_theta():
     """Test dat een representatie stabiel is met een niet‑triviale theta‑vector."""
     pytest.importorskip("networkx")
-    from apeiron.layers.layer02_relational.quiver import (
+    from apeiron.optional.quiver_moduli import (
         StabilityCondition, is_stable
     )
-    from apeiron.layers.layer02_relational.relations_core import Quiver, QuiverRepresentation
+    from apeiron.layers.layer02_relational.quiver import Quiver, QuiverRepresentation
     q = Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
@@ -831,12 +830,12 @@ def test_stability_with_nonzero_theta():
 # ============================================================================
 
 def test_derived_categories_import():
-    from apeiron.layers.layer02_relational import derived_categories
+    from apeiron.optional import derived_categories
     assert hasattr(derived_categories, 'ChainComplex')
     assert hasattr(derived_categories, 'ChainMap')
 
 def test_chain_complex_basic():
-    from apeiron.layers.layer02_relational.category import ChainComplex
+    from apeiron.optional.derived_categories import ChainComplex
     d1 = np.array([[1,0,0],[0,1,0]])
     d2 = np.array([[1,0],[0,0],[0,1]])
     C = ChainComplex([d1, d2])
@@ -850,13 +849,13 @@ def test_chain_complex_basic():
 # ============================================================================
 
 def test_model_categories_import():
-    from apeiron.layers.layer02_relational import model_categories
+    from apeiron.optional import model_categories
     assert hasattr(model_categories, 'ModelCategory')
     assert hasattr(model_categories, 'ChainComplexesModelCategory')
 
 def test_chain_complexes_model_basic():
-    from apeiron.layers.layer02_relational.category import ChainComplexesModelCategory
-    from apeiron.layers.layer02_relational.category import ChainComplex, ChainMap
+    from apeiron.optional.model_categories import ChainComplexesModelCategory
+    from apeiron.optional.model_categories import ChainComplex, ChainMap
     model = ChainComplexesModelCategory()
     C = ChainComplex([])
     id_map = ChainMap(C, C, [])
@@ -870,7 +869,7 @@ def test_chain_complexes_model_basic():
 def test_graph_self_supervised_import():
     pytest.importorskip("torch")
     pytest.importorskip("torch_geometric")
-    from apeiron.layers.layer02_relational import graph_self_supervised
+    from apeiron.optional import graph_self_supervised
     assert hasattr(graph_self_supervised, 'GraphCL')
     assert hasattr(graph_self_supervised, 'GCNEncoder')
 
@@ -879,7 +878,7 @@ def test_graph_self_supervised_basic():
     pytest.importorskip("torch_geometric")
     import torch
     from torch_geometric.data import Data
-    from apeiron.layers.layer02_relational.hypergraph import (
+    from apeiron.optional.graph_self_supervised import (
         GCNEncoder, GraphCL, node_dropping
     )
     edge_index = torch.tensor([[0,1,1,2],[1,0,2,1]], dtype=torch.long)
@@ -929,7 +928,7 @@ def test_atomicity_aware_dgi_loss():
 
 def test_graphql_api_import():
     pytest.importorskip("strawberry")
-    from apeiron.layers.layer02_relational import graphql_api
+    from apeiron.infrastructure.api import graphql_api
     assert hasattr(graphql_api, 'schema')
 
 def test_graphql_schema_basic():
@@ -944,7 +943,7 @@ def test_graphql_schema_basic():
 # ============================================================================
 
 def test_database_integration_import():
-    from apeiron.layers.layer02_relational import database_integration
+    from apeiron.infrastructure import database_integration
     assert hasattr(database_integration, 'DatabaseManager')
     assert hasattr(database_integration, 'SQLiteBackend')
 
