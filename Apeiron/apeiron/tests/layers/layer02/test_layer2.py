@@ -71,7 +71,6 @@ def create_test_registry():
         }
     }
 
-
 # ============================================================================
 # adjacency_matrix
 # ============================================================================
@@ -560,7 +559,7 @@ def test_hall_algebra_import():
     assert hasattr(hall_algebra, 'JordanHallAlgebra')
 
 def test_hall_algebra_basic():
-    from apeiron.layers.layer02_relational.hall_algebra import JordanHallAlgebra, Partition
+    from apeiron.layers.layer02_relational.causal_discovery import JordanHallAlgebra, Partition
     hall = JordanHallAlgebra(max_part_size=3)
     basis = hall.basis()
     assert len(basis) > 0
@@ -972,7 +971,7 @@ def test_sqlite_backend_basic():
 
 def test_save_load_layer1_registry():
     """Test het opslaan en laden van een Layer 1 registry in database."""
-    from from apeiron.infrastructure.database import SQLiteBackend, DatabaseManager
+    from apeiron.infrastructure.database import SQLiteBackend, DatabaseManager
     backend = SQLiteBackend(":memory:")
     mgr = DatabaseManager(backend)
     import asyncio
@@ -1035,7 +1034,7 @@ def test_temporal_network_basic():
     G2 = nx.erdos_renyi_graph(5, 0.4)
     tn = TemporalNetwork(snapshots=[G1, G2], timestamps=[0.0, 1.0])
     assert len(tn) == 2
-    series = temporal_networks.compute_statistics_series(tn, {
+    series = tn.compute_statistics_series(tn, {
         'num_nodes': lambda g: g.number_of_nodes()
     })
     assert 'num_nodes' in series
