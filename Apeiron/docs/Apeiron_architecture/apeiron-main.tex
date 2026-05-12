@@ -7,7 +7,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[expansion=false]{microtype}
 \usepackage{amsmath, amssymb, amsthm, mathtools}
-\usepackage[backend=biber,style=ieee]{biblatex}
+\usepackage[style=apa, backend=biber]{biblatex}
 \addbibresource{apeiron.bib}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -121,9 +121,14 @@ The author thanks the open-source community for the libraries that made this wor
 \input{Sections/Appendices/B_algorithms.tex}
 \input{Sections/Appendices/C_glossary.tex}
 \input{sections/Appendices/D_axiom_justifications.tex}
+\input{Sections/100_e_governance_example.tex}
+\section{Data and Code Availability}
+\label{sec:availability}
+
+The reference implementation, all experiment scripts, proof scripts (Z3, Lean, Coq), preprocessing pipelines, seeds, and CI artifacts are publicly available in the repository at \url{https://github.com/BeniersD/Apeiron}. The repository contains a Dockerfile and a reproducibility guide with exact commit hashes and instructions to replicate the multi-prover pipeline and the Cluster~I experiments reported in this paper.
 
 \printbibliography
-
 \listoffigures
+
 
 \end{document}

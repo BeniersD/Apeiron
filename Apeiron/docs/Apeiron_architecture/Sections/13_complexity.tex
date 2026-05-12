@@ -27,6 +27,11 @@ Detecting ontogenetic events via persistent homology on a point cloud of $M$ sta
 
 The meta-operator $\meta$ of Layer~17 seeks a fixed point $\meta(\mathcal{F}) \simeq \mathcal{F}$. Iterative refinement of operator families can be viewed as a fixed-point iteration. The convergence rate depends on the spectral radius of the Jacobian of $\meta$. Under suitable compactness and Lipschitz conditions, linear convergence is achievable. The per-iteration cost is dominated by the evaluation of the worldbuilding, normative, and autopoietic operators, which are themselves composite operations spanning multiple lower layers.
 
+\subsection{Idealised Mathematics and Computational Tractability}
+\label{subsec:ideal_vs_real}
+
+Several formal tools employed in the \Apeiron{} Framework---Kolmogorov complexity, Schauder's fixed-point theorem, global Lyapunov spectra---are, in their full generality, incomputable or require infinite-precision arithmetic. The framework acknowledges this gap explicitly: it defines an \emph{ideal mathematical model} that provides existence and consistency guarantees, while the reference implementation operates with computationally tractable proxies (zlib compression, sample-based measure tests, Euler--Maruyama integration). The \texttt{MetaSpecification} records the nature and expected error bounds of each proxy, and the coherence tensor (Layer~10) monitors whether accumulation of approximation errors threatens the global consistency of the system. In this sense, the inescapable tension between ideal mathematics and physical computation is not a weakness of the framework but a design principle: it drives the iterative refinement loops that move the implemented system asymptotically closer to its formal specification.
+
 \subsection{Scalability Strategies}
 
 To maintain tractability for systems of practical interest, the \Apeiron{} Framework incorporates several scalability strategies:
@@ -39,3 +44,14 @@ To maintain tractability for systems of practical interest, the \Apeiron{} Frame
 \end{itemize}
 
 With these strategies, the \Apeiron{} Framework scales to moderate-sized configurations (e.g., $N \le 10^4$ observables) on commodity hardware, and larger deployments can be supported through distributed computing and further approximations.
+
+\subsection{Empirical Resource Footprint of the Cluster~I Implementation}
+\label{subsec:empirical_resources}
+
+To ground the complexity analysis, we profiled the reference implementation on a standard workstation (\texttt{Windows~10/11}, Intel~Core~i7-13700, 64\,GB RAM, no GPU, Python~3.10).
+%
+The atomicity verification of the 47‑observable benchmark (Table~\ref{tab:examples}) completed in \texttt{0.01}\,s with a peak memory of \texttt{0.3}\,MB.
+%
+The full unsupervised clustering pipeline---hypergraph construction, Louvain community detection, and counterfactual ablation for all five visual datasets plus the CIFAR‑10 Omega variant (Table~\ref{tab:all_experiments})---required \texttt{472.7}\,s ($\sim$7.9\,min) and \texttt{1842.5}\,MB ($\sim$1.80\,GB) RAM.
+%
+The complete profiling script and the resulting hardware‑performance logs are included in the repository (\texttt{benchmark/profile\_cluster1\_full.py}).

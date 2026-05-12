@@ -26,6 +26,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="apeiron\profile_cluster1_full.py" />
     <Compile Include="apeiron\benchmark\__init__.py" />
     <Compile Include="apeiron\core\adaptive_thresholds.py" />
     <Compile Include="apeiron\core\dependencies.py" />
@@ -67,7 +68,7 @@
     <Compile Include="apeiron\tests\layers\layer01\unit\test_minimal.py" />
     <Compile Include="apeiron\tests\layers\layer01\unit\__init__.py" />
     <Compile Include="apeiron\tests\layers\layer01\visualization\__init__.py" />
-    <Compile Include="apeiron\run_all_experiments.py" />
+    <Compile Include="apeiron\experiment\run_all_experiments.py" />
     <Compile Include="apeiron\tests\categorical_verification.py" />
     <Compile Include="apeiron\tests\functorial_emergence_verify.py" />
     <Compile Include="apeiron\tests\relational_emergence_experiments.py" />
@@ -110,6 +111,7 @@
     <Compile Include="apeiron\tests\layers\layer01\certificates\generate_self_proof_certificate.py" />
     <Compile Include="apeiron\tests\layers\layer01\archive\run_apeiron_mnist.py" />
     <Compile Include="apeiron\tests\layers\layer01\experiments\run_apeiron_omega_phase1.py" />
+    <Compile Include="apeiron\experiment\__init__.py" />
     <Compile Include="setup.py" />
     <Compile Include="archive\layers\_observables_old.py" />
     <Compile Include="archive\layers\_observables_new.py" />
@@ -836,6 +838,7 @@
     <Folder Include="docs\Apeiron_verification\Sections\" />
     <Folder Include="docs\Articles\" />
     <Folder Include="logs\" />
+    <Folder Include="apeiron\experiment\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

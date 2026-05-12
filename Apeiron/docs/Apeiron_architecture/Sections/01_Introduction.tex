@@ -9,6 +9,8 @@ The \Apeiron{} Framework is a systematic attempt to dismantle this anthropocentr
 
 We recognize a central paradox: any framework designed to transcend human epistemology is necessarily conceived within it, using human language and mathematics. The \Apeiron{} Framework does not claim to have escaped this bootstrap problem; rather, it provides a structured, formal, and layered approach for \emph{iteratively approximating} a perspective less bound by our innate cognitive defaults.
 
+We may think of the human designer, with her mathematical tools and culturally embedded assumptions, as an implicit \textbf{Layer 0}. The framework does not deny this origin; instead, it builds into its architecture explicit mechanisms for detecting and revising anthropocentric biases: the \texttt{MetaSpecification} (Layer~1), the coherence tensor (Layer~10), and the epistemic humility interface (Layer~17) all serve to surface and eventually correct the conceptual residues of Layer~0. In this sense, the framework is not an escape from the human condition but a disciplined, recursive attempt to widen the circle of observation.
+
 \subsection{The Nature of This Contribution}
 \label{subsec:nature_of_contribution}
 
@@ -21,7 +23,7 @@ This document is not a report on a completed, empirically validated system. It i
     \item Invite the broader scientific community to engage with, critique, and extend the framework.
 \end{enumerate}
 
-In this inaugural paper, we fully specify and implement \textbf{Cluster I (Layers 1--4)}, which establishes the irreducible observables, relational emergence, functional organization, and endogenous temporality that form the substrate of the architecture. \textbf{Clusters II--IV (Layers 5--17)} are presented as detailed architectural specifications that define the trajectory for future work. They are not yet implemented, but they are formalized to a degree that makes their theoretical commitments explicit and their empirical predictions falsifiable.
+In this inaugural paper, we provide a complete formal specification and a \emph{reference implementation} of \textbf{Cluster I (Layers 1--4)}—an executable proof‑of‑concept that includes multi‑prover atomicity verification (SymPy, Z3, Lean, Coq) and unsupervised functional cluster discovery on five real‑world image datasets. This distinguishes the framework from purely speculative architectures: the foundational substrate is not only mathematically defined but also computationally operational.
 
 \subsection{Historical and Philosophical Context}
 \label{subsec:context}
@@ -39,7 +41,23 @@ The remainder of this paper is organized as follows. Section~\ref{sec:related} p
 
 Sections~\ref{sec:cluster1}--\ref{sec:cluster4} present the detailed formal specifications of all seventeen layers. For \textbf{Cluster I (Layers 1--4)}, we provide complete mathematical definitions, sublayers, implementation details, and a falsifiable experiment validating the foundational atomicity claims. For \textbf{Clusters II--IV (Layers 5--17)}, we present the architectural specifications, formal definitions where applicable, and the research questions that will guide their future implementation and validation.
 
-Section~\ref{sec:examples} offers concrete examples, Section~\ref{sec:validation} presents the falsifiable experiments conducted
-for Cluster~I---including the multi-axial convergence test and the
-unsupervised relational-structure discovery across five datasets---and
-outlines the experimental roadmap for higher clusters. Section~\ref{sec:complexity} analyzes computational complexity, Section~\ref{sec:ethics} details the embedded ethical framework, Section~\ref{sec:status} explicitly delineates the current state of implementation and the trajectory for future work, and Section~\ref{sec:conclusion} concludes with a call for community engagement.
+Section~\ref{sec:examples} offers concrete examples, Section~\ref{sec:validation} presents the falsifiable experiments conducted for Cluster~I---including the multi-axial convergence test and the unsupervised relational-structure discovery across five datasets---and outlines the experimental roadmap for higher clusters. Section~\ref{sec:complexity} analyzes computational complexity, Section~\ref{sec:ethics} details the embedded ethical framework, Section~\ref{sec:status} explicitly delineates the current state of implementation and the trajectory for future work, and Section~\ref{sec:conclusion} concludes with a call for community engagement.
+
+\bigskip
+\noindent\textbf{Architectural Roadmap.}
+Although the framework comprises seventeen layers, they cluster naturally into four cognitive regimes that progressively relax anthropocentric constraints:
+\begin{itemize}
+    \setlength\itemsep{0pt}
+    \item \textbf{Layers 1--3 (Ontological Base):} Foundational observables, relational hypergraphs, and functional emergence lay the irreducible substrate.
+    \item \textbf{Layers 4--7 (Adaptive Dynamics):} From feedback‑driven adaptation through meta‑learning to emergent self‑awareness, the system learns to orchestrate its own organisation.
+    \item \textbf{Layers 8--13 (Transcending Constraints):} Endogenous temporality, ontological creation, reconciliation, and ontogenesis enable the system to escape its initial vocabulary and to generate genuine novelty.
+    \item \textbf{Layers 14--17 (Worldmaking \& Planetary Integration):} Autopoietic world‑building, responsible morphogenesis, collective transcendence, and absolute integration constitute the cyber‑physical continuum where software becomes matter and ethics becomes architecture.
+\end{itemize}
+This clustering offers the reader a cognitive map before entering the detailed layer‑by‑layer exposition.
+
+\bigskip
+\noindent\textbf{A Call to the Community.}\\
+
+\bigskip
+\noindent\textbf{A Call to the Community.}\\
+This document is not a final report; it is the opening statement of a research programme. We invite the scientific community to treat the specifications as hypotheses, to replicate the experiments, to formalize the functorial translations in interactive theorem provers, and to propose alternative instantiations of the higher layers. The Apeiron Framework is offered as a structured invitation, not a closed doctrine---an architecture designed to evolve through critical engagement and collaborative inquiry.

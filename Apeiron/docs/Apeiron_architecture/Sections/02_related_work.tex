@@ -35,11 +35,26 @@ The present paper is not a report on a completed, empirically validated system. 
     \item \textbf{Friston's Free Energy Principle} \cite{friston2010} began as a theoretical proposal in neuroscience, postulating that biological systems minimize variational free energy. Over more than a decade, this conceptual framework has expanded into a broad research programme spanning neuroscience, psychiatry, and even artificial agent design, demonstrating how a well-articulated theoretical vision can progressively accumulate empirical support.
 \end{itemize}
 
-The \Apeiron{} Framework follows in this tradition. Like these works, it aims to establish a coherent conceptual and formal foundation---in this case, for non-anthropocentric knowledge genesis---upon which future theoretical and empirical work can build. The present paper fully specifies and implements the foundational
-Layer~1, provides prototype implementations of Layers~2--3, and validates
-Cluster~I on five image datasets; Clusters~II--IV are presented as
-detailed architectural specifications that define the trajectory for the
-research programme.
+The \Apeiron{} Framework follows in this tradition. Like these works, it aims to establish a coherent conceptual and formal foundation---in this case, for non-anthropocentric knowledge genesis---upon which future theoretical and empirical work can build. Table~\ref{tab:comparison_precedents} summarizes the comparative scope of these seminal research programme papers and highlights the distinctive contribution of \Apeiron{}.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of \Apeiron{} with foundational research programme papers.}
+\label{tab:comparison_precedents}
+\begin{tabular}{p{1.6cm} p{2.2cm} p{2.2cm} p{2.2cm} p{2.2cm}}
+\toprule
+\textbf{Dimension} & \textbf{G\"odel Machine} & \textbf{AIXI} & \textbf{Free Energy Principle} & \textbf{Apeiron} \\
+\midrule
+Core concept & Self-referential code rewriting & Optimal reward-based agent & Variational free energy minimization & Autonomous knowledge genesis from first principles \\
+Ontology & Monolithic (single agent) & Fixed (reward signal) & Hierarchical generative models & Layered, with functorial translations (17 layers) \\
+Time & External & External & Implicit in dynamics & Endogenous, emergent \\
+Ethics & Not addressed & Via reward specification & Via priors & Embedded as architectural primitives (Layers 15--17) \\
+Empirical status & Theoretical construct & Incomputable, approximations exist & Neuroscientific & Cluster I implemented and validated; Clusters II--IV specified \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Recent developments.} The framework also engages with contemporary advances in open-ended learning \cite{stanley2019}, foundation models, and categorical deep learning \cite{gavranovic2024}. While these approaches push the boundaries of human-designed AI, \Apeiron{} systematically removes the human from the loop of category formation, aiming to construct a truly non-anthropocentric observer.
 
 \subsection{Contrast with Deep Learning Paradigms}
 \label{subsec:contrast}

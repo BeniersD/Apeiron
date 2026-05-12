@@ -131,6 +131,12 @@ reproducible across five visual domains.  All scripts and logs are
 available in the repository under
 \texttt{run\_all\_experiments.py}.
 
+\noindent\textbf{Interpretive Remarks.}
+A particularly striking result is the Fashion-MNIST dataset, where the top Apeiron cluster exhibits a counterfactual ablation drop of 61.0\%, nearly capturing the full predictive power of the model---indicating that a single emergent functional entity can dominate the system's understanding of the domain.  The consistent outperformance of Apeiron over standard unsupervised baselines on Kuzushiji-MNIST underlines that the method is not tied to Western cultural symbols.  The modest gains on CIFAR-10 (grayscale) are expected given the low number of observables in that condition; the Omega variant demonstrates that enriching the feature space with biologically inspired filters (Gabor) improves functional discovery.
+
+\noindent\textbf{Limitations of the current validation.}
+All experiments operate on static images; the framework's ability to handle streaming, temporal, or multimodal data remains to be tested.  The computational cost of hypergraph construction limits the current datasets to a few thousand samples per condition.  Furthermore, the counterfactual ablation currently uses a simple classifier as a surrogate for the system-level objective; a fully endogenous performance function $P_k$ (as specified in Layer~5) would provide a more faithful measure of functional significance.  These limitations define the immediate agenda for extending the validation to larger, more complex environments.
+
 \subsection{Hypothesis 3: Layer 13 Ontogenesis}
 \label{subsec:validation-h3}
 

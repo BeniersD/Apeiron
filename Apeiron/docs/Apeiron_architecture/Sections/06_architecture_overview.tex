@@ -1,3 +1,4 @@
+% Bestand: 06_architecture_overview.tex
 \section{The \Apeiron{} Architecture: Overview}
 \label{sec:architecture_overview}
 
@@ -5,19 +6,26 @@ The \Apeiron{} Framework is organized into seventeen distinct but interpenetrati
 
 \begin{figure}[htbp]
     \centering
-    \adjustbox{width=\textwidth,center}{
+    \adjustbox{max width=\textwidth, max height=\textheight, keepaspectratio, center}{
         \begin{tikzpicture}[
-            layer/.style={rectangle, draw=black, fill=blue!10, minimum width=8cm, minimum height=0.7cm, align=center, font=\small},
-            cluster/.style={rectangle, draw=black, dashed, fill=none, inner sep=0.3cm},
+            scale=0.85, transform shape,
+            layer/.style={rectangle, draw=black, fill=blue!10, minimum width=7.5cm, minimum height=0.5cm, align=center, font=\footnotesize},
+            cluster/.style={rectangle, draw=black, dashed, fill=none, inner sep=0pt},
             arrow/.style={-{Stealth}, thick, color=gray},
         ]
-    % Clusters
-    \node[cluster, fit={(-4.5,0) (4.5,-3.5)}, label=above:{\textbf{Cluster I: Substrate \& Emergence}}] (c1) {};
-    \node[cluster, fit={(-4.5,-4.5) (4.5,-7.5)}, label=above:{\textbf{Cluster II: Adaptive Intelligence}}] (c2) {};
-    \node[cluster, fit={(-4.5,-8.5) (4.5,-14.5)}, label=above:{\textbf{Cluster III: Ontological Fluidity}}] (c3) {};
-    \node[cluster, fit={(-4.5,-15.5) (4.5,-19.5)}, label=above:{\textbf{Cluster IV: World-Making \& Governance}}] (c4) {};
+    % Clusters (zonder label)
+    \node[cluster, fit={(-4.5,0) (4.5,-3.5)}] (c1) {};
+    \node[cluster, fit={(-4.5,-4.5) (4.5,-7.5)}] (c2) {};
+    \node[cluster, fit={(-4.5,-8.5) (4.5,-14.5)}] (c3) {};
+    \node[cluster, fit={(-4.5,-15.5) (4.5,-19.5)}] (c4) {};
+
+    % Labels apart, boven de clusters
+    \node[above=5pt of c1, font=\bfseries] {Cluster I: Substrate \& Emergence};
+    \node[above=5pt of c2, font=\bfseries] {Cluster II: Adaptive Intelligence};
+    \node[above=5pt of c3, font=\bfseries] {Cluster III: Ontological Fluidity};
+    \node[above=5pt of c4, font=\bfseries] {Cluster IV: World-Making \& Governance};
     
-    % Layers
+    % Layers (ongewijzigd)
     \node[layer] at (0,0) (l1) {Layer 1: Foundational Observables (Epistemic Singularity)};
     \node[layer] at (0,-1) (l2) {Layer 2: Relational Emergence};
     \node[layer] at (0,-2) (l3) {Layer 3: Functional Emergence};
@@ -63,3 +71,22 @@ The \Apeiron{} Framework is organized into seventeen distinct but interpenetrati
     \item[Cluster III: Ontological Fluidity (Layers 8--13)] enables the system to generate new ontological categories, reconcile incommensurable frameworks, and produce genuine novelty.
     \item[Cluster IV: World-Making \& Governance (Layers 14--17)] enables the system to generate self-sustaining worlds, effect material change under ethical governance, and achieve collective transcendence.
 \end{description}
+
+\begin{table}[htbp]
+\centering
+\caption{Implementation status of the seventeen layers.}
+\label{tab:layer_status}
+\begin{tabular}{c c c}
+\toprule
+\textbf{Layer(s)} & \textbf{Status} & \textbf{Key Artefact} \\
+\midrule
+1--4 & Implemented \& validated & Multi-prover atomicity certificates, functional clusters on 5 datasets \\
+5--7 & Specified & Formal operators $\Omega_k$, $\mathcal{H}$, $\Psi$, $\Gamma$ \\
+8--13 & Specified & Categorical functors, reconciliation spans, persistence homology monitoring \\
+14--17 & Specified & Meta-operator $\mathcal{M}$, $\varepsilon$-reversibility contracts, ethical scenario \\
+\bottomrule
+\end{tabular}
+\end{table}
+For Layers~5--17, the descriptions below constitute formal \emph{hypotheses} and falsifiable predictions; they are not yet empirically validated. Where the text states that “the system can” or “the layer enables”, it should be understood as “the layer is designed to enable”.
+
+\noindent\textbf{Why seventeen layers?} Each layer introduces a qualitatively novel operator that cannot be reduced to a combination of lower layers. The boundaries are drawn where the axiomatic commitments change: for example, Layer~8 endogenises time (Axiom~5), while Layer~13 detects the topological signature of ontogenesis (Axiom~6). Without this fine-grained articulation, the framework would conflate creation with evaluation, or temporality with novelty, losing the analytical precision required for falsifiable experimentation and formal verification. The number seventeen thus reflects the minimal decomposition necessary to satisfy all twelve axioms while keeping each layer computationally tractable and semantically distinct.

@@ -1,0 +1,32 @@
+\begin{table}[htbp]
+\centering
+\caption{Clustering performance across datasets. Modularity $Q$ and top cluster ablation drop (\%).}
+\label{tab:all_experiments}
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Dataset} & \textbf{Method} & \textbf{Modularity $Q$} & \textbf{Top Ablation Drop (\%)} \\
+\midrule
+digits & k-means & 0.17 & $12.7 \pm 1.0$ \\
+digits & Spectral & 0.39 & $42.2 \pm 2.9$ \\
+digits & Apeiron & 0.46 & $38.8 \pm 2.5$ \\
+\midrule
+mnist & k-means & 0.18 & $14.2 \pm 1.3$ \\
+mnist & Spectral & 0.10 & $64.3 \pm 1.3$ \\
+mnist & Apeiron & 0.32 & $36.8 \pm 0.4$ \\
+\midrule
+fashion & k-means & 0.13 & $19.4 \pm 2.1$ \\
+fashion & Spectral & 0.18 & $43.6 \pm 3.3$ \\
+fashion & Apeiron & 0.24 & $62.1 \pm 2.2$ \\
+\midrule
+kmnist & k-means & 0.23 & $12.0 \pm 0.8$ \\
+kmnist & Spectral & 0.27 & $18.9 \pm 2.4$ \\
+kmnist & Apeiron & 0.37 & $35.3 \pm 1.5$ \\
+\midrule
+cifar10_gray & k-means & 0.13 & $5.4 \pm 0.3$ \\
+cifar10_gray & Spectral & 0.13 & $6.2 \pm 1.9$ \\
+cifar10_gray & Apeiron & 0.23 & $9.1 \pm 1.9$ \\
+\midrule
+cifar10_omega & Apeiron & 0.28 & $10.3 \pm 0.9$ \\
+\bottomrule
+\end{tabular}
+\end{table}

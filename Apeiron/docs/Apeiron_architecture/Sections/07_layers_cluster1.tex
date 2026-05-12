@@ -1,6 +1,10 @@
 \section{Cluster I: Substrate \& Emergence (Layers 1--4)}
 \label{sec:cluster1}
 
+\begin{tcolorbox}[colback=green!5, colframe=green!50, title=Status: Partially Implemented]
+Layer~1 is fully implemented, formally verified, and empirically validated. Layer~2 (hypergraph, DensityField) has a prototype implementation; Layer~3 (functional clustering) is partially implemented with Louvain community detection; Layer~4 (SDE dynamics) is implemented for single entities, with multi-entity event-driven simulation under development. All formal specifications are complete.
+\end{tcolorbox}
+
 The first cluster establishes the foundational observables and the initial dynamics by which structure and function emerge from elementary interactions. These four layers instantiate Axioms~\ref{ax:irred}--\ref{ax:emergence} and provide the substrate upon which all higher cognitive capacities are built.
 
 %==============================================
@@ -117,7 +121,7 @@ If the SMT solver returns \texttt{unsat}, the observable is certified as Boolean
 \textbf{Computational Complexity.} The measure-theoretic test samples subsets to bound complexity at $\mathcal{O}(\text{max\_subsets})$, with exhaustive enumeration for $|o| \le 20$. The information-theoretic test runs in $\mathcal{O}(n)$ for input length $n$. Boolean and categorical tests are $\mathcal{O}(1)$ for typical scalar values. Caching of atomicity scores with dirty-flag invalidation avoids redundant recomputation.
 
 \textbf{Axioms satisfied:} Axioms~\ref{ax:irred}, \ref{ax:multi}, \ref{ax:observer}. \\
-\textbf{Research questions addressed:} RQ1, RQ2.
+\textbf{Research questions addressed:} RQ1.
 
 %==============================================
 \subsection{Layer 2: Relational Emergence}

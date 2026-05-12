@@ -1,0 +1,21 @@
+Normalised Mutual Information (NMI) tussen menselijke labels
+en sample-clustering afgeleid uit feature-clusters.
+
+digits: Apeiron NMI = 0.552
+digits: k-means NMI = 0.570
+digits: Spectral NMI = 0.542
+mnist: Apeiron NMI = 0.302
+mnist: k-means NMI = 0.382
+mnist: Spectral NMI = 0.244
+fashion: Apeiron NMI = 0.423
+fashion: k-means NMI = 0.457
+fashion: Spectral NMI = 0.447
+kmnist: Apeiron NMI = 0.264
+kmnist: k-means NMI = 0.349
+kmnist: Spectral NMI = 0.380
+cifar10_gray: Apeiron NMI = 0.069
+cifar10_gray: k-means NMI = 0.072
+cifar10_gray: Spectral NMI = 0.070
+cifar10_omega: Apeiron NMI = 0.061
+cifar10_omega: k-means NMI = N/A
+cifar10_omega: Spectral NMI = N/A
