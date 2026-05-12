@@ -358,6 +358,22 @@ The reference implementation will provide:
 \end{itemize}
 
 \textbf{Computational Complexity.} The cost of applying $\meta$ is dominated by the cost of evaluating and aligning the component operators, which themselves are composite operations spanning all lower layers. This is the most computationally intensive layer. In practice, $\meta$ will be applied infrequently, as a kind of ``system-wide reflection'' event.
+\paragraph{Illustrative miniature scenario.}
+Consider two world‑models, $W_1$ and $W_2$, generated from
+complementary sensor modalities (e.g., lidar and vision).  Each has
+its own ontological category $\Cat_{W_i}$, dynamical law
+$\mathcal{D}_{W_i}$, and normative scaffold $\mathcal{N}_{W_i}$.
+The meta‑operator $\mathcal{M}$ aligns the shared “object persistence”
+sub‑structure by computing a bridge category
+$\Cat_{\text{bridge}}$ (Layer~12) and integrating the two normative
+scaffolds into a Pareto‑optimal compromise $\mathcal{N}^*$ that
+preserves both safety constraints (Layer~15).  After a small number
+of iterations, $\mathcal{M}(\mathcal{F})\simeq\mathcal{F}$ is
+reached, yielding a unified world‑model that respects both sensory
+perspectives without collapsing their differences.  This scenario
+demonstrates how absolute integration is not a fusion into a single
+monolithic ontology but a principled, reversible coordination of
+incommensurable views.
 
 \textbf{Axioms satisfied:} All twelve axioms converge here, with particular emphasis on Axioms~\ref{ax:convergence}, \ref{ax:reversibility}, and \ref{ax:humility}. \\
 \textbf{Research questions addressed:} RQ15.

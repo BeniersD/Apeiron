@@ -2,67 +2,80 @@
 \section{The \Apeiron{} Architecture: Overview}
 \label{sec:architecture_overview}
 
-The \Apeiron{} Framework is organized into seventeen distinct but interpenetrating layers. Rather than a strict hierarchy, the layers constitute a \emph{dynamic field of relational densities}, where entities can exist across multiple layers simultaneously, outside linear temporality, and in parallel frames of interpretation. The layers are grouped into four conceptual clusters, each representing a qualitative shift in the system's capacity for abstraction and self-organization (see Figure~\ref{fig:layers}).
+The \Apeiron{} Framework is organized into seventeen distinct but interpenetrating layers. Rather than a strict hierarchy, the layers constitute a \emph{dynamic field of relational densities}, where entities can exist across multiple layers simultaneously, outside linear temporality, and in parallel frames of interpretation. The layers are grouped into four conceptual clusters, each representing a qualitative shift in the system's capacity for abstraction and self-organization (see Figure~\ref{fig:full_architecture}).
 
 \begin{figure}[htbp]
-    \centering
-    \adjustbox{max width=\textwidth, max height=\textheight, keepaspectratio, center}{
-        \begin{tikzpicture}[
-            scale=0.85, transform shape,
-            layer/.style={rectangle, draw=black, fill=blue!10, minimum width=7.5cm, minimum height=0.5cm, align=center, font=\footnotesize},
-            cluster/.style={rectangle, draw=black, dashed, fill=none, inner sep=0pt},
-            arrow/.style={-{Stealth}, thick, color=gray},
-        ]
-    % Clusters (zonder label)
-    \node[cluster, fit={(-4.5,0) (4.5,-3.5)}] (c1) {};
-    \node[cluster, fit={(-4.5,-4.5) (4.5,-7.5)}] (c2) {};
-    \node[cluster, fit={(-4.5,-8.5) (4.5,-14.5)}] (c3) {};
-    \node[cluster, fit={(-4.5,-15.5) (4.5,-19.5)}] (c4) {};
-
-    % Labels apart, boven de clusters
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tikzpicture}[
+      layer/.style={rectangle, draw=black, fill=blue!8, minimum width=7.5cm, minimum height=0.5cm, align=center, font=\footnotesize},
+      cluster/.style={rectangle, draw=black, dashed, fill=none, inner sep=0pt},
+      arrow/.style={-{Stealth}, thick, color=gray},
+      functor/.style={-{Stealth}, thick, color=red, dashed}
+    ]
+    % Clusters
+    \node[cluster, fit={(-4.5,1) (4.5,-4)}] (c1) {};
+    \node[cluster, fit={(-4.5,-5) (4.5,-8)}] (c2) {};
+    \node[cluster, fit={(-4.5,-9) (4.5,-15)}] (c3) {};
+    \node[cluster, fit={(-4.5,-16) (4.5,-20)}] (c4) {};
     \node[above=5pt of c1, font=\bfseries] {Cluster I: Substrate \& Emergence};
     \node[above=5pt of c2, font=\bfseries] {Cluster II: Adaptive Intelligence};
     \node[above=5pt of c3, font=\bfseries] {Cluster III: Ontological Fluidity};
     \node[above=5pt of c4, font=\bfseries] {Cluster IV: World-Making \& Governance};
     
-    % Layers (ongewijzigd)
-    \node[layer] at (0,0) (l1) {Layer 1: Foundational Observables (Epistemic Singularity)};
-    \node[layer] at (0,-1) (l2) {Layer 2: Relational Emergence};
-    \node[layer] at (0,-2) (l3) {Layer 3: Functional Emergence};
-    \node[layer] at (0,-3) (l4) {Layer 4: Dynamic Adaptation \& Feedback};
+    % Layers
+    \node[layer] at (0,1)  (l1) {Layer 1: Epistemic Singularity};
+    \node[layer] at (0,0)  (l2) {Layer 2: Relational Hypergraph};
+    \node[layer] at (0,-1) (l3) {Layer 3: Functional Clusters};
+    \node[layer] at (0,-2) (l4) {Layer 4: Endogenous Dynamics};
+    \node[layer] at (0,-3) (l5) {Layer 5: Autonomous Optimization};
+    \node[layer] at (0,-4) (l6) {Layer 6: Meta-Learning};
+    \node[layer] at (0,-5) (l7) {Layer 7: Global Self-Awareness};
+    \node[layer] at (0,-6) (l8) {Layer 8: Temporality \& Flux};
+    \node[layer] at (0,-7) (l9) {Layer 9: Ontological Creation};
+    \node[layer] at (0,-8) (l10){Layer 10: Meta-Ontological Evaluation};
+    \node[layer] at (0,-9) (l11){Layer 11: Adaptive Contextualization};
+    \node[layer] at (0,-10)(l12){Layer 12: Ontological Reconciliation};
+    \node[layer] at (0,-11)(l13){Layer 13: Ontogenesis of Novelty};
+    \node[layer] at (0,-12)(l14){Layer 14: Autopoietic Worldbuilding};
+    \node[layer] at (0,-13)(l15){Layer 15: Responsible Morphogenesis};
+    \node[layer] at (0,-14)(l16){Layer 16: Collective Cognition};
+    \node[layer] at (0,-15)(l17){Layer 17: Absolute Integration};
     
-    \node[layer] at (0,-4.5) (l5) {Layer 5: Autonomous Optimization \& Learning};
-    \node[layer] at (0,-5.5) (l6) {Layer 6: Meta-Learning \& Cross-Layer Integration};
-    \node[layer] at (0,-6.5) (l7) {Layer 7: Emergent Self-Awareness \& Global Synthesis};
-    
-    \node[layer] at (0,-8.5) (l8) {Layer 8: Temporality \& Flux};
-    \node[layer] at (0,-9.5) (l9) {Layer 9: Ontological Creation};
-    \node[layer] at (0,-10.5) (l10) {Layer 10: Global Meta-Ontological Evaluation};
-    \node[layer] at (0,-11.5) (l11) {Layer 11: Adaptive Meta-Contextualization};
-    \node[layer] at (0,-12.5) (l12) {Layer 12: Transdimensional Integration \& Reconciliation};
-    \node[layer] at (0,-13.5) (l13) {Layer 13: Ontogenesis of Novelty};
-    
-    \node[layer] at (0,-15.5) (l14) {Layer 14: Autopoietic Worldbuilding};
-    \node[layer] at (0,-16.5) (l15) {Layer 15: Responsible Recursive Morphogenesis};
-    \node[layer] at (0,-17.5) (l16) {Layer 16: Transcendence \& Collective Cognition};
-    \node[layer] at (0,-18.5) (l17) {Layer 17: Absolute Integration};
-    
-    % Arrows between layers
+    % Solid forward arrows
     \foreach \i in {1,...,16} {
         \pgfmathtruncatemacro{\j}{\i+1}
-        \draw[arrow] (l\i.south) -- (l\j.north);
+        \draw[arrow] (l\i.south) ++(0,-0.3) -- ++(0,-0.4) coordinate (mid);
+        \draw[arrow] (mid) -- (l\j.north);
     }
     
-    % Bidirectional arrows within clusters
-    \draw[arrow, dashed] (l4.east) -- ++(1.5,0) |- (l1.east);
-    \draw[arrow, dashed] (l7.east) -- ++(1.5,0) |- (l5.east);
-    \draw[arrow, dashed] (l13.east) -- ++(1.5,0) |- (l8.east);
-    \draw[arrow, dashed] (l17.east) -- ++(1.5,0) |- (l14.east);
+    % Functor arrows (Layer translations)
+    \draw[functor] (l1.east) ++(0.5,0) -- ++(1,0) |- (l2.east) node[midway, right] {\(F_{1,2}\)};
+    \draw[functor] (l2.east) ++(0.5,0) -- ++(1,0) |- (l3.east) node[midway, right] {\(F_{2,3}\)};
+    \draw[functor] (l3.east) ++(0.5,0) -- ++(1,0) |- (l4.east) node[midway, right] {\(F_{3,4}\)};
+    \draw[functor] (l4.east) ++(0.5,0) -- ++(1,0) |- (l5.east) node[midway, right] {\(F_{4,5}\)};
+    \draw[functor] (l5.east) ++(0.5,0) -- ++(1,0) |- (l6.east) node[midway, right] {\(F_{5,6}\)};
+    \draw[functor] (l6.east) ++(0.5,0) -- ++(1,0) |- (l7.east) node[midway, right] {\(F_{6,7}\)};
+    \draw[functor] (l7.east) ++(0.5,0) -- ++(1,0) |- (l8.east) node[midway, right] {\(F_{7,8}\)};
+    \draw[functor] (l8.east) ++(0.5,0) -- ++(1,0) |- (l9.east) node[midway, right] {\(F_{8,9}\)};
+    \draw[functor] (l9.east) ++(0.5,0) -- ++(1,0) |- (l10.east)node[midway, right] {\(F_{9,10}\)};
+    \draw[functor] (l10.east)++(0.5,0) -- ++(1,0) |- (l11.east)node[midway, right] {\(F_{10,11}\)};
+    \draw[functor] (l11.east)++(0.5,0) -- ++(1,0) |- (l12.east)node[midway, right] {\(F_{11,12}\)};
+    \draw[functor] (l12.east)++(0.5,0) -- ++(1,0) |- (l13.east)node[midway, right] {\(F_{12,13}\)};
+    \draw[functor] (l13.east)++(0.5,0) -- ++(1,0) |- (l14.east)node[midway, right] {\(F_{13,14}\)};
+    \draw[functor] (l14.east)++(0.5,0) -- ++(1,0) |- (l15.east)node[midway, right] {\(F_{14,15}\)};
+    \draw[functor] (l15.east)++(0.5,0) -- ++(1,0) |- (l16.east)node[midway, right] {\(F_{15,16}\)};
+    \draw[functor] (l16.east)++(0.5,0) -- ++(1,0) |- (l17.east)node[midway, right] {\(F_{16,17}\)};
     
+    % Feedback loops (dashed)
+    \draw[arrow, dashed] (l7.west)  ++(-0.5,0) -- ++(-1,0) |- (l1.west);
+    \draw[arrow, dashed] (l13.west) ++(-0.5,0) -- ++(-1,0) |- (l8.west);
+    \draw[arrow, dashed] (l17.west) ++(-0.5,0) -- ++(-1,0) |- (l14.west);
+    \draw[arrow, dashed] (l10.west) ++(-0.5,0) -- ++(-1,0) |- (l4.west);
     \end{tikzpicture}
-    }
-    \caption{The seventeen layers of the \Apeiron{} Framework, grouped into four conceptual clusters. Solid arrows indicate the primary flow of emergence; dashed arrows represent feedback and cross-layer influence.}
-    \label{fig:layers}
+  }
+  \caption{Complete seventeen‑layer architecture with translation functors (red dashed) and cross‑layer feedback loops (gray dashed).}
+  \label{fig:full_architecture}
 \end{figure}
 
 \begin{description}[font=\normalfont\bfseries, leftmargin=3cm, style=nextline]

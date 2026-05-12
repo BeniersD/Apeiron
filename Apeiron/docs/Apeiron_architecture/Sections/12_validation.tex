@@ -171,6 +171,22 @@ cifar10\_omega & 0.061 & – & – \\
 \bottomrule
 \end{tabular}
 \end{table}
+\noindent\textbf{Implications for the central research question.}
+The systematic pattern of low NMI combined with high modularity and
+substantial ablation impact directly addresses the overarching research
+question (Section~\ref{subsec:main_rq}): a computational system can
+autonomously construct a body of knowledge that is functionally potent
+while being less dependent on human categories.  The discovered feature
+clusters are not merely rediscovering human class boundaries; they
+encode a complementary, signal‑driven organisation of the visual domain
+that the ablation experiments prove to be causally relevant.  The
+divergence is most pronounced on CIFAR‑10, where the NMI drops below
+0.07—the Apeiron hypergraph effectively partitions the images along
+texture and contrast dimensions that are orthogonal to the ten human‑
+defined object classes.  This demonstrates that the framework can
+produce a genuinely \emph{non‑anthropocentric} perspective: a structured,
+verifiable, and predictive representation of the world that differs
+measurably from the one humans have imposed.
 
 Apeiron achieves the lowest NMI on every dataset except digits,
 indicating that its discovered functional clusters deviate most from
@@ -193,6 +209,34 @@ The current pilot demonstrates that the Apeiron pipeline can
 simultaneously yield high functional coherence and low alignment with
 human categories—a necessary condition for a genuinely
 non‑anthropocentric observer.
+
+\subsection{Illustrative Example: A Non‑Anthropocentric Functional Cluster on CIFAR‑10}
+\label{subsec:non_anthro_example}
+
+To provide a qualitative intuition for the type of structure that yields
+low NMI yet high functional coherence, we inspected the most prominent
+feature cluster discovered by Apeiron on the CIFAR‑10 grayscale dataset.
+Figure~\ref{fig:cifar_cluster_example} displays nine randomly chosen
+images where this cluster is strongly activated, alongside nine images
+where it is largely absent.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/cifar_cluster_example.pdf}
+  \caption{Left block: images where the most active Apeiron feature cluster
+           is prominent. Right block: images where it is scarcely present.
+           The cluster captures high‑contrast textures that are orthogonal
+           to the ten human‑defined object classes, explaining the low NMI
+           (0.069) while retaining substantial predictive power (ablation
+           drop $9.1\%$).}
+  \label{fig:cifar_cluster_example}
+\end{figure}
+
+This cluster primarily responds to background textures and luminance
+gradients that recur across classes, illustrating how Apeiron can
+isolate functionally potent structures that are not aligned with
+human semantic categories---a concrete operationalisation of
+non‑anthropocentric observation.
 
 \subsection{Hypothesis 3: Layer 13 Ontogenesis}
 \label{subsec:validation-h3}

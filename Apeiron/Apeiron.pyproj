@@ -26,6 +26,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="apeiron\experiment\case_study_cifar10.py" />
     <Compile Include="apeiron\profile_cluster1_full.py" />
     <Compile Include="apeiron\benchmark\__init__.py" />
     <Compile Include="apeiron\core\adaptive_thresholds.py" />

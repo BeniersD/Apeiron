@@ -1,0 +1,22 @@
+\subsection{Theoretical Guarantees of the Architectural Layers}
+\label{subsec:guarantees}
+
+Each layer of the \Apeiron{} Framework provides a specific formal guarantee under its stated axioms; together they form a cumulative warranty of the system's epistemic soundness.
+
+\begin{description}
+  \item[Layer~1 (Atomicity).] Every foundational observable provably admits no non‑trivial decomposition (Axiom~\ref{ax:irred}). Convergence across Boolean, measure, categorical and information frameworks (Axiom~\ref{ax:multi}) guarantees robustness against single‑formalism blind spots. Propositions~\ref{prop:bool-atom}--\ref{prop:info-atom} establish atomicity for canonical values; the multi‑prover pipeline certifies them in Z3, Lean and Coq.
+
+  \item[Layer~2 (Relational Hypergraph).] The hypergraph construction (Theorem~\ref{thm:spectral}) guarantees that a giant connected component emerges when relational density exceeds a critical threshold. Excess entropy (Proposition~\ref{prop:excess_entropy}) certifies that the whole predicts its future better than the sum of its parts, a rigorous signature of weak emergence \cite{bedau1997}.
+
+  \item[Layer~3 (Functional Clusters).] The ablation test (Proposition~\ref{prop:ablation}) provides a statistical guarantee that a cluster carries genuine functional information: the observed drop in system performance would occur by chance only at a controlled $\alpha$ level. Functional equivalence classes (Definition~7.13) ensure multiple realizability and compress the description length of the system.
+
+  \item[Layer~4 (Dynamics).] The SDE formulation guarantees convergence to a unique stationary distribution under strong convexity (Langevin diffusion, Section~7.4.2). Lyapunov exponents provide a certified indicator of stability or chaos; bifurcation analysis (Lemma~7.18, Theorem~\ref{thm:bifurcation}) predicts the onset of oscillatory regimes.
+
+  \item[Layers~5--7 (Optimization \& Synthesis).] Optimization operators (Layer~5) enjoy sub‑linear regret bounds (Theorem~\ref{thm:bo_regret}) and convex convergence guarantees (Proposition~\ref{prop:sgd_convergence}). The meta‑learner (Layer~6) offers generalization bounds that degrade gracefully with task dissimilarity (Proposition~\ref{prop:maml_bound}). The synthesis operator (Layer~7) compresses cross‑layer state with minimal loss; under convexity it possesses a unique fixed point (Proposition~\ref{prop:synthesis_existence}), and soft guidance remains stable for small coupling (Theorem~\ref{thm:guidance_stability}).
+
+  \item[Layers~8--13 (Ontological Fluidity).] Temporal invariances are fixed points of the flux operator with detectable early‑warning signals (Layer~8). Ontological creations are certified as genuinely novel via the non‑retraction criterion (Theorem~\ref{thm:irreducibility}). Global coherence is monitored by a tensor that is monotonic under refinement (Layer~10), while contextualization preserves consistency through a sheaf condition (Layer~11). Reconciliation via spans (Layer~12) conserves internal distinctions (Theorem~\ref{thm:conservativity}), and persistent homology provides statistically reliable precursors of ontogenetic events (Theorem~\ref{thm:early_warning}).
+
+  \item[Layers~14--17 (World‑Making \& Governance).] Autopoietic closure guarantees self‑maintenance of world‑models above a regeneration threshold (Layer~14). Morphogenetic actions are $\varepsilon$‑reversible by default; invariant contracts guarantee forward safety of the global state (Layer~15). Super‑additive collective capacity is achievable under connectivity and diversity (Theorem~\ref{thm:superadditivity}, Layer~16). Finally, the meta‑operator $\mathcal{M}$ possesses a unique fixed point whenever it constitutes a contraction mapping (Theorem~\ref{thm:fixed_point}), providing a mathematical foundation for absolute integration.
+\end{description}
+
+These guarantees are not simultaneously active in the current reference implementation (Clusters~II–IV are specified but not yet implemented). They constitute the formal backbone of the research programme and define the success criteria for progressive validation.
