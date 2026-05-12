@@ -45,13 +45,29 @@ To maintain tractability for systems of practical interest, the \Apeiron{} Frame
 
 With these strategies, the \Apeiron{} Framework scales to moderate-sized configurations (e.g., $N \le 10^4$ observables) on commodity hardware, and larger deployments can be supported through distributed computing and further approximations.
 
+% =======================================================
+% EMPIRICAL RESOURCE FOOTPRINT – definitief met jouw JSON
+% =======================================================
 \subsection{Empirical Resource Footprint of the Cluster~I Implementation}
 \label{subsec:empirical_resources}
 
-To ground the complexity analysis, we profiled the reference implementation on a standard workstation (\texttt{Windows~10/11}, Intel~Core~i7-13700, 64\,GB RAM, no GPU, Python~3.10).
+To ground the complexity analysis, we profiled the reference
+implementation on a commodity workstation:
+\emph{Windows~10, Intel\textsuperscript{\textregistered} Core\textsuperscript{\texttrademark} i7-8750H
+(6 physical / 12 logical cores, 2.2\,GHz base), 32\,GB DDR4‑2666 RAM,
+no GPU used}.
 %
-The atomicity verification of the 47‑observable benchmark (Table~\ref{tab:examples}) completed in \texttt{0.01}\,s with a peak memory of \texttt{0.3}\,MB.
+The atomicity verification of the 47‑observable benchmark
+(Table~\ref{tab:examples}) completed in \texttt{0.01}\,s with a peak
+memory of \texttt{0.3}\,MB.
 %
-The full unsupervised clustering pipeline---hypergraph construction, Louvain community detection, and counterfactual ablation for all five visual datasets plus the CIFAR‑10 Omega variant (Table~\ref{tab:all_experiments})---required \texttt{472.7}\,s ($\sim$7.9\,min) and \texttt{1842.5}\,MB ($\sim$1.80\,GB) RAM.
+The full unsupervised clustering pipeline---hypergraph construction,
+Louvain community detection, and counterfactual ablation for all five
+visual datasets plus the CIFAR‑10 Omega variant
+(Table~\ref{tab:all_experiments})---required \texttt{440.7}\,s
+($\sim$7.3\,min) and \texttt{2038.3}\,MB ($\sim$1.99\,GB) RAM.
 %
-The complete profiling script and the resulting hardware‑performance logs are included in the repository (\texttt{benchmark/profile\_cluster1\_full.py}).
+The complete profiling script and the resulting hardware‑performance
+logs are included in the repository
+(\texttt{profile\_cluster1.py} and
+\texttt{profile\_cluster1\_results.json}).
