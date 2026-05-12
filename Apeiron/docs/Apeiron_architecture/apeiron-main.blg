@@ -1,19 +1,19 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'apeiron-main.blg'
-[127] biber-MSWIN64:342> INFO - === 
-[169] Biber.pm:421> INFO - Reading 'apeiron-main.bcf'
-[346] Biber.pm:1002> INFO - Found 78 citekeys in bib section 0
-[370] Biber.pm:4487> INFO - Processing section 0
-[386] Biber.pm:4678> INFO - Looking for bibtex file 'apeiron.bib' for section 0
-[456] bibtex.pm:1713> INFO - LaTeX decoding ...
-[669] bibtex.pm:1519> INFO - Found BibTeX data source 'apeiron.bib'
-[1253] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[1253] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[1253] Biber.pm:4307> INFO - Sorting list 'apa/apasortcite//global/global/global' of type 'entry' with template 'apa' and locale 'en-US'
-[1253] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[1436] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[1437] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[1437] Biber.pm:4307> INFO - Sorting list 'apa/global//global/global/global' of type 'entry' with template 'apa' and locale 'en-US'
-[1437] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[1524] bbl.pm:676> INFO - Writing 'apeiron-main.bbl' with encoding 'UTF-8'
-[1646] bbl.pm:779> INFO - Output to apeiron-main.bbl
+[125] biber-MSWIN64:342> INFO - === 
+[167] Biber.pm:421> INFO - Reading 'apeiron-main.bcf'
+[345] Biber.pm:1002> INFO - Found 78 citekeys in bib section 0
+[372] Biber.pm:4487> INFO - Processing section 0
+[385] Biber.pm:4678> INFO - Looking for bibtex file 'apeiron.bib' for section 0
+[435] bibtex.pm:1713> INFO - LaTeX decoding ...
+[543] bibtex.pm:1519> INFO - Found BibTeX data source 'apeiron.bib'
+[1084] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1084] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1084] Biber.pm:4307> INFO - Sorting list 'apa/apasortcite//global/global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[1084] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[1263] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1263] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1264] Biber.pm:4307> INFO - Sorting list 'apa/global//global/global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[1264] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[1350] bbl.pm:676> INFO - Writing 'apeiron-main.bbl' with encoding 'UTF-8'
+[1467] bbl.pm:779> INFO - Output to apeiron-main.bbl

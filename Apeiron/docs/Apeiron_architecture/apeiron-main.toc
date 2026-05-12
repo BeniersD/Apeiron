@@ -1,233 +1,238 @@
-\contentsline {section}{\numberline {1}Introduction: A Research Programme for Non-Anthropocentric AI}{8}{section.1}%
-\contentsline {subsection}{\numberline {1.1}The Nature of This Contribution}{8}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Historical and Philosophical Context}{9}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Structure of This Paper}{10}{subsection.1.3}%
-\contentsline {section}{\numberline {2}Related Work}{12}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Foundational AI Architectures}{12}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Category Theory in AI}{12}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Formal Verification and Explainable AI}{12}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Non-Anthropocentric and Emergentist AI}{13}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Precedents: Research Programme Papers in AI}{13}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Contrast with Deep Learning Paradigms}{15}{subsection.2.6}%
-\contentsline {subsection}{\numberline {2.7}Positioning of the Apeiron Framework}{15}{subsection.2.7}%
-\contentsline {section}{\numberline {3}Research Questions and Methodological Framing}{16}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Main Research Question}{16}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Methodological Approach}{16}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Detailed Research Questions by Cluster}{16}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Cluster I: Substrate \& Emergence (Layers 1--4)}{16}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Cluster II: Adaptive Intelligence (Layers 5--7)}{17}{subsubsection.3.3.2}%
-\contentsline {subsubsection}{\numberline {3.3.3}Cluster III: Ontological Fluidity (Layers 8--13)}{17}{subsubsection.3.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.4}Cluster IV: World-Making \& Governance (Layers 14--17)}{18}{subsubsection.3.3.4}%
-\contentsline {section}{\numberline {4}Foundational Scientific Theories}{19}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Category Theory}{19}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Complex Systems Theory}{19}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Information Theory}{19}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Process Philosophy}{20}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Non-Euclidean Geometry and Topology}{20}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Category Theory: Beyond Sets and Functions}{20}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Complex Systems: Attractors, Bifurcations, and Criticality}{21}{subsection.4.7}%
-\contentsline {subsection}{\numberline {4.8}Information Theory: From Shannon to Kolmogorov}{21}{subsection.4.8}%
-\contentsline {subsection}{\numberline {4.9}Process Philosophy: Individuation and Becoming}{21}{subsection.4.9}%
-\contentsline {subsection}{\numberline {4.10}Non-Euclidean Geometry and Topology: Persistent Homology}{22}{subsection.4.10}%
-\contentsline {section}{\numberline {5}Axiomatic Foundations}{23}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Formal Verification Status}{24}{subsection.5.1}%
-\contentsline {section}{\numberline {6}The \textsc {Apeiron}{} Architecture: Overview}{26}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Theoretical Guarantees of the Architectural Layers}{28}{subsection.6.1}%
-\contentsline {section}{\numberline {7}Cluster I: Substrate \& Emergence (Layers 1--4)}{30}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Layer 1: Foundational Observables (The Epistemic Singularity)}{30}{subsection.7.1}%
-\contentsline {paragraph}{Epistemic Singularity as a Foundational Principle.}{30}{section*.8}%
-\contentsline {paragraph}{Multi‑Axial Justification.}{32}{section*.9}%
-\contentsline {paragraph}{Observer Dependence and Contextual Atomicity.}{33}{section*.10}%
-\contentsline {paragraph}{Algorithmic Verification of Atomicity.}{34}{section*.11}%
-\contentsline {subsection}{\numberline {7.2}Layer 2: Relational Emergence}{34}{subsection.7.2}%
-\contentsline {paragraph}{Introduction for the Reader.}{34}{section*.12}%
-\contentsline {subsubsection}{\numberline {7.2.1}Theoretical Grounding and Epistemological Shift}{34}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Formal Definition: The Weighted Hypergraph of Relations}{35}{subsubsection.7.2.2}%
-\contentsline {subsubsection}{\numberline {7.2.3}Probabilistic Semantics and Context-Dependence}{36}{subsubsection.7.2.3}%
-\contentsline {paragraph}{Connection to Research Question RQ2.}{36}{section*.14}%
-\contentsline {subsubsection}{\numberline {7.2.4}Emergence of Structure: Weak Emergence and Excess Entropy}{37}{subsubsection.7.2.4}%
-\contentsline {subsubsection}{\numberline {7.2.5}Sublayers of Relational Structure}{37}{subsubsection.7.2.5}%
-\contentsline {subsubsection}{\numberline {7.2.6}Mathematical Appendix: Spectral Properties and Percolation}{37}{subsubsection.7.2.6}%
-\contentsline {paragraph}{Online Hypergraph Maintenance.}{38}{section*.15}%
-\contentsline {subsection}{\numberline {7.3}Layer 3: Functional Emergence}{38}{subsection.7.3}%
-\contentsline {paragraph}{Introduction for the Reader.}{38}{section*.16}%
-\contentsline {subsubsection}{\numberline {7.3.1}Theoretical Grounding: From Structuralism to Functionalism}{39}{subsubsection.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}Formal Definitions: Functional Entities and Modularity}{39}{subsubsection.7.3.2}%
-\contentsline {subsubsection}{\numberline {7.3.3}Counterfactual Ablation and Functional Significance}{39}{subsubsection.7.3.3}%
-\contentsline {subsubsection}{\numberline {7.3.4}Multiple Realizability and Equivalence Classes}{40}{subsubsection.7.3.4}%
-\contentsline {subsubsection}{\numberline {7.3.5}Hierarchical Organization of Functions}{40}{subsubsection.7.3.5}%
-\contentsline {subsubsection}{\numberline {7.3.6}Connection to Research Question RQ3}{41}{subsubsection.7.3.6}%
-\contentsline {subsubsection}{\numberline {7.3.7}Implementation Notes}{41}{subsubsection.7.3.7}%
-\contentsline {subsection}{\numberline {7.4}Layer 4: Dynamic Adaptation and Feedback}{41}{subsection.7.4}%
-\contentsline {paragraph}{Introduction for the Reader.}{41}{section*.18}%
-\contentsline {subsubsection}{\numberline {7.4.1}Theoretical Grounding: Time from Causality}{41}{subsubsection.7.4.1}%
-\contentsline {subsubsection}{\numberline {7.4.2}Stochastic Differential Equation for Adaptation}{42}{subsubsection.7.4.2}%
-\contentsline {paragraph}{Choice of Objective $\mathcal {L}$.}{42}{section*.20}%
-\contentsline {subsubsection}{\numberline {7.4.3}Feedback Loops: Homeostasis, Exploration, and Recursion}{43}{subsubsection.7.4.3}%
-\contentsline {subsubsection}{\numberline {7.4.4}Lyapunov Exponents and Chaos}{43}{subsubsection.7.4.4}%
-\contentsline {paragraph}{Connection to RQ4.}{44}{section*.21}%
-\contentsline {subsubsection}{\numberline {7.4.5}Implementation: Discretization and Event-Driven Simulation}{44}{subsubsection.7.4.5}%
-\contentsline {subsubsection}{\numberline {7.4.6}Mathematical Appendix: Stability Proofs}{44}{subsubsection.7.4.6}%
-\contentsline {subsubsection}{\numberline {7.4.7}Analogies and Examples}{44}{subsubsection.7.4.7}%
-\contentsline {section}{\numberline {8}Cluster II: Adaptive Intelligence (Layers 5--7)}{46}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Layer 5: Autonomous Optimization and Learning}{46}{subsection.8.1}%
-\contentsline {paragraph}{Introduction for the Reader.}{46}{section*.22}%
-\contentsline {subsubsection}{\numberline {8.1.1}Theoretical Grounding: From Adaptation to Optimization}{46}{subsubsection.8.1.1}%
-\contentsline {subsubsection}{\numberline {8.1.2}Formal Definition: The Optimization Operator}{47}{subsubsection.8.1.2}%
-\contentsline {paragraph}{SGD Operator.}{47}{section*.24}%
-\contentsline {paragraph}{Evolutionary Strategies Operator.}{47}{section*.25}%
-\contentsline {paragraph}{Bayesian Optimization Operator.}{48}{section*.26}%
-\contentsline {subsubsection}{\numberline {8.1.3}Sublayers of Autonomous Optimization}{48}{subsubsection.8.1.3}%
-\contentsline {subsubsection}{\numberline {8.1.4}Connection to Research Question RQ5}{49}{subsubsection.8.1.4}%
-\contentsline {subsubsection}{\numberline {8.1.5}Implementation Notes}{49}{subsubsection.8.1.5}%
-\contentsline {subsection}{\numberline {8.2}Layer 6: Meta-Learning and Cross-Layer Integration}{49}{subsection.8.2}%
-\contentsline {paragraph}{Introduction for the Reader.}{49}{section*.27}%
-\contentsline {subsubsection}{\numberline {8.2.1}Theoretical Grounding: Learning to Learn}{50}{subsubsection.8.2.1}%
-\contentsline {subsubsection}{\numberline {8.2.2}Formal Definition: The Hyperoperator}{50}{subsubsection.8.2.2}%
-\contentsline {paragraph}{MAML-inspired Hyperoperator.}{51}{section*.29}%
-\contentsline {subsubsection}{\numberline {8.2.3}Cross-Layer Integration}{51}{subsubsection.8.2.3}%
-\contentsline {subsubsection}{\numberline {8.2.4}Sublayers of Meta-Learning}{52}{subsubsection.8.2.4}%
-\contentsline {subsubsection}{\numberline {8.2.5}Connection to Research Question RQ5}{52}{subsubsection.8.2.5}%
-\contentsline {subsubsection}{\numberline {8.2.6}Implementation Notes}{52}{subsubsection.8.2.6}%
-\contentsline {subsection}{\numberline {8.3}Layer 7: Emergent Self-Awareness and Global Pattern Synthesis}{52}{subsection.8.3}%
-\contentsline {paragraph}{Introduction for the Reader.}{52}{section*.30}%
-\contentsline {subsubsection}{\numberline {8.3.1}Theoretical Grounding: Self-Modeling and Global Coherence}{53}{subsubsection.8.3.1}%
-\contentsline {subsubsection}{\numberline {8.3.2}Formal Definition: The Synthesis Operator}{54}{subsubsection.8.3.2}%
-\contentsline {paragraph}{Free-Energy Formulation.}{54}{section*.32}%
-\contentsline {subsubsection}{\numberline {8.3.3}Soft Guidance Operator $\Gamma $}{55}{subsubsection.8.3.3}%
-\contentsline {subsubsection}{\numberline {8.3.4}Connection to Integrated Information Theory}{55}{subsubsection.8.3.4}%
-\contentsline {paragraph}{Connection to Research Question RQ6.}{56}{section*.33}%
-\contentsline {paragraph}{Connection to Research Question RQ7.}{56}{section*.34}%
-\contentsline {subsubsection}{\numberline {8.3.5}Sublayers of Emergent Self-Awareness}{56}{subsubsection.8.3.5}%
-\contentsline {subsubsection}{\numberline {8.3.6}Implementation Notes}{56}{subsubsection.8.3.6}%
-\contentsline {section}{\numberline {9}Cluster III: Ontological Fluidity (Layers 8--13)}{58}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Layer 8: Temporality and Flux}{58}{subsection.9.1}%
-\contentsline {paragraph}{Introduction for the Reader.}{58}{section*.35}%
-\contentsline {subsubsection}{\numberline {9.1.1}Theoretical Grounding: Time from Correlations}{58}{subsubsection.9.1.1}%
-\contentsline {subsubsection}{\numberline {9.1.2}Formal Definition: The Master Equation of Flux}{59}{subsubsection.9.1.2}%
-\contentsline {subsubsection}{\numberline {9.1.3}Multi-Scale Temporal Encoding}{59}{subsubsection.9.1.3}%
-\contentsline {subsubsection}{\numberline {9.1.4}Sublayers of Temporality and Flux}{60}{subsubsection.9.1.4}%
-\contentsline {subsubsection}{\numberline {9.1.5}Connection to Research Question RQ8}{60}{subsubsection.9.1.5}%
-\contentsline {subsubsection}{\numberline {9.1.6}Implementation Notes}{60}{subsubsection.9.1.6}%
-\contentsline {subsection}{\numberline {9.2}Layer 9: Ontological Creation}{61}{subsection.9.2}%
-\contentsline {paragraph}{Introduction for the Reader.}{61}{section*.36}%
-\contentsline {subsubsection}{\numberline {9.2.1}Theoretical Grounding: Category Theory and Worldmaking}{61}{subsubsection.9.2.1}%
-\contentsline {subsubsection}{\numberline {9.2.2}Formal Definition: Ontological Functors}{61}{subsubsection.9.2.2}%
-\contentsline {paragraph}{Example: Creating a ``Temporal Cycle'' Category.}{62}{section*.37}%
-\contentsline {subsubsection}{\numberline {9.2.3}Mechanisms of Ontological Creation}{62}{subsubsection.9.2.3}%
-\contentsline {subsubsection}{\numberline {9.2.4}Sublayers of Ontological Creation}{63}{subsubsection.9.2.4}%
-\contentsline {subsubsection}{\numberline {9.2.5}Connection to Research Question RQ9}{63}{subsubsection.9.2.5}%
-\contentsline {subsubsection}{\numberline {9.2.6}Implementation Notes}{63}{subsubsection.9.2.6}%
-\contentsline {subsection}{\numberline {9.3}Layer 10: Global Meta-Ontological Evaluation}{63}{subsection.9.3}%
-\contentsline {paragraph}{Introduction for the Reader.}{63}{section*.38}%
-\contentsline {subsubsection}{\numberline {9.3.1}Theoretical Grounding: Second-Order Cybernetics and Meta-Cognition}{64}{subsubsection.9.3.1}%
-\contentsline {subsubsection}{\numberline {9.3.2}Formal Definition: The Coherence Tensor}{64}{subsubsection.9.3.2}%
-\contentsline {subsubsection}{\numberline {9.3.3}Computing the Coherence Scores}{65}{subsubsection.9.3.3}%
-\contentsline {subsubsection}{\numberline {9.3.4}Sublayers of Meta-Ontological Evaluation}{65}{subsubsection.9.3.4}%
-\contentsline {subsubsection}{\numberline {9.3.5}Connection to Research Question RQ10}{65}{subsubsection.9.3.5}%
-\contentsline {subsubsection}{\numberline {9.3.6}Implementation Notes}{66}{subsubsection.9.3.6}%
-\contentsline {subsection}{\numberline {9.4}Layer 11: Adaptive Meta-Contextualization}{66}{subsection.9.4}%
-\contentsline {paragraph}{Introduction for the Reader.}{66}{section*.39}%
-\contentsline {subsubsection}{\numberline {9.4.1}Theoretical Grounding: Situated Knowledge and Perspectival Realism}{66}{subsubsection.9.4.1}%
-\contentsline {subsubsection}{\numberline {9.4.2}Formal Definition: Contextual Operators}{66}{subsubsection.9.4.2}%
-\contentsline {subsubsection}{\numberline {9.4.3}Context-Aware Atomicity and Ontology}{67}{subsubsection.9.4.3}%
-\contentsline {subsubsection}{\numberline {9.4.4}Sublayers of Adaptive Meta-Contextualization}{67}{subsubsection.9.4.4}%
-\contentsline {subsubsection}{\numberline {9.4.5}Connection to Research Question RQ10}{68}{subsubsection.9.4.5}%
-\contentsline {subsubsection}{\numberline {9.4.6}Implementation Notes}{68}{subsubsection.9.4.6}%
-\contentsline {subsection}{\numberline {9.5}Layer 12: Transdimensional Integration and Ontological Reconciliation}{68}{subsection.9.5}%
-\contentsline {paragraph}{Introduction for the Reader.}{68}{section*.40}%
-\contentsline {subsubsection}{\numberline {9.5.1}Theoretical Grounding: Incommensurability and Translation}{68}{subsubsection.9.5.1}%
-\contentsline {subsubsection}{\numberline {9.5.2}Formal Definition: Reconciliation Spans}{69}{subsubsection.9.5.2}%
-\contentsline {paragraph}{Example: Reconciling Newtonian and Relativistic Ontologies.}{69}{section*.41}%
-\contentsline {subsubsection}{\numberline {9.5.3}Sublayers of Transdimensional Integration}{69}{subsubsection.9.5.3}%
-\contentsline {subsubsection}{\numberline {9.5.4}Connection to Research Questions RQ9 and RQ10}{70}{subsubsection.9.5.4}%
-\contentsline {subsubsection}{\numberline {9.5.5}Implementation Notes}{70}{subsubsection.9.5.5}%
-\contentsline {subsection}{\numberline {9.6}Layer 13: Ontogenesis of Novelty}{70}{subsection.9.6}%
-\contentsline {paragraph}{Introduction for the Reader.}{70}{section*.42}%
-\contentsline {subsubsection}{\numberline {9.6.1}Theoretical Grounding: Individuation and Critical Transitions}{71}{subsubsection.9.6.1}%
-\contentsline {subsubsection}{\numberline {9.6.2}Formal Definition: The Emergent Operator and Ontogenesis}{71}{subsubsection.9.6.2}%
-\contentsline {subsubsection}{\numberline {9.6.3}Early-Warning Diagnostics via Persistent Homology}{72}{subsubsection.9.6.3}%
-\contentsline {subsubsection}{\numberline {9.6.4}Sublayers of Ontogenesis}{72}{subsubsection.9.6.4}%
-\contentsline {subsubsection}{\numberline {9.6.5}Connection to Research Question RQ11}{73}{subsubsection.9.6.5}%
-\contentsline {subsubsection}{\numberline {9.6.6}Implementation Notes}{73}{subsubsection.9.6.6}%
-\contentsline {section}{\numberline {10}Cluster IV: World-Making \& Governance (Layers 14--17)}{74}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Layer 14: Autopoietic Worldbuilding}{74}{subsection.10.1}%
-\contentsline {paragraph}{Introduction for the Reader.}{74}{section*.44}%
-\contentsline {subsubsection}{\numberline {10.1.1}Theoretical Grounding: Autopoiesis and the Pluriverse}{74}{subsubsection.10.1.1}%
-\contentsline {subsubsection}{\numberline {10.1.2}Formal Definition: World-Models and the Pluriverse}{75}{subsubsection.10.1.2}%
-\contentsline {subsubsection}{\numberline {10.1.3}Plurality Preservation and Epistemic Distance}{76}{subsubsection.10.1.3}%
-\contentsline {subsubsection}{\numberline {10.1.4}Sublayers of Autopoietic Worldbuilding}{76}{subsubsection.10.1.4}%
-\contentsline {subsubsection}{\numberline {10.1.5}Connection to Research Question RQ12}{77}{subsubsection.10.1.5}%
-\contentsline {subsubsection}{\numberline {10.1.6}Implementation Notes}{77}{subsubsection.10.1.6}%
-\contentsline {subsection}{\numberline {10.2}Layer 15: Responsible Recursive Morphogenesis}{77}{subsection.10.2}%
-\contentsline {paragraph}{Introduction for the Reader.}{77}{section*.46}%
-\contentsline {subsubsection}{\numberline {10.2.1}Theoretical Grounding: Material Agency and Synthetic Biology}{78}{subsubsection.10.2.1}%
-\contentsline {subsubsection}{\numberline {10.2.2}Formal Definition: The Global State and Morphogenetic Actions}{78}{subsubsection.10.2.2}%
-\contentsline {subsubsection}{\numberline {10.2.3}Safe Operating Envelope and Invariant Contracts}{79}{subsubsection.10.2.3}%
-\contentsline {subsubsection}{\numberline {10.2.4}Ethical Reflexivity and Recursive Meta-Structure}{79}{subsubsection.10.2.4}%
-\contentsline {subsubsection}{\numberline {10.2.5}Sublayers of Responsible Recursive Morphogenesis}{80}{subsubsection.10.2.5}%
-\contentsline {subsubsection}{\numberline {10.2.6}Connection to Research Question RQ13}{80}{subsubsection.10.2.6}%
-\contentsline {subsubsection}{\numberline {10.2.7}Implementation Notes}{80}{subsubsection.10.2.7}%
-\contentsline {subsection}{\numberline {10.3}Layer 16: Transcendence and Collective Cognition}{81}{subsection.10.3}%
-\contentsline {paragraph}{Introduction for the Reader.}{81}{section*.47}%
-\contentsline {subsubsection}{\numberline {10.3.1}Theoretical Grounding: Distributed Cognition and Collective Intelligence}{81}{subsubsection.10.3.1}%
-\contentsline {subsubsection}{\numberline {10.3.2}Formal Definition: The Collective Cognitive Operator}{81}{subsubsection.10.3.2}%
-\contentsline {subsubsection}{\numberline {10.3.3}Sublayers of Transcendence and Collective Cognition}{82}{subsubsection.10.3.3}%
-\contentsline {subsubsection}{\numberline {10.3.4}Connection to Research Question RQ14}{82}{subsubsection.10.3.4}%
-\contentsline {subsubsection}{\numberline {10.3.5}Implementation Notes}{83}{subsubsection.10.3.5}%
-\contentsline {subsection}{\numberline {10.4}Layer 17: Absolute Integration}{83}{subsection.10.4}%
-\contentsline {paragraph}{Introduction for the Reader.}{83}{section*.48}%
-\contentsline {subsubsection}{\numberline {10.4.1}Theoretical Grounding: Higher-Order Cybernetics and Fixed-Point Theorems}{83}{subsubsection.10.4.1}%
-\contentsline {subsubsection}{\numberline {10.4.2}Formal Definition: The Meta-Operator and Equilibrium}{84}{subsubsection.10.4.2}%
-\contentsline {subsubsection}{\numberline {10.4.3}The Principle of Reversible Integration}{84}{subsubsection.10.4.3}%
-\contentsline {subsubsection}{\numberline {10.4.4}Sublayers of Absolute Integration}{85}{subsubsection.10.4.4}%
-\contentsline {subsubsection}{\numberline {10.4.5}Connection to Research Question RQ15}{85}{subsubsection.10.4.5}%
-\contentsline {subsubsection}{\numberline {10.4.6}Implementation Notes}{85}{subsubsection.10.4.6}%
-\contentsline {section}{\numberline {11}Concrete Examples and Illustrations}{87}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Atomicity Scores for Diverse Observables}{87}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Qualitative Dimensions in Practice}{87}{subsection.11.2}%
-\contentsline {subsection}{\numberline {11.3}Relational Density Field}{88}{subsection.11.3}%
-\contentsline {section}{\numberline {12}Validation: Falsifiable Experiments}{89}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Hypothesis 1: Layer 1 Multi-Axial Convergence}{89}{subsection.12.1}%
-\contentsline {subsubsection}{\numberline {12.1.1}Experimental Setup}{89}{subsubsection.12.1.1}%
-\contentsline {subsubsection}{\numberline {12.1.2}Results}{90}{subsubsection.12.1.2}%
-\contentsline {subsubsection}{\numberline {12.1.3}Interpretation}{90}{subsubsection.12.1.3}%
-\contentsline {subsection}{\numberline {12.2}Hypothesis 2: Unsupervised Relational Structure Discovery Across Five Datasets}{90}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}Pilot Measurement of Non-Anthropocentricity}{92}{subsection.12.3}%
-\contentsline {subsection}{\numberline {12.4}Illustrative Example: A Non‑Anthropocentric Functional Cluster on CIFAR‑10}{92}{subsection.12.4}%
-\contentsline {subsection}{\numberline {12.5}Hypothesis 3: Layer 13 Ontogenesis}{93}{subsection.12.5}%
-\contentsline {subsection}{\numberline {12.6}Summary of Falsifiable Predictions}{93}{subsection.12.6}%
-\contentsline {section}{\numberline {13}Computational Complexity and Scaling}{94}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Layer 1: Atomicity Testing}{94}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Layer 2: Hypergraph Construction and Influence Computation}{94}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Layer 7: Global Synthesis}{94}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Layer 13: Ontogenesis Detection}{94}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}Layer 17: Fixed-Point Computation}{95}{subsection.13.5}%
-\contentsline {subsection}{\numberline {13.6}Idealised Mathematics and Computational Tractability}{95}{subsection.13.6}%
-\contentsline {subsection}{\numberline {13.7}Scalability Strategies}{95}{subsection.13.7}%
-\contentsline {subsection}{\numberline {13.8}Empirical Resource Footprint of the Cluster~I Implementation}{96}{subsection.13.8}%
-\contentsline {section}{\numberline {14}Ethical and Governance Framework}{97}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Reversible Integration as an Architectural Principle}{97}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Provenance, Auditability, and Cryptographic Attestation}{97}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}Multi-Stakeholder Governance and Participatory Design}{97}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}Ethical Reflexivity in Layer~15}{98}{subsection.14.4}%
-\contentsline {subsection}{\numberline {14.5}Moral Status of Simulated Entities and Pluriverses}{99}{subsection.14.5}%
-\contentsline {subsection}{\numberline {14.6}Alignment with Axiomatic Foundations}{99}{subsection.14.6}%
-\contentsline {section}{\numberline {15}Research Programme Status and Roadmap}{100}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Current Implementation Status}{100}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}Falsifiable Predictions and Validation Roadmap}{100}{subsection.15.2}%
-\contentsline {subsection}{\numberline {15.3}Invitation to the Community}{101}{subsection.15.3}%
-\contentsline {section}{\numberline {16}Discussion}{102}{section.16}%
-\contentsline {subsection}{\numberline {16.1}Implications for Explainable and Trustworthy AI}{102}{subsection.16.1}%
-\contentsline {subsection}{\numberline {16.2}Relation to Existing Work}{102}{subsection.16.2}%
-\contentsline {subsection}{\numberline {16.3}Interdisciplinary Significance}{103}{subsection.16.3}%
-\contentsline {subsection}{\numberline {16.4}Limitations and Open Challenges}{103}{subsection.16.4}%
-\contentsline {subsection}{\numberline {16.5}Future Work}{104}{subsection.16.5}%
-\contentsline {section}{\numberline {17}Summary of Layers, Axioms, and Research Questions}{106}{section.17}%
-\contentsline {section}{\numberline {18}Conclusion: A Call for Collaborative Inquiry}{107}{section.18}%
-\contentsline {section}{\numberline {A}Proofs of Key Propositions}{111}{appendix.A}%
-\contentsline {section}{\numberline {B}Algorithm Pseudocode}{113}{appendix.B}%
-\contentsline {section}{\numberline {C}Glossary of Symbols}{115}{appendix.C}%
-\contentsline {section}{\numberline {D}Justification and Formal Status of the Axioms}{116}{appendix.D}%
-\contentsline {section}{\numberline {E}Example Governance Protocol for Layer~15 Morphogenetic Actions}{118}{appendix.E}%
-\contentsline {section}{\numberline {F}Data and Code Availability}{119}{appendix.F}%
+\contentsline {section}{Executive Summary}{2}{section*.1}%
+\contentsline {paragraph}{What has been accomplished.}{2}{section*.2}%
+\contentsline {paragraph}{What is specified for future work.}{2}{section*.3}%
+\contentsline {paragraph}{Why it matters.}{2}{section*.4}%
+\contentsline {section}{\numberline {1}Introduction: A Research Programme for Non-Anthropocentric AI}{9}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Nature of This Contribution}{9}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Historical and Philosophical Context}{10}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Structure of This Paper}{11}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Related Work}{13}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Foundational AI Architectures}{13}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Category Theory in AI}{13}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Formal Verification and Explainable AI}{13}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Non-Anthropocentric and Emergentist AI}{14}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Precedents: Research Programme Papers in AI}{14}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Contrast with Deep Learning Paradigms}{16}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Positioning of the Apeiron Framework}{16}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Research Questions and Methodological Framing}{17}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Main Research Question}{17}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Methodological Approach}{17}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Detailed Research Questions by Cluster}{17}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Cluster I: Substrate \& Emergence (Layers 1--4)}{17}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Cluster II: Adaptive Intelligence (Layers 5--7)}{18}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Cluster III: Ontological Fluidity (Layers 8--13)}{18}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.4}Cluster IV: World-Making \& Governance (Layers 14--17)}{19}{subsubsection.3.3.4}%
+\contentsline {section}{\numberline {4}Foundational Scientific Theories}{20}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Category Theory}{20}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Complex Systems Theory}{20}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Information Theory}{20}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Process Philosophy}{21}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Non-Euclidean Geometry and Topology}{21}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Category Theory: Beyond Sets and Functions}{21}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Complex Systems: Attractors, Bifurcations, and Criticality}{22}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Information Theory: From Shannon to Kolmogorov}{22}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.9}Process Philosophy: Individuation and Becoming}{22}{subsection.4.9}%
+\contentsline {subsection}{\numberline {4.10}Non-Euclidean Geometry and Topology: Persistent Homology}{23}{subsection.4.10}%
+\contentsline {section}{\numberline {5}Axiomatic Foundations}{24}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Formal Verification Status}{25}{subsection.5.1}%
+\contentsline {section}{\numberline {6}The \textsc {Apeiron}{} Architecture: Overview}{27}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Theoretical Guarantees of the Architectural Layers}{29}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Cluster I: Substrate \& Emergence (Layers 1--4)}{31}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Layer 1: Foundational Observables (The Epistemic Singularity)}{31}{subsection.7.1}%
+\contentsline {paragraph}{Epistemic Singularity as a Foundational Principle.}{31}{section*.12}%
+\contentsline {paragraph}{Multi‑Axial Justification.}{33}{section*.13}%
+\contentsline {paragraph}{Observer Dependence and Contextual Atomicity.}{34}{section*.14}%
+\contentsline {paragraph}{Algorithmic Verification of Atomicity.}{35}{section*.15}%
+\contentsline {subsection}{\numberline {7.2}Layer 2: Relational Emergence}{35}{subsection.7.2}%
+\contentsline {paragraph}{Introduction for the Reader.}{35}{section*.16}%
+\contentsline {subsubsection}{\numberline {7.2.1}Theoretical Grounding and Epistemological Shift}{35}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Formal Definition: The Weighted Hypergraph of Relations}{36}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Probabilistic Semantics and Context-Dependence}{37}{subsubsection.7.2.3}%
+\contentsline {paragraph}{Connection to Research Question RQ2.}{37}{section*.18}%
+\contentsline {subsubsection}{\numberline {7.2.4}Emergence of Structure: Weak Emergence and Excess Entropy}{38}{subsubsection.7.2.4}%
+\contentsline {subsubsection}{\numberline {7.2.5}Sublayers of Relational Structure}{38}{subsubsection.7.2.5}%
+\contentsline {subsubsection}{\numberline {7.2.6}Mathematical Appendix: Spectral Properties and Percolation}{38}{subsubsection.7.2.6}%
+\contentsline {paragraph}{Online Hypergraph Maintenance.}{39}{section*.19}%
+\contentsline {subsection}{\numberline {7.3}Layer 3: Functional Emergence}{39}{subsection.7.3}%
+\contentsline {paragraph}{Introduction for the Reader.}{39}{section*.20}%
+\contentsline {subsubsection}{\numberline {7.3.1}Theoretical Grounding: From Structuralism to Functionalism}{40}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Formal Definitions: Functional Entities and Modularity}{40}{subsubsection.7.3.2}%
+\contentsline {subsubsection}{\numberline {7.3.3}Counterfactual Ablation and Functional Significance}{40}{subsubsection.7.3.3}%
+\contentsline {subsubsection}{\numberline {7.3.4}Multiple Realizability and Equivalence Classes}{41}{subsubsection.7.3.4}%
+\contentsline {subsubsection}{\numberline {7.3.5}Hierarchical Organization of Functions}{41}{subsubsection.7.3.5}%
+\contentsline {subsubsection}{\numberline {7.3.6}Connection to Research Question RQ3}{42}{subsubsection.7.3.6}%
+\contentsline {subsubsection}{\numberline {7.3.7}Implementation Notes}{42}{subsubsection.7.3.7}%
+\contentsline {subsection}{\numberline {7.4}Layer 4: Dynamic Adaptation and Feedback}{42}{subsection.7.4}%
+\contentsline {paragraph}{Introduction for the Reader.}{42}{section*.22}%
+\contentsline {subsubsection}{\numberline {7.4.1}Theoretical Grounding: Time from Causality}{42}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}Stochastic Differential Equation for Adaptation}{43}{subsubsection.7.4.2}%
+\contentsline {paragraph}{Choice of Objective $\mathcal {L}$.}{43}{section*.24}%
+\contentsline {subsubsection}{\numberline {7.4.3}Feedback Loops: Homeostasis, Exploration, and Recursion}{44}{subsubsection.7.4.3}%
+\contentsline {subsubsection}{\numberline {7.4.4}Lyapunov Exponents and Chaos}{44}{subsubsection.7.4.4}%
+\contentsline {paragraph}{Connection to RQ4.}{45}{section*.25}%
+\contentsline {subsubsection}{\numberline {7.4.5}Implementation: Discretization and Event-Driven Simulation}{45}{subsubsection.7.4.5}%
+\contentsline {subsubsection}{\numberline {7.4.6}Mathematical Appendix: Stability Proofs}{45}{subsubsection.7.4.6}%
+\contentsline {subsubsection}{\numberline {7.4.7}Analogies and Examples}{45}{subsubsection.7.4.7}%
+\contentsline {section}{\numberline {8}Cluster II: Adaptive Intelligence (Layers 5--7)}{47}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Layer 5: Autonomous Optimization and Learning}{47}{subsection.8.1}%
+\contentsline {paragraph}{Introduction for the Reader.}{47}{section*.26}%
+\contentsline {subsubsection}{\numberline {8.1.1}Theoretical Grounding: From Adaptation to Optimization}{47}{subsubsection.8.1.1}%
+\contentsline {subsubsection}{\numberline {8.1.2}Formal Definition: The Optimization Operator}{48}{subsubsection.8.1.2}%
+\contentsline {paragraph}{SGD Operator.}{48}{section*.28}%
+\contentsline {paragraph}{Evolutionary Strategies Operator.}{48}{section*.29}%
+\contentsline {paragraph}{Bayesian Optimization Operator.}{49}{section*.30}%
+\contentsline {subsubsection}{\numberline {8.1.3}Sublayers of Autonomous Optimization}{49}{subsubsection.8.1.3}%
+\contentsline {subsubsection}{\numberline {8.1.4}Connection to Research Question RQ5}{50}{subsubsection.8.1.4}%
+\contentsline {subsubsection}{\numberline {8.1.5}Implementation Notes}{50}{subsubsection.8.1.5}%
+\contentsline {subsection}{\numberline {8.2}Layer 6: Meta-Learning and Cross-Layer Integration}{50}{subsection.8.2}%
+\contentsline {paragraph}{Introduction for the Reader.}{50}{section*.31}%
+\contentsline {subsubsection}{\numberline {8.2.1}Theoretical Grounding: Learning to Learn}{51}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}Formal Definition: The Hyperoperator}{51}{subsubsection.8.2.2}%
+\contentsline {paragraph}{MAML-inspired Hyperoperator.}{52}{section*.33}%
+\contentsline {subsubsection}{\numberline {8.2.3}Cross-Layer Integration}{52}{subsubsection.8.2.3}%
+\contentsline {subsubsection}{\numberline {8.2.4}Sublayers of Meta-Learning}{53}{subsubsection.8.2.4}%
+\contentsline {subsubsection}{\numberline {8.2.5}Connection to Research Question RQ5}{53}{subsubsection.8.2.5}%
+\contentsline {subsubsection}{\numberline {8.2.6}Implementation Notes}{53}{subsubsection.8.2.6}%
+\contentsline {subsection}{\numberline {8.3}Layer 7: Emergent Self-Awareness and Global Pattern Synthesis}{53}{subsection.8.3}%
+\contentsline {paragraph}{Introduction for the Reader.}{53}{section*.34}%
+\contentsline {subsubsection}{\numberline {8.3.1}Theoretical Grounding: Self-Modeling and Global Coherence}{54}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}Formal Definition: The Synthesis Operator}{55}{subsubsection.8.3.2}%
+\contentsline {paragraph}{Free-Energy Formulation.}{55}{section*.36}%
+\contentsline {subsubsection}{\numberline {8.3.3}Soft Guidance Operator $\Gamma $}{56}{subsubsection.8.3.3}%
+\contentsline {subsubsection}{\numberline {8.3.4}Connection to Integrated Information Theory}{56}{subsubsection.8.3.4}%
+\contentsline {paragraph}{Connection to Research Question RQ6.}{57}{section*.37}%
+\contentsline {paragraph}{Connection to Research Question RQ7.}{57}{section*.38}%
+\contentsline {subsubsection}{\numberline {8.3.5}Sublayers of Emergent Self-Awareness}{57}{subsubsection.8.3.5}%
+\contentsline {subsubsection}{\numberline {8.3.6}Implementation Notes}{57}{subsubsection.8.3.6}%
+\contentsline {section}{\numberline {9}Cluster III: Ontological Fluidity (Layers 8--13)}{59}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Layer 8: Temporality and Flux}{59}{subsection.9.1}%
+\contentsline {paragraph}{Introduction for the Reader.}{59}{section*.39}%
+\contentsline {subsubsection}{\numberline {9.1.1}Theoretical Grounding: Time from Correlations}{59}{subsubsection.9.1.1}%
+\contentsline {subsubsection}{\numberline {9.1.2}Formal Definition: The Master Equation of Flux}{60}{subsubsection.9.1.2}%
+\contentsline {subsubsection}{\numberline {9.1.3}Multi-Scale Temporal Encoding}{60}{subsubsection.9.1.3}%
+\contentsline {subsubsection}{\numberline {9.1.4}Sublayers of Temporality and Flux}{61}{subsubsection.9.1.4}%
+\contentsline {subsubsection}{\numberline {9.1.5}Connection to Research Question RQ8}{61}{subsubsection.9.1.5}%
+\contentsline {subsubsection}{\numberline {9.1.6}Implementation Notes}{61}{subsubsection.9.1.6}%
+\contentsline {subsection}{\numberline {9.2}Layer 9: Ontological Creation}{62}{subsection.9.2}%
+\contentsline {paragraph}{Introduction for the Reader.}{62}{section*.40}%
+\contentsline {subsubsection}{\numberline {9.2.1}Theoretical Grounding: Category Theory and Worldmaking}{62}{subsubsection.9.2.1}%
+\contentsline {subsubsection}{\numberline {9.2.2}Formal Definition: Ontological Functors}{62}{subsubsection.9.2.2}%
+\contentsline {paragraph}{Example: Creating a ``Temporal Cycle'' Category.}{63}{section*.41}%
+\contentsline {subsubsection}{\numberline {9.2.3}Mechanisms of Ontological Creation}{63}{subsubsection.9.2.3}%
+\contentsline {subsubsection}{\numberline {9.2.4}Sublayers of Ontological Creation}{64}{subsubsection.9.2.4}%
+\contentsline {subsubsection}{\numberline {9.2.5}Connection to Research Question RQ9}{64}{subsubsection.9.2.5}%
+\contentsline {subsubsection}{\numberline {9.2.6}Implementation Notes}{64}{subsubsection.9.2.6}%
+\contentsline {subsection}{\numberline {9.3}Layer 10: Global Meta-Ontological Evaluation}{64}{subsection.9.3}%
+\contentsline {paragraph}{Introduction for the Reader.}{64}{section*.42}%
+\contentsline {subsubsection}{\numberline {9.3.1}Theoretical Grounding: Second-Order Cybernetics and Meta-Cognition}{65}{subsubsection.9.3.1}%
+\contentsline {subsubsection}{\numberline {9.3.2}Formal Definition: The Coherence Tensor}{65}{subsubsection.9.3.2}%
+\contentsline {subsubsection}{\numberline {9.3.3}Computing the Coherence Scores}{66}{subsubsection.9.3.3}%
+\contentsline {subsubsection}{\numberline {9.3.4}Sublayers of Meta-Ontological Evaluation}{66}{subsubsection.9.3.4}%
+\contentsline {subsubsection}{\numberline {9.3.5}Connection to Research Question RQ10}{66}{subsubsection.9.3.5}%
+\contentsline {subsubsection}{\numberline {9.3.6}Implementation Notes}{67}{subsubsection.9.3.6}%
+\contentsline {subsection}{\numberline {9.4}Layer 11: Adaptive Meta-Contextualization}{67}{subsection.9.4}%
+\contentsline {paragraph}{Introduction for the Reader.}{67}{section*.43}%
+\contentsline {subsubsection}{\numberline {9.4.1}Theoretical Grounding: Situated Knowledge and Perspectival Realism}{67}{subsubsection.9.4.1}%
+\contentsline {subsubsection}{\numberline {9.4.2}Formal Definition: Contextual Operators}{67}{subsubsection.9.4.2}%
+\contentsline {subsubsection}{\numberline {9.4.3}Context-Aware Atomicity and Ontology}{68}{subsubsection.9.4.3}%
+\contentsline {subsubsection}{\numberline {9.4.4}Sublayers of Adaptive Meta-Contextualization}{68}{subsubsection.9.4.4}%
+\contentsline {subsubsection}{\numberline {9.4.5}Connection to Research Question RQ10}{69}{subsubsection.9.4.5}%
+\contentsline {subsubsection}{\numberline {9.4.6}Implementation Notes}{69}{subsubsection.9.4.6}%
+\contentsline {subsection}{\numberline {9.5}Layer 12: Transdimensional Integration and Ontological Reconciliation}{69}{subsection.9.5}%
+\contentsline {paragraph}{Introduction for the Reader.}{69}{section*.44}%
+\contentsline {subsubsection}{\numberline {9.5.1}Theoretical Grounding: Incommensurability and Translation}{69}{subsubsection.9.5.1}%
+\contentsline {subsubsection}{\numberline {9.5.2}Formal Definition: Reconciliation Spans}{70}{subsubsection.9.5.2}%
+\contentsline {paragraph}{Example: Reconciling Newtonian and Relativistic Ontologies.}{70}{section*.45}%
+\contentsline {subsubsection}{\numberline {9.5.3}Sublayers of Transdimensional Integration}{70}{subsubsection.9.5.3}%
+\contentsline {subsubsection}{\numberline {9.5.4}Connection to Research Questions RQ9 and RQ10}{71}{subsubsection.9.5.4}%
+\contentsline {subsubsection}{\numberline {9.5.5}Implementation Notes}{71}{subsubsection.9.5.5}%
+\contentsline {subsection}{\numberline {9.6}Layer 13: Ontogenesis of Novelty}{71}{subsection.9.6}%
+\contentsline {paragraph}{Introduction for the Reader.}{71}{section*.46}%
+\contentsline {subsubsection}{\numberline {9.6.1}Theoretical Grounding: Individuation and Critical Transitions}{72}{subsubsection.9.6.1}%
+\contentsline {subsubsection}{\numberline {9.6.2}Formal Definition: The Emergent Operator and Ontogenesis}{72}{subsubsection.9.6.2}%
+\contentsline {subsubsection}{\numberline {9.6.3}Early-Warning Diagnostics via Persistent Homology}{73}{subsubsection.9.6.3}%
+\contentsline {subsubsection}{\numberline {9.6.4}Sublayers of Ontogenesis}{73}{subsubsection.9.6.4}%
+\contentsline {subsubsection}{\numberline {9.6.5}Connection to Research Question RQ11}{74}{subsubsection.9.6.5}%
+\contentsline {subsubsection}{\numberline {9.6.6}Implementation Notes}{74}{subsubsection.9.6.6}%
+\contentsline {section}{\numberline {10}Cluster IV: World-Making \& Governance (Layers 14--17)}{75}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Layer 14: Autopoietic Worldbuilding}{75}{subsection.10.1}%
+\contentsline {paragraph}{Introduction for the Reader.}{75}{section*.48}%
+\contentsline {subsubsection}{\numberline {10.1.1}Theoretical Grounding: Autopoiesis and the Pluriverse}{75}{subsubsection.10.1.1}%
+\contentsline {subsubsection}{\numberline {10.1.2}Formal Definition: World-Models and the Pluriverse}{76}{subsubsection.10.1.2}%
+\contentsline {subsubsection}{\numberline {10.1.3}Plurality Preservation and Epistemic Distance}{77}{subsubsection.10.1.3}%
+\contentsline {subsubsection}{\numberline {10.1.4}Sublayers of Autopoietic Worldbuilding}{77}{subsubsection.10.1.4}%
+\contentsline {subsubsection}{\numberline {10.1.5}Connection to Research Question RQ12}{78}{subsubsection.10.1.5}%
+\contentsline {subsubsection}{\numberline {10.1.6}Implementation Notes}{78}{subsubsection.10.1.6}%
+\contentsline {subsection}{\numberline {10.2}Layer 15: Responsible Recursive Morphogenesis}{78}{subsection.10.2}%
+\contentsline {paragraph}{Introduction for the Reader.}{78}{section*.50}%
+\contentsline {subsubsection}{\numberline {10.2.1}Theoretical Grounding: Material Agency and Synthetic Biology}{79}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}Formal Definition: The Global State and Morphogenetic Actions}{79}{subsubsection.10.2.2}%
+\contentsline {subsubsection}{\numberline {10.2.3}Safe Operating Envelope and Invariant Contracts}{80}{subsubsection.10.2.3}%
+\contentsline {subsubsection}{\numberline {10.2.4}Ethical Reflexivity and Recursive Meta-Structure}{80}{subsubsection.10.2.4}%
+\contentsline {subsubsection}{\numberline {10.2.5}Sublayers of Responsible Recursive Morphogenesis}{81}{subsubsection.10.2.5}%
+\contentsline {subsubsection}{\numberline {10.2.6}Connection to Research Question RQ13}{81}{subsubsection.10.2.6}%
+\contentsline {subsubsection}{\numberline {10.2.7}Implementation Notes}{81}{subsubsection.10.2.7}%
+\contentsline {subsection}{\numberline {10.3}Layer 16: Transcendence and Collective Cognition}{82}{subsection.10.3}%
+\contentsline {paragraph}{Introduction for the Reader.}{82}{section*.51}%
+\contentsline {subsubsection}{\numberline {10.3.1}Theoretical Grounding: Distributed Cognition and Collective Intelligence}{82}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Formal Definition: The Collective Cognitive Operator}{82}{subsubsection.10.3.2}%
+\contentsline {subsubsection}{\numberline {10.3.3}Sublayers of Transcendence and Collective Cognition}{83}{subsubsection.10.3.3}%
+\contentsline {subsubsection}{\numberline {10.3.4}Connection to Research Question RQ14}{83}{subsubsection.10.3.4}%
+\contentsline {subsubsection}{\numberline {10.3.5}Implementation Notes}{84}{subsubsection.10.3.5}%
+\contentsline {subsection}{\numberline {10.4}Layer 17: Absolute Integration}{84}{subsection.10.4}%
+\contentsline {paragraph}{Introduction for the Reader.}{84}{section*.52}%
+\contentsline {subsubsection}{\numberline {10.4.1}Theoretical Grounding: Higher-Order Cybernetics and Fixed-Point Theorems}{84}{subsubsection.10.4.1}%
+\contentsline {subsubsection}{\numberline {10.4.2}Formal Definition: The Meta-Operator and Equilibrium}{85}{subsubsection.10.4.2}%
+\contentsline {subsubsection}{\numberline {10.4.3}The Principle of Reversible Integration}{85}{subsubsection.10.4.3}%
+\contentsline {subsubsection}{\numberline {10.4.4}Sublayers of Absolute Integration}{86}{subsubsection.10.4.4}%
+\contentsline {subsubsection}{\numberline {10.4.5}Connection to Research Question RQ15}{86}{subsubsection.10.4.5}%
+\contentsline {subsubsection}{\numberline {10.4.6}Implementation Notes}{86}{subsubsection.10.4.6}%
+\contentsline {paragraph}{Illustrative miniature scenario.}{87}{section*.53}%
+\contentsline {section}{\numberline {11}Concrete Examples and Illustrations}{88}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Atomicity Scores for Diverse Observables}{88}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Qualitative Dimensions in Practice}{88}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Relational Density Field}{89}{subsection.11.3}%
+\contentsline {section}{\numberline {12}Validation: Falsifiable Experiments}{90}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Hypothesis 1: Layer 1 Multi-Axial Convergence}{90}{subsection.12.1}%
+\contentsline {subsubsection}{\numberline {12.1.1}Experimental Setup}{90}{subsubsection.12.1.1}%
+\contentsline {subsubsection}{\numberline {12.1.2}Results}{91}{subsubsection.12.1.2}%
+\contentsline {subsubsection}{\numberline {12.1.3}Interpretation}{91}{subsubsection.12.1.3}%
+\contentsline {subsection}{\numberline {12.2}Hypothesis 2: Unsupervised Relational Structure Discovery Across Five Datasets}{91}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Pilot Measurement of Non-Anthropocentricity}{93}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Illustrative Example: A Non‑Anthropocentric Functional Cluster on CIFAR‑10}{94}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}Hypothesis 3: Layer 13 Ontogenesis}{94}{subsection.12.5}%
+\contentsline {subsection}{\numberline {12.6}Summary of Falsifiable Predictions}{95}{subsection.12.6}%
+\contentsline {section}{\numberline {13}Computational Complexity and Scaling}{96}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Layer 1: Atomicity Testing}{96}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Layer 2: Hypergraph Construction and Influence Computation}{96}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Layer 7: Global Synthesis}{96}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Layer 13: Ontogenesis Detection}{96}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}Layer 17: Fixed-Point Computation}{97}{subsection.13.5}%
+\contentsline {subsection}{\numberline {13.6}Idealised Mathematics and Computational Tractability}{97}{subsection.13.6}%
+\contentsline {subsection}{\numberline {13.7}Scalability Strategies}{97}{subsection.13.7}%
+\contentsline {subsection}{\numberline {13.8}Empirical Resource Footprint of the Cluster~I Implementation}{98}{subsection.13.8}%
+\contentsline {section}{\numberline {14}Ethical and Governance Framework}{99}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Reversible Integration as an Architectural Principle}{99}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Provenance, Auditability, and Cryptographic Attestation}{99}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Multi-Stakeholder Governance and Participatory Design}{99}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}Ethical Reflexivity in Layer~15}{100}{subsection.14.4}%
+\contentsline {subsection}{\numberline {14.5}Moral Status of Simulated Entities and Pluriverses}{101}{subsection.14.5}%
+\contentsline {subsection}{\numberline {14.6}Alignment with Axiomatic Foundations}{101}{subsection.14.6}%
+\contentsline {section}{\numberline {15}Research Programme Status and Roadmap}{102}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Current Implementation Status}{102}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Falsifiable Predictions and Validation Roadmap}{102}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}Invitation to the Community}{103}{subsection.15.3}%
+\contentsline {section}{\numberline {16}Discussion}{104}{section.16}%
+\contentsline {subsection}{\numberline {16.1}Implications for Explainable and Trustworthy AI}{104}{subsection.16.1}%
+\contentsline {subsection}{\numberline {16.2}Relation to Existing Work}{104}{subsection.16.2}%
+\contentsline {subsection}{\numberline {16.3}Interdisciplinary Significance}{105}{subsection.16.3}%
+\contentsline {subsection}{\numberline {16.4}Limitations and Open Challenges}{105}{subsection.16.4}%
+\contentsline {subsection}{\numberline {16.5}Future Work}{106}{subsection.16.5}%
+\contentsline {section}{\numberline {17}Summary of Layers, Axioms, and Research Questions}{108}{section.17}%
+\contentsline {section}{\numberline {18}Conclusion: A Call for Collaborative Inquiry}{109}{section.18}%
+\contentsline {section}{\numberline {A}Proofs of Key Propositions}{113}{appendix.A}%
+\contentsline {section}{\numberline {B}Algorithm Pseudocode}{115}{appendix.B}%
+\contentsline {section}{\numberline {C}Glossary of Symbols}{117}{appendix.C}%
+\contentsline {section}{\numberline {D}Justification and Formal Status of the Axioms}{118}{appendix.D}%
+\contentsline {section}{\numberline {E}Example Governance Protocol for Layer~15 Morphogenetic Actions}{120}{appendix.E}%
+\contentsline {section}{\numberline {F}Data and Code Availability}{121}{appendix.F}%
