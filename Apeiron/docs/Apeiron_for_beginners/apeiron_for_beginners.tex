@@ -1,0 +1,97 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------- Packages --------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc, backgrounds}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\setlength{\parskip}{0.7em}
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{13.6pt}
+\addtolength{\topmargin}{-1.6pt}
+
+% -------- Header / Footer --------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Apeiron Explained}}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% -------- Title ------------------------------------------
+\title{\textbf{The Apeiron Framework}\\[0.3em]
+\Large A gentle introduction to an AI that builds its own knowledge from scratch}
+\author{David Beniers}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\vspace*{\fill}
+\newpage
+
+% -------- Teaser -----------------------------------------
+\input{Sections/00_teaser.tex}
+
+% -------- Sections ---------------------------------------
+\input{Sections/00_about.tex}
+\input{Sections/01_intro.tex}
+\input{Sections/02_limits.tex}
+\input{Sections/03_idea.tex}
+\input{Sections/04_layer1.tex}
+\input{Sections/05_layer2.tex}
+\input{Sections/06_layer3.tex}
+\input{Sections/07_layer4.tex}
+
+% --- Cluster II ------------------------------------------
+\input{Sections/08_layer5.tex}
+\input{Sections/09_layer6.tex}
+\input{Sections/10_layer7.tex}
+\input{Sections/11_cluster2_log.tex}   % Mission Log
+
+% --- Cluster III -----------------------------------------
+\input{Sections/12_layer8.tex}
+\input{Sections/13_layer9.tex}
+\input{Sections/14_layer10.tex}
+\input{Sections/15_layer11.tex}
+\input{Sections/16_layer12.tex}
+\input{Sections/17_layer13.tex}
+\input{Sections/18_cluster3_log.tex}   % Mission Log
+
+% --- Cluster IV ------------------------------------------
+\input{Sections/19_layer14.tex}
+\input{Sections/20_layer15.tex}
+\input{Sections/21_layer16.tex}
+\input{Sections/22_layer17.tex}
+\input{Sections/23_cluster4_log.tex}   % Mission Log
+
+% --- All layers overview figure --------------------------
+\input{Sections/24_all_layers_figure.tex}
+
+% --- Ethics & Summary & Glossary -------------------------
+\input{Sections/09_ethics.tex}
+\input{Sections/10_summary.tex}
+\input{Sections/11_glossary.tex}
+
+% --- Visual Summary (Pixel’s Brain) ----------------------
+\input{Sections/99_pixel_brain.tex}
+
+% -------- Bibliography ------------------------------------
+\begin{thebibliography}{9}
+\bibitem{hawking} S.~Hawking, \textit{A Brief History of Time},
+Bantam Books, 1988.
+\bibitem{mitchell} M.~Mitchell, \textit{Complexity: A Guided Tour},
+Oxford University Press, 2009.
+\bibitem{ai_modern} S.~Russell \& P.~Norvig,
+\textit{Artificial Intelligence: A Modern Approach}, 4th ed., Pearson, 2020.
+\end{thebibliography}
+
+\end{document}

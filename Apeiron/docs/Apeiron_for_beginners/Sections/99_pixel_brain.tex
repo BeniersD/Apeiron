@@ -1,0 +1,56 @@
+\newpage
+\section*{Pixel’s Brain – The Complete Journey}
+\addcontentsline{toc}{section}{Pixel’s Brain – The Complete Journey}
+
+\begin{tikzpicture}[
+    scale=0.7, transform shape,
+    layer/.style={rectangle, draw=black, fill=blue!8, minimum width=8cm, minimum height=0.7cm, align=center, font=\footnotesize},
+    arrow/.style={-{Stealth}, thick, color=gray},
+    cluster label/.style={font=\bfseries\small}
+]
+
+% Clusters als achtergrond
+\fill[blue!5]  (-4.5, 1.5) rectangle (4.5, -2.8);
+\fill[green!5] (-4.5, -3.2) rectangle (4.5, -5.0);
+\fill[yellow!5](-4.5, -5.4) rectangle (4.5, -9.4);
+\fill[red!5]   (-4.5, -9.8) rectangle (4.5, -12.0);
+
+\node[cluster label] at (0, 1.8)  {Cluster I – Substrate \& Emergence};
+\node[cluster label] at (0, -2.9) {Cluster II – Adaptive Intelligence};
+\node[cluster label] at (0, -5.1) {Cluster III – Ontological Fluidity};
+\node[cluster label] at (0, -9.5) {Cluster IV – World-Making \& Governance};
+
+% Lagen
+\node[layer] at (0, 1.0)  {Layer 1 – Epistemic Singularity \hspace{1cm} \textbf{The Splitter} [S]};
+\node[layer] at (0, 0.2)  {Layer 2 – Relational Hypergraph \hspace{1cm} \textbf{The Networker} [N]};
+\node[layer] at (0,-0.6)  {Layer 3 – Functional Clusters \hspace{1cm} \textbf{The Grouper} [G]};
+\node[layer] at (0,-1.4)  {Layer 4 – Endogenous Dynamics \hspace{1cm} \textbf{The Time Weaver} [T]};
+
+\node[layer, fill=green!12] at (0,-2.6) {Layer 5 – Autonomous Optimization \hspace{1cm} \textbf{The Optimiser} [O]};
+\node[layer, fill=green!12] at (0,-3.4) {Layer 6 – Meta‑Learning \hspace{1cm} \textbf{The Meta‑Learner} [M]};
+\node[layer, fill=green!12] at (0,-4.2) {Layer 7 – Emergent Self‑Awareness \hspace{1cm} \textbf{The Watcher} [W]};
+
+\node[layer, fill=yellow!12] at (0,-5.4) {Layer 8 – Temporality \& Flux \hspace{1cm} \textbf{The Multi‑Timer} [MT]};
+\node[layer, fill=yellow!12] at (0,-6.2) {Layer 9 – Ontological Creation \hspace{1cm} \textbf{The Creator} [C]};
+\node[layer, fill=yellow!12] at (0,-7.0) {Layer 10 – Global Evaluation \hspace{1cm} \textbf{The Editor} [E]};
+\node[layer, fill=yellow!12] at (0,-7.8) {Layer 11 – Adaptive Contextualization \hspace{1cm} \textbf{The Contextualiser} [Cx]};
+\node[layer, fill=yellow!12] at (0,-8.6) {Layer 12 – Reconciliation \hspace{1cm} \textbf{The Bridge‑Builder} [BB]};
+\node[layer, fill=yellow!12] at (0,-9.4) {Layer 13 – Ontogenesis of Novelty \hspace{1cm} \textbf{The Seismologist} [S]};
+
+\node[layer, fill=red!12] at (0,-10.6) {Layer 14 – Autopoietic Worldbuilding \hspace{1cm} \textbf{The World‑Builder} [WB]};
+\node[layer, fill=red!12] at (0,-11.4) {Layer 15 – Responsible Morphogenesis \hspace{1cm} \textbf{The Sculptor} [Sc]};
+\node[layer, fill=red!12] at (0,-12.2) {Layer 16 – Collective Cognition \hspace{1cm} \textbf{The Hive‑Mind} [HM]};
+\node[layer, fill=red!12] at (0,-13.0) {Layer 17 – Absolute Integration \hspace{1cm} \textbf{The Integrator} [I]};
+
+% Pijlen
+\foreach \i in {1,...,16} {
+    \pgfmathtruncatemacro{\j}{\i+1}
+    \draw[arrow] (0,-0.8*\i+1.8) -- (0,-0.8*\j+1.8);
+}
+
+% Pixel onderaan
+\node[draw, circle, fill=gray!20, minimum size=2cm] at (0,-14.5) {\Huge\bfseries P};
+\node at (0,-15.5) {\textbf{Pixel}};
+\node at (0,-16.0) {\small “From atoms to understanding.”};
+
+\end{tikzpicture}

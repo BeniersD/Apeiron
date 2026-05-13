@@ -1,0 +1,48 @@
+\section{The Core Idea of Apeiron}
+\label{sec:idea}
+
+The name “Apeiron” comes from an ancient Greek word meaning
+\emph{the unlimited} or \emph{the source of all things}.  The framework
+is built on a simple philosophy:
+\begin{quote}
+\textbf{Intelligence is the ability to organise elementary observations
+into coherent, useful knowledge without any external guidance.}
+\end{quote}
+
+\begin{tcolorbox}[colback=purple!5, colframe=purple!50, title=\textbf{Where does the name come from?}]
+More than 2500 years ago, the Greek thinker Anaximander proposed that
+everything in the universe arose from a single, boundless substance he
+called \emph{to apeiron} — “the unlimited”.  It was not water, not
+fire, but something deeper from which all things emerge and to which
+they return.
+
+The Apeiron Framework borrows this idea: intelligence, too, can emerge
+from a single, undivided starting point — raw observation — and
+gradually unfold into a rich universe of concepts.  No pre‑defined
+categories, no imported labels; just an open field of possibilities,
+waiting to be structured.
+\end{tcolorbox}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw=black, fill=blue!10, minimum width=6cm, minimum height=0.6cm, font=\small},
+    arrow/.style={-{Stealth}, thick, gray}
+]
+\node[layer] (L1) at (0,0)  {Layer 1 – Observing the smallest pieces (atoms)};
+\node[layer] (L2) at (0,-1) {Layer 2 – Finding connections between pieces};
+\node[layer] (L3) at (0,-2) {Layer 3 – Grouping connections into functions};
+\node[layer] (L4) at (0,-3) {Layer 4 – Letting the system feel time};
+\node[layer, fill=green!10] at (0,-4) {\footnotesize Layers 5–17 continue upwards...};
+\foreach \i in {1,2,3} {
+    \pgfmathtruncatemacro{\j}{\i+1}
+    \draw[arrow] (L\i.south) -- (L\j.north);
+}
+\end{tikzpicture}
+\caption{The first four layers of Apeiron (simplified).  Each layer builds upon the one below it.}
+\label{fig:layers_simple}
+\end{figure}
+
+Apeiron has \textbf{seventeen layers} organised in four clusters.
+But don’t worry – we will look at every single one, step by step,
+following Pixel’s journey on Mars.

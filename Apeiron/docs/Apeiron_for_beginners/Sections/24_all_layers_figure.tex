@@ -1,0 +1,33 @@
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw=black, fill=blue!8, minimum width=7cm, minimum height=0.5cm, align=center, font=\footnotesize},
+    arrow/.style={-{Stealth}, thick, color=gray}
+]
+\node[layer] at (0,0)   {Layer 1 – Epistemic Singularity};
+\node[layer] at (0,-0.6){Layer 2 – Relational Hypergraph};
+\node[layer] at (0,-1.2){Layer 3 – Functional Clusters};
+\node[layer] at (0,-1.8){Layer 4 – Endogenous Dynamics};
+\node[layer, fill=green!8] at (0,-2.6){Layer 5 – Autonomous Optimization};
+\node[layer, fill=green!8] at (0,-3.2){Layer 6 – Meta‑Learning};
+\node[layer, fill=green!8] at (0,-3.8){Layer 7 – Emergent Self‑Awareness};
+\node[layer, fill=yellow!8] at (0,-4.6){Layer 8 – Temporality \& Flux};
+\node[layer, fill=yellow!8] at (0,-5.2){Layer 9 – Ontological Creation};
+\node[layer, fill=yellow!8] at (0,-5.8){Layer 10 – Global Evaluation};
+\node[layer, fill=yellow!8] at (0,-6.4){Layer 11 – Adaptive Contextualization};
+\node[layer, fill=yellow!8] at (0,-7.0){Layer 12 – Reconciliation};
+\node[layer, fill=yellow!8] at (0,-7.6){Layer 13 – Ontogenesis of Novelty};
+\node[layer, fill=red!8] at (0,-8.4){Layer 14 – Autopoietic Worldbuilding};
+\node[layer, fill=red!8] at (0,-9.0){Layer 15 – Responsible Morphogenesis};
+\node[layer, fill=red!8] at (0,-9.6){Layer 16 – Collective Cognition};
+\node[layer, fill=red!8] at (0,-10.2){Layer 17 – Absolute Integration};
+
+\foreach \i in {1,...,16} {
+    \pgfmathtruncatemacro{\j}{\i+1}
+    \draw[arrow] (0,-0.6*\i+0.6) -- (0,-0.6*\j+0.3);
+}
+\node at (0,-11) {\small Cluster I (blue) – Cluster II (green) – Cluster III (yellow) – Cluster IV (red)};
+\end{tikzpicture}
+\caption{All seventeen layers of Apeiron at a glance.}
+\label{fig:all17}
+\end{figure}

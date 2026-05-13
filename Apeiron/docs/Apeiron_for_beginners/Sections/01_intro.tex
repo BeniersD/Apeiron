@@ -1,0 +1,53 @@
+\section{What Does It Mean to ``Know'' Something?}
+\label{sec:intro}
+
+Imagine you see a chair for the first time.  Nobody tells you what it is,
+yet you quickly understand that you can sit on it.  How does your brain
+figure that out?
+
+Your brain detects shapes, colours, and edges.  It notices that certain
+groups of shapes often appear together, and it learns to associate those
+groups with the possibility of sitting.  Over time, you build a mental
+model of the world that is independent of any single teacher.
+
+Today’s artificial intelligence systems are \emph{not} like that.  They
+are trained on millions of pictures that already have labels attached:
+“chair”, “cat”, “car”.  They never have to discover the concept of a
+chair by themselves.
+
+The Apeiron Framework asks a bold question:
+\begin{center}
+\textbf{What if an AI had to build \emph{all} its knowledge from
+elementary observations, without ever being told what anything means?}
+\end{center}
+
+\subsection*{A Small Glimpse of What Apeiron Already Does}
+
+Look at the two rows of images below.
+They are photographs of the real world, but they have no captions.
+Apeiron looked at 3000 such photos and found a group of pixels that
+fires together – a texture pattern, a contrast between light and dark –
+that appears in aeroplanes, deer, ships, and frogs alike.
+No human labelled this pattern; it is simply a signal that the world
+offers, and Apeiron picked it up.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/cifar_cluster_example.pdf}
+  \caption{Left block: images where the most active Apeiron feature cluster
+           is prominent. Right block: images where it is scarcely present.
+           The cluster captures high‑contrast textures that recur across
+           object classes.}
+  \label{fig:cifar_example}
+\end{figure}
+
+\subsection*{Meet Pixel – Our Little Explorer}
+
+To make all of this concrete, we will follow a tiny robot called \textbf{Pixel}.
+Pixel has crash‑landed on Mars next to a broken rover.  Its only working
+sensor is a camera, and its only goal is to understand the world well
+enough to repair the antenna and call Earth.  Step by step, we will
+watch Pixel climb the same seventeen‑layer ladder that Apeiron uses,
+from raw sensation to a full‑blown plan of action.
+
+So, grab a comfy seat and let’s join Pixel on its journey!
