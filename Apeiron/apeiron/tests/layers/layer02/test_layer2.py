@@ -33,6 +33,13 @@ Uitvoeren met (vanuit de hoofdmap apeiron):
 
 import pytest
 import numpy as np
+import torch
+HAS_TORCH = torch.cuda.is_available() if hasattr(torch, 'cuda') else False
+try:
+    import torch_geometric
+    HAS_PYG = True
+except ImportError:
+    HAS_PYG = False
 
 # ============================================================================
 # Hulpfuncties
@@ -130,9 +137,10 @@ def test_spectral_database_basic():
 # ============================================================================
 
 def test_hypergraph_relations_import():
-    from apeiron.layers.layer02_relational import hypergraph_relations
-    assert hasattr(hypergraph_relations, 'Hypergraph')
-    assert hasattr(hypergraph_relations, 'QuantumGraph')
+    from apeiron.layers.layer02_relational import hypergraph
+    assert hasattr(hypergraph, 'Hypergraph')
+    from apeiron.layers.layer02_relational import quantum_graph
+    assert hasattr(quantum_graph, 'QuantumGraph')
 
 def test_hypergraph_basic():
     hg = create_test_hypergraph()
@@ -320,10 +328,9 @@ def test_compute_relations():
 # ============================================================================
 # benchmarks
 # ============================================================================
-
 def test_benchmarks_import():
-    from apeiron.layers.layer02_relational import benchmarks
-    assert hasattr(benchmarks, 'BenchmarkSuite')
+    from apeiron.benchmark.layer02_benchmarks import BenchmarkSuite
+    assert BenchmarkSuite is not None
 
 def test_benchmark_suite_basic():
     from apeiron.benchmark.layer02_benchmarks import BenchmarkSuite
@@ -681,7 +688,7 @@ def test_from_temporal_registry():
 
 def test_quantum_error_correction_import():
     pytest.importorskip("qiskit")
-    from apeiron.layers.layer02_relational import quantum_error_correction
+    from apeiron.optional import quantum_error_correction
     assert hasattr(quantum_error_correction, 'RepetitionCode')
     assert hasattr(quantum_error_correction, 'ShorCode')
     assert hasattr(quantum_error_correction, 'FiveQubitCode')
@@ -828,11 +835,13 @@ def test_stability_with_nonzero_theta():
 # ============================================================================
 # derived_categories
 # ============================================================================
-
 def test_derived_categories_import():
-    from apeiron.optional import derived_categories
-    assert hasattr(derived_categories, 'ChainComplex')
-    assert hasattr(derived_categories, 'ChainMap')
+    from apeiron.optional.derived_categories import ChainComplex
+    d1 = np.array([[1], [-1]])
+    C = ChainComplex([d1])
+    assert C.is_complex()
+    h0 = C.homology(0)[0]
+    assert h0 == 1
 
 def test_chain_complex_basic():
     from apeiron.optional.derived_categories import ChainComplex
@@ -1065,7 +1074,7 @@ def test_temporal_motif_significance():
 
 def test_quantum_ml_import():
     pytest.importorskip("pennylane")
-    from apeiron.layers.layer02_relational import quantum_ml
+    from apeiron.optional import quantum_ml
     assert hasattr(quantum_ml, 'QSVM')
     assert hasattr(quantum_ml, 'QuantumKernel')
     assert hasattr(quantum_ml, 'VariationalQuantumClassifier')
@@ -1196,7 +1205,7 @@ def test_dashboard_builder():
 
 def test_atomicity_visuals_import():
     """Test of atomicity_visuals module importeerbaar is."""
-    from apeiron.layers.layer02_relational import atomicity_visuals
+    from apeiron.layers.layer01_foundational import visualization as atomicity_visuals
     assert hasattr(atomicity_visuals, 'plot_atomicity_heatmap')
     assert hasattr(atomicity_visuals, 'plot_atomicity_distribution')
     assert hasattr(atomicity_visuals, 'plot_atomicity_comparison')
@@ -1206,7 +1215,7 @@ def test_atomicity_visuals_import():
 def test_atomicity_visuals_basic():
     """Test basisfunctionaliteit van atomicity_visuals (backend fallback)."""
     pytest.importorskip("matplotlib")  # vereist voor demo
-    from apeiron.layers.layer02_relational import atomicity_visuals
+    from apeiron.layers.layer01_foundational import visualization as atomicity_visuals
     atomicity = np.random.rand(20)
     # Alleen controleren of ze worden aangeroepen zonder fouten (show=False)
     fig = atomicity_visuals.plot_atomicity_distribution(atomicity, backend='matplotlib', show=False)
