@@ -117,6 +117,7 @@ class GlobalWorkspace:
     """
 
     def __init__(self, hypergraph):
+        from apeiron.layers.layer02_relational.hypergraph import Hypergraph
         if Hypergraph is None:
             raise ImportError("Hypergraph module is required for GlobalWorkspace.")
         self.hypergraph = hypergraph

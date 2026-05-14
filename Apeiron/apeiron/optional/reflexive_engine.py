@@ -40,7 +40,7 @@ import sys
 import tempfile
 import warnings
 from copy import deepcopy
-from typing import Dict, List, Tuple, Set, Optional, Any
+from typing import Callable, Dict, List, Tuple, Set, Optional, Any
 
 import numpy as np
 

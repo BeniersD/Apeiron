@@ -250,7 +250,7 @@ class Hypergraph:
                 if face_set not in self.simplicial_complex[k]:
                     self.simplicial_complex[k].append(face_set)
 
-                        def _ensure_simplices(self, dim: int) -> List[Set[Any]]:
+    def _ensure_simplices(self, dim: int) -> List[Set[Any]]:
         """
         Lazy, on‑demand materialisation of simplices for dimension `dim`.
         Only builds faces of hyperedges up to the requested dimension,

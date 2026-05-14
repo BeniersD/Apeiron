@@ -105,8 +105,6 @@ class GapDetector:
     """
 
     def __init__(self, hypergraph):
-        if Hypergraph is None:
-            raise ImportError("Hypergraph module is required.")
         self.hypergraph = hypergraph
 
     def detect_gaps(self) -> List[EpistemicGap]:
@@ -271,15 +269,7 @@ class OntogenesisEngine:
         Maximum number of ontogenetic jumps per run.
     """
 
-    def __init__(
-        self,
-        hypergraph: Any,
-        category: Optional[Any] = None,
-        auto_apply: bool = False,
-        max_jumps: int = 5,
-    ):
-        if Hypergraph is None:
-            raise ImportError("Hypergraph module is required.")
+    def __init__( self, hypergraph: Any, category: Optional[Any] = None, auto_apply: bool = False, max_jumps: int = 5,):
         self.hypergraph = hypergraph
         self.category = category
         self.auto_apply = auto_apply

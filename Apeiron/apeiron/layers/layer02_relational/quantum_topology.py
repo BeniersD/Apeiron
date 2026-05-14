@@ -152,7 +152,7 @@ class QuantumBettiEstimator:
 
         # Edges (1-simplices): all pairs within hyperedges
         edges_set = set()
-        for edge in self.hypergraph.edges:
+        for edge in self.hypergraph.hyperedges.values():
             for v1, v2 in combinations(edge, 2):
                 edges_set.add(tuple(sorted([v1, v2])))
         edges = sorted(edges_set)
@@ -161,7 +161,7 @@ class QuantumBettiEstimator:
 
         # Triangles (2-simplices): all triples within hyperedges
         triangles_set = set()
-        for edge in self.hypergraph.edges:
+        for edge in self.hypergraph.hyperedges.values():
             if len(edge) >= 3:
                 for triple in combinations(edge, 3):
                     triangles_set.add(tuple(sorted(triple)))
@@ -363,7 +363,7 @@ class HypergraphTQFT:
         }
         # Hyperedges as multi-leg tensors
         self.edge_tensors = {}
-        for i, edge in enumerate(self.hypergraph.edges):
+        for i, (eid, edge) in enumerate(self.hypergraph.hyperedges.items()):
             # A hyperedge with k vertices corresponds to a tensor of rank k
             k = len(edge)
             # For simplicity, assign a GHZ state projector
@@ -416,7 +416,7 @@ class HypergraphTQFT:
             'partition_function': self.partition_function(),
             'euler_characteristic': (
                 len(self.hypergraph.vertices) -
-                sum(len(edge) - 1 for edge in self.hypergraph.edges)
+                sum(len(edge) - 1 for edge in self.hypergraph.hyperedges)
             )
         }
 

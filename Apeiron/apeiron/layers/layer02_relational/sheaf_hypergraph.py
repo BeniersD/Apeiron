@@ -413,10 +413,14 @@ class SheafHypergraph:
             C¹ = im δ ⊕ ker δ^T
             and H¹ ≅ ker δ^T ∩ ker δ₁ where δ₁ is the 1-coboundary.
         """
+
+
         if self._cohomology_cache is not None and not force_recompute:
             return self._cohomology_cache
 
         delta = self._build_boundary_matrix()
+        if delta.size == 0:
+            return SheafCohomologyResult(0, 0, np.array([]))
 
         # H⁰ = ker δ
         if delta.shape[0] == 0:  # No hyperedges

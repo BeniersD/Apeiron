@@ -320,7 +320,10 @@ class SpectralGraphAnalysis:
                 B = A - deg_outer / (2 * m)
             else:
                 raise ValueError(f"Unsupported matrix type: {matrix_type}")
-            self._matrices[key] = locals()[key.split('.')[0]]  # hack: variable name = key
+            if matrix_type == SpectralType.LAPLACIAN:
+                self._matrices[key] = L
+            elif matrix_type == SpectralType.NORMALIZED_LAPLACIAN:
+                self._matrices[key] = L_norm
             return self._matrices[key]
         else:
             out_deg, in_deg = self._get_degrees()

@@ -183,7 +183,7 @@ class HypergraphHodgeDecomposer:
 
         # Build edge list from hyperedges (take all pairs within each hyperedge)
         edges_set = set()
-        for edge in self.hypergraph.edges:
+        for edge in self.hypergraph.hyperedges:
             for v1, v2 in combinations(edge, 2):
                 edges_set.add((min(v1, v2), max(v1, v2)))
         edges = sorted(edges_set)
@@ -192,7 +192,7 @@ class HypergraphHodgeDecomposer:
 
         # Build triangle list from triples within hyperedges and 3-cliques in 2-section
         triangles_set = set()
-        for edge in self.hypergraph.edges:
+        for edge in self.hypergraph.hyperedges:
             if len(edge) >= 3:
                 for triple in combinations(edge, 3):
                     triangles_set.add(tuple(sorted(triple)))

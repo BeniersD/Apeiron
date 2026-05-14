@@ -362,7 +362,7 @@ class MapperFunctor:
         G = nx.Graph()
         for v in self.hypergraph.vertices:
             G.add_node(v)
-        for edge in self.hypergraph.edges:
+        for edge in self.hypergraph.hyperedges:
             for v1, v2 in combinations(edge, 2):
                 G.add_edge(v1, v2)
 
@@ -475,7 +475,7 @@ class CategoricalTDA:
 
         # Create a distance matrix from shortest paths in the 2-section graph
         adj_matrix = np.zeros((n, n))
-        for edge in self.hypergraph.edges:
+        for edge in self.hypergraph.hyperedges:
             for v1, v2 in combinations(edge, 2):
                 if v1 in vertices and v2 in vertices:
                     i, j = vertices.index(v1), vertices.index(v2)
@@ -532,7 +532,7 @@ class CategoricalTDA:
             return PersistenceModule([0.0], [0])
 
         # Sort hyperedges by size as a proxy for filtration
-        edges = sorted(self.hypergraph.edges, key=len)
+        edges = sorted(self.hypergraph.hyperedges, key=len)
         filtration_vals = [0.0]
         dims = [0]  # initially no connected components counted
 

@@ -245,112 +245,112 @@ class RelationalCategory:
             hyperedges = [set(vertices)]  # fallback single hyperedge
         return SheafHypergraph(vertices, hyperedges)
 
-    @dataclass
-    class LazyNerve:
+@dataclass
+class LazyNerve:
+    """
+    Lazy construction of the simplicial nerve of a category.
+
+    Simplices (composable chains of morphisms) are only materialized
+    on demand, enabling scalable verification of coherence conditions.
+
+    An n‑simplex is a tuple of the form
+        (obj0, obj1, …, objn, m1, m2, …, mn)
+    where each mi : obj_{i-1} → obj_i is a morphism in the category.
+    """
+    category: RelationalCategory
+    _cache: Dict[int, List[Tuple[Any, ...]]] = field(default_factory=dict)
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+    def n_simplices(self, n: int) -> List[Tuple[Any, ...]]:
         """
-        Lazy construction of the simplicial nerve of a category.
+        Return all n‑simplices (composable chains of n morphisms).
 
-        Simplices (composable chains of morphisms) are only materialized
-        on demand, enabling scalable verification of coherence conditions.
-
-        An n‑simplex is a tuple of the form
-            (obj0, obj1, …, objn, m1, m2, …, mn)
-        where each mi : obj_{i-1} → obj_i is a morphism in the category.
+        For n=0 : objects                    -> tuple (obj0,)
+        For n=1 : morphisms                  -> tuple (obj0, obj1, m1)
+        For n=2 : composable pairs            -> tuple (obj0, obj1, obj2, m1, m2)
+        etc.
         """
-        category: RelationalCategory
-        _cache: Dict[int, List[Tuple[Any, ...]]] = field(default_factory=dict)
+        if n in self._cache:
+            return self._cache[n]
 
-        # ------------------------------------------------------------------
-        # Public API
-        # ------------------------------------------------------------------
-        def n_simplices(self, n: int) -> List[Tuple[Any, ...]]:
-            """
-            Return all n‑simplices (composable chains of n morphisms).
-
-            For n=0 : objects                    -> tuple (obj0,)
-            For n=1 : morphisms                  -> tuple (obj0, obj1, m1)
-            For n=2 : composable pairs            -> tuple (obj0, obj1, obj2, m1, m2)
-            etc.
-            """
-            if n in self._cache:
-                return self._cache[n]
-
-            if n == 0:
-                simplices = [(obj,) for obj in self.category.objects]
-            elif n == 1:
-                simplices = []
+        if n == 0:
+            simplices = [(obj,) for obj in self.category.objects]
+        elif n == 1:
+            simplices = []
+            for (src, tgt), morphs in self.category.hom_sets.items():
+                for m in morphs:
+                    simplices.append((src, tgt, m))
+        else:
+            # Build from (n-1)-simplices
+            prev = self.n_simplices(n - 1)
+            simplices = []
+            for chain in prev:
+                # chain = (obj0, …, obj_{n-1}, m1, …, m_{n-1})
+                # length = (n) + (n-1) = 2n-1
+                last_object = chain[n - 1]          # obj_{n-1}
+                # Extend with any morphism leaving last_object
                 for (src, tgt), morphs in self.category.hom_sets.items():
-                    for m in morphs:
-                        simplices.append((src, tgt, m))
-            else:
-                # Build from (n-1)-simplices
-                prev = self.n_simplices(n - 1)
-                simplices = []
-                for chain in prev:
-                    # chain = (obj0, …, obj_{n-1}, m1, …, m_{n-1})
-                    # length = (n) + (n-1) = 2n-1
-                    last_object = chain[n - 1]          # obj_{n-1}
-                    # Extend with any morphism leaving last_object
-                    for (src, tgt), morphs in self.category.hom_sets.items():
-                        if src == last_object:
-                            for m in morphs:
-                                new_chain = chain + (tgt, m)
-                                simplices.append(new_chain)
-            self._cache[n] = simplices
-            return simplices
+                    if src == last_object:
+                        for m in morphs:
+                            new_chain = chain + (tgt, m)
+                            simplices.append(new_chain)
+        self._cache[n] = simplices
+        return simplices
 
-        # ------------------------------------------------------------------
-        # Coherence verification
-        # ------------------------------------------------------------------
-        def verify_naturality(
-            self,
-            functor_F: RelationalFunctor,
-            functor_G: RelationalFunctor,
-            components: Dict[Any, Any],   # object in C -> morphism in D: η_A : F(A) → G(A)
-        ) -> bool:
-            """
-            Verify that the given components define a natural transformation η : F ⇒ G.
+    # ------------------------------------------------------------------
+    # Coherence verification
+    # ------------------------------------------------------------------
+    def verify_naturality(
+        self,
+        functor_F: RelationalFunctor,
+        functor_G: RelationalFunctor,
+        components: Dict[Any, Any],   # object in C -> morphism in D: η_A : F(A) → G(A)
+    ) -> bool:
+        """
+        Verify that the given components define a natural transformation η : F ⇒ G.
 
-            Checks the naturality square for every morphism f : A → B in the source
-            category:  G(f) ∘ η_A = η_B ∘ F(f)
+        Checks the naturality square for every morphism f : A → B in the source
+        category:  G(f) ∘ η_A = η_B ∘ F(f)
 
-            Returns True if all squares commute (or the category does not contain
-            enough data to disprove them).
-            """
-            C = functor_F.source_category
-            D = functor_F.target_category      # must be the same for F and G
+        Returns True if all squares commute (or the category does not contain
+        enough data to disprove them).
+        """
+        C = functor_F.source_category
+        D = functor_F.target_category      # must be the same for F and G
 
-            for (a, b), morphisms in C.hom_sets.items():
-                for f in morphisms:
-                    # Skip identities – they automatically commute
-                    if C.is_identity(f):
-                        continue
+        for (a, b), morphisms in C.hom_sets.items():
+            for f in morphisms:
+                # Skip identities – they automatically commute
+                if C.is_identity(f):
+                    continue
 
-                    # The image of f under F and G
-                    Ff = functor_F.apply_to_morphism(a, b, f)
-                    Gf = functor_G.apply_to_morphism(a, b, f)
-                    if Ff is None or Gf is None:
-                        return False
+                # The image of f under F and G
+                Ff = functor_F.apply_to_morphism(a, b, f)
+                Gf = functor_G.apply_to_morphism(a, b, f)
+                if Ff is None or Gf is None:
+                    return False
 
-                    # The components at A and B
-                    eta_A = components.get(a)
-                    eta_B = components.get(b)
-                    if eta_A is None or eta_B is None:
-                        return False
+                # The components at A and B
+                eta_A = components.get(a)
+                eta_B = components.get(b)
+                if eta_A is None or eta_B is None:
+                    return False
 
-                    # Left path:  G(f) ∘ η_A
-                    left = D.compose(eta_A, Gf, functor_F.apply_to_object(a),
-                                     functor_G.apply_to_object(a), functor_G.apply_to_object(b))
-                    # Right path: η_B ∘ F(f)
-                    right = D.compose(Ff, eta_B, functor_F.apply_to_object(a),
-                                      functor_F.apply_to_object(b), functor_G.apply_to_object(b))
+                # Left path:  G(f) ∘ η_A
+                left = D.compose(eta_A, Gf, functor_F.apply_to_object(a),
+                                    functor_G.apply_to_object(a), functor_G.apply_to_object(b))
+                # Right path: η_B ∘ F(f)
+                right = D.compose(Ff, eta_B, functor_F.apply_to_object(a),
+                                    functor_F.apply_to_object(b), functor_G.apply_to_object(b))
 
-                    if left is None or right is None:
-                        return False
-                    if not _morphisms_equal(D, left, right):
-                        return False
+                if left is None or right is None:
+                    return False
+                if not _morphisms_equal(D, left, right):
+                    return False
 
-            return True
+        return True
 
 # ============================================================================
 # RelationalFunctor

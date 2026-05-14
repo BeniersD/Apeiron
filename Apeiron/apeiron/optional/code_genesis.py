@@ -168,12 +168,12 @@ class CodeChange:
     id: str
     type: ChangeType
     target_file: str
-    target_line: Optional[int] = None
-    old_code: Optional[str] = None
     new_code: str
     description: str
     reason: str
-    author: str  # Agent ID die wijziging voorstelt
+    author: str
+    target_line: Optional[int] = None
+    old_code: Optional[str] = None
     timestamp: float = field(default_factory=time.time)
     status: ChangeStatus = ChangeStatus.PROPOSED
     backups: List[str] = field(default_factory=list)

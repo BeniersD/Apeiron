@@ -178,25 +178,74 @@ except ImportError:
 # ============================================================================
 # Imports van de te benchmarken modules
 # ============================================================================
-from . import adjacency_matrix
-from . import hypergraph_relations
-from . import motif_detection
-from . import relations
-from . import causal_discovery
-from . import rl_on_graphs
-from . import multi_agent_rl
-from . import probabilistic_models
-from . import quantum_ml
-from . import temporal_networks
-from . import graph_self_supervised
-from . import derived_categories
-from . import layer1_bridge
-from . import density_field
-from . import discovery
-from . import qualitative_dimensions
-from . import decomposition
-from . import meta_spec
-from . import atomicity_visuals
+# Layer 2 modules (huidige namen)
+# Layer 2 kernmodules
+from apeiron.layers.layer02_relational.spectral import (
+    SpectralGraphAnalysis, SpectralType, DynamicSpectralAnalysis
+)
+from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+from apeiron.layers.layer02_relational.quantum_graph import QuantumGraph
+from apeiron.layers.layer02_relational.motif_detection import (
+    MotifCounter, MotifType, PersistentHomology, TemporalMotifDetector,
+    GraphKernel, GraphKernelType, detect_communities_enhanced,
+    compute_centralities_extended
+)
+from apeiron.layers.layer02_relational.relations_core import (
+    UltimateRelation, RelationType, RelationalCategory
+)
+from apeiron.layers.layer02_relational.causal_discovery import CausalDiscovery
+from apeiron.layers.layer02_relational.graph_rl import HypergraphEnv, RLAgent
+from apeiron.layers.layer02_relational.rl_on_graphs import (
+    GraphEnv, QLearningAgent, DQNAgent, train_agent
+)
+from apeiron.layers.layer02_relational.multi_agent_rl import (
+    MultiAgentGraphEnv, IndependentQLearningAgent, train_multi_agent
+)
+from apeiron.layers.layer02_relational.probabilistic_models import (
+    BayesianNetwork, HiddenMarkovModel
+)
+from apeiron.layers.layer02_relational.temporal_networks import (
+    TemporalNetwork, dynamic_communities, detect_change_points, forecast_next_snapshot
+)
+from apeiron.layers.layer02_relational.layer1_bridge import (
+    extract_feature_matrix, similarity_matrix, registry_to_graph, discretize_observable
+)
+
+# Optionele modules (uit optional/)
+try:
+    from apeiron.optional.quantum_ml import QuantumKernel, QSVM
+except ImportError:
+    QuantumKernel = QSVM = None
+try:
+    from apeiron.optional.graph_self_supervised import GCNEncoder, GraphCL, node_dropping
+except ImportError:
+    GCNEncoder = GraphCL = node_dropping = None
+try:
+    from apeiron.optional.derived_categories import ChainComplex
+except ImportError:
+    ChainComplex = None
+try:
+    from apeiron.layers.layer02_relational.mapper import Mapper as MapperClass
+except ImportError:
+    MapperClass = None
+try:
+    from apeiron.layers.layer02_relational.relations_core import (
+        RelationalMetricSpace, QuantumState
+    )
+except ImportError:
+    RelationalMetricSpace = QuantumState = None
+
+# Layer 1 modules
+from apeiron.layers.layer01_foundational.density_field import DensityField
+from apeiron.layers.layer01_foundational.discovery import (
+    HeuristicDiscovery, EvolutionaryFeedbackLoop
+)
+from apeiron.layers.layer01_foundational.qualitative_dimensions import (
+    ColourDimension, ColourSpace, VectorDimension
+)
+from apeiron.layers.layer01_foundational.decomposition import is_atomic_by_operator
+from apeiron.layers.layer01_foundational.meta_spec import MetaSpecification
+from apeiron.layers.layer01_foundational.visualization import plot_atomicity_heatmap
 
 # ============================================================================
 # Dataclass voor resultaten
@@ -777,12 +826,13 @@ def register_benchmarks(suite: BenchmarkSuite):
 
     @suite.register(name="mapper")
     def bench_mapper(n_nodes: int, p: float = 0.1):
+        if MapperClass is None:
+            return None
         if not HAS_NETWORKX or not HAS_KMAPPER:
             return None
         G = BenchmarkDataGenerator.random_graph(n_nodes, p)
         data = np.array([G.degree(v) for v in G.nodes()]).reshape(-1, 1)
-        from .motif_detection import Mapper
-        mapper = Mapper(data, lens=[data[:,0]])
+        mapper = MapperClass(data, lens=[data[:,0]])
         mapper.run()
         return mapper.graph is not None
 

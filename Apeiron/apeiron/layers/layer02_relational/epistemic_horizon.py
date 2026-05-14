@@ -90,8 +90,6 @@ class EpistemicHorizonDetector:
     """
 
     def __init__(self, hypergraph, diffusion=None):
-        if Hypergraph is None:
-            raise ImportError("Hypergraph module is required.")
         self.hypergraph = hypergraph
         self.diffusion = diffusion
         self._sheaf = None
@@ -162,8 +160,6 @@ class DataQuarantine:
     """
 
     def __init__(self, hypergraph):
-        if Hypergraph is None:
-            raise ImportError("Hypergraph module is required.")
         self.hypergraph = hypergraph
         self.quarantined: List[EpistemicSingularity] = []
         self.frozen_edges: Set[str] = set()

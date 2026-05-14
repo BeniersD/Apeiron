@@ -341,22 +341,55 @@ class DerivedFunctor:
             return n_F * n_G  # fallback
 
     def _ext1_dim(self, delta_F: np.ndarray, delta_G: np.ndarray) -> int:
-        """Estimate Ext¹ dimension."""
-        # Ext¹ = H¹(Hom(P_•, G)).
-        # We already have hom0. Now we need the dimension of 1-cocycles
-        # modulo 1-coboundaries for the Hom complex.
-        # This is equivalent to the first sheaf cohomology of the internal Hom.
-        # For hypergraphs, we can compute it as the kernel of the Laplacian
-        # of the Hom sheaf. Placeholder: use sheaf cohomology of tensor product.
-        if self.module.sheaf == other_module.sheaf:
-            # Compute H¹ of the structure sheaf
+        """
+        Compute an estimate for dim Ext¹(F, G) using sheaf cohomology.
+
+        If the underlying hypergraph is acyclic (β₁ = 0), then Ext¹ = 0 for
+        any sheaves F, G. Otherwise, we estimate Ext¹ as the maximum of the
+        H¹ dimensions of F and G.
+        """
+        # Try to obtain the hypergraph via the sheaf module
+        hypergraph = None
+        if hasattr(self.module, 'sheaf') and self.module.sheaf is not None:
             try:
-                cohom = other_module.sheaf.compute_cohomology()
-                return cohom.h1_dimension
+                # Reconstruct a Hypergraph instance from the sheaf's vertices/edges
+                from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+                hg = Hypergraph()
+                # vertices of the sheaf are strings like "v_0", "v_1", ...
+                # we ignore the string labels and just use indices
+                vert_names = self.module.sheaf.vertices  # list of string names
+                for v in vert_names:
+                    hg.vertices.add(v)
+                # edges: the sheaf stores hyperedges as sets of vertex names
+                for e_set in self.module.sheaf.hyperedges:
+                    hg.add_hyperedge(str(e_set), e_set)
+                hypergraph = hg
             except Exception:
-                return 0
+                pass
+
+        # If we have a hypergraph, check its Betti numbers
+        if hypergraph is not None:
+            betti = hypergraph.betti_numbers()
+            if betti.get(1, 0) == 0:
+                return 0  # acyclic hypergraph => Ext¹ = 0
+
+        # Fallback: use spectral properties of the Laplacians
+        # H¹ dimension ≈ number of zero eigenvalues of L1 = δ δ^T
+        L1_F = delta_F @ delta_F.T
+        L1_G = delta_G @ delta_G.T
+        if L1_F.size > 0:
+            eig_F = np.linalg.eigvalsh(L1_F)
+            h1_F = int(np.sum(np.abs(eig_F) < 1e-10))
         else:
-            return 0
+            h1_F = 0
+        if L1_G.size > 0:
+            eig_G = np.linalg.eigvalsh(L1_G)
+            h1_G = int(np.sum(np.abs(eig_G) < 1e-10))
+        else:
+            h1_G = 0
+
+        # A safe upper bound
+        return max(h1_F, h1_G)
 
 
 # ============================================================================

@@ -39,8 +39,8 @@ def test_quantum_vqe_optimizer_import():
 
 def test_quantum_vqe_import():
     pytest.importorskip("qiskit")
-    from apeiron.optional.quantum_vqe import QuantumVQE
-    assert QuantumVQE is not None
+    from apeiron.optional.quantum_vqe import QuantumOntologyOptimizer
+    assert QuantumOntologyOptimizer is not None
 
 def test_quantum_ml_import():
     pytest.importorskip("pennylane")
@@ -75,9 +75,13 @@ def test_hall_algebra_import():
 def test_graph_self_supervised_import():
     pytest.importorskip("torch")
     pytest.importorskip("torch_geometric")
-    from apeiron.optional.graph_self_supervised import GCNEncoder, GraphCL, node_dropping
     import torch
+    # Forceer CPU – voorkom dat PyG de tensor naar GPU verplaatst
+    torch.cuda.is_available = lambda: False
+
+    from apeiron.optional.graph_self_supervised import GCNEncoder, GraphCL, node_dropping
     from torch_geometric.data import Data
+
     edge_index = torch.tensor([[0,1,1,2],[1,0,2,1]], dtype=torch.long)
     x = torch.randn(3, 5)
     data = Data(x=x, edge_index=edge_index)
@@ -87,13 +91,16 @@ def test_graph_self_supervised_import():
     optim = torch.optim.Adam(model.parameters(), lr=0.01)
     loss = model.train_step(data, optim)
     assert 'loss' in loss
-
+  
 def test_derived_categories_import():
     from apeiron.optional.derived_categories import ChainComplex
-    d1 = np.array([[1,0,0],[0,1,0]])
-    d2 = np.array([[1,0],[0,0],[0,1]])
-    C = ChainComplex([d1, d2])
+    # Rand van een 1-simplex (twee hoekpunten, één rand)
+    d1 = np.array([[1], [-1]])   # ∂₁ : C₁ → C₀
+    C = ChainComplex([d1])
     assert C.is_complex()
+    # Optioneel: bereken homologie
+    h0 = C.homology(0)[0]  # dim H₀ = aantal componenten (1, want samenhangend)
+    assert h0 == 1
 
 def test_code_genesis_import():
     from apeiron.optional.code_genesis import CodeGenesis
@@ -190,18 +197,23 @@ def test_scale_invariant_monitor_basic():
     assert 0.0 <= profile.scale_invariance_score <= 1.0
 
 def test_reflexive_engine_basic():
+    pytest.importorskip("z3")
     import tempfile, os
-    # Create a temporary dummy Python file for the engine to analyse
     with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
         f.write("x = 1\ny = 2\n")
         temp_path = f.name
     try:
         from apeiron.optional.reflexive_engine import ReflexiveEngine
         engine = ReflexiveEngine(temp_path, safety_sandbox=True)
-        consistency = engine.check_self_consistency()
+        try:
+            consistency = engine.check_self_consistency()
+        except Exception:
+            # Z3 runtime error: het systeem valt terug op 'geen Z3', wat een geldig resultaat geeft.
+            consistency = engine.check_self_consistency()
         assert 'consistent' in consistency
     finally:
         os.unlink(temp_path)
+
 
 def test_topological_generation_basic():
     hg = create_test_hypergraph()

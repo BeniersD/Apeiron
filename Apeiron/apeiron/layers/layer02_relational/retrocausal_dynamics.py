@@ -40,12 +40,8 @@ import numpy as np
 from typing import Dict, List, Tuple, Optional, Any, Set, Callable
 from dataclasses import dataclass, field
 from copy import deepcopy
+from apeiron.layers.layer02_relational.hypergraph import Hypergraph
 import warnings
-
-try:
-    from .hypergraph import Hypergraph
-except ImportError:
-    Hypergraph = None
 
 try:
     from .sheaf_hypergraph import SheafHypergraph
@@ -102,8 +98,6 @@ class RetrocausalDynamics:
         learning_rate: float = 0.01,
         max_iterations: int = 200,
     ):
-        if Hypergraph is None:
-            raise ImportError("Hypergraph module is required for retrocausal dynamics.")
         self.initial = initial_hypergraph
         self.target = target_hypergraph
         self.T = T

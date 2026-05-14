@@ -15,18 +15,45 @@ from typing import Dict, List, Any, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
-# Optionele quantum imports
+# ---------------------------------------------------------------------------
+# OPTIONELE QUANTUM IMPORTS
+# ---------------------------------------------------------------------------
+QISKIT_AVAILABLE = False
+PauliSumOp = None
+
 try:
     from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute, Aer
     from qiskit.providers.aer import QasmSimulator, StatevectorSimulator
     from qiskit.algorithms import VQE
     from qiskit.algorithms.optimizers import COBYLA, SPSA
     from qiskit.circuit.library import TwoLocal, RealAmplitudes
-    from qiskit.opflow import I, Z, X, Y, PauliSumOp
     from qiskit.quantum_info import SparsePauliOp
     QISKIT_AVAILABLE = True
 except ImportError:
-    QISKIT_AVAILABLE = False
+    pass
+
+if QISKIT_AVAILABLE:
+    # PauliSumOp is in Qiskit 2.x vervangen door SparsePauliOp
+    PauliSumOp = SparsePauliOp
+
+# Overige optionele imports (visualisatie, parallel, redis) blijven hetzelfde...
+try:
+    import matplotlib.pyplot as plt
+    VISUALIZATION_AVAILABLE = True
+except ImportError:
+    VISUALIZATION_AVAILABLE = False
+
+try:
+    from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+    PARALLEL_AVAILABLE = True
+except ImportError:
+    PARALLEL_AVAILABLE = False
+
+try:
+    import redis
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
 
 
 class QuantumGroundStateOptimizer:
@@ -83,6 +110,10 @@ class QuantumGroundStateOptimizer:
             # Converteer ontologie naar Hamiltoniaan
             hamiltonian = self._ontology_to_hamiltonian(ontology)
             
+            # Als PauliSumOp niet beschikbaar is, val terug op klassieke schatting
+            if PauliSumOp is None:
+                return self._fallback_estimate(ontology)
+
             # Maak ansatz circuit
             ansatz = self._create_ansatz(hamiltonian.num_qubits)
             
@@ -123,21 +154,18 @@ class QuantumGroundStateOptimizer:
             logger.error(f"❌ VQE fout: {e}")
             return self._fallback_estimate(ontology)
     
-    def _ontology_to_hamiltonian(self, ontology: Dict) -> PauliSumOp:
+    def _ontology_to_hamiltonian(self, ontology: Dict) -> 'PauliSumOp':
         """
         Converteer ontologie naar Ising Hamiltoniaan.
-        
-        H = -∑ J_ij Z_i Z_j - ∑ h_i Z_i
-        Lagere energie = stabielere configuratie.
+        Als PauliSumOp niet beschikbaar is, valt hij terug op SparsePauliOp.
         """
         entities = list(ontology.get('entities', []))
         relations = ontology.get('relations', {})
-        
+
         n = min(len(entities), self.n_qubits)
-        
-        pauli_list = []
         entity_indices = {e: i for i, e in enumerate(entities[:n])}
-        
+
+        pauli_list = []
         # ZZ interacties voor relaties
         for (e1, e2), strength in relations.items():
             if e1 in entity_indices and e2 in entity_indices:
@@ -146,7 +174,6 @@ class QuantumGroundStateOptimizer:
                 zz[i] = 'Z'
                 zz[j] = 'Z'
                 pauli_list.append((-strength, ''.join(zz)))
-        
         # Z termen voor weights
         weights = ontology.get('weights', {})
         for entity, weight in weights.items():
@@ -155,13 +182,16 @@ class QuantumGroundStateOptimizer:
                 z = ['I'] * n
                 z[i] = 'Z'
                 pauli_list.append((-weight, ''.join(z)))
-        
+
         if not pauli_list:
-            # Return null operator
-            return PauliSumOp(SparsePauliOp.from_list([('I'*n, 0.0)]))
-        
+            sparse = SparsePauliOp.from_list([('I'*n, 0.0)])
+            return PauliSumOp(sparse) if PauliSumOp is not None else sparse
+
         sparse_pauli = SparsePauliOp.from_list(pauli_list)
-        return PauliSumOp(sparse_pauli)
+        if PauliSumOp is not None:
+            return PauliSumOp(sparse_pauli)
+        else:
+            return sparse_pauli
     
     def _create_ansatz(self, num_qubits: int) -> QuantumCircuit:
         """Creëer een geoptimaliseerd ansatz circuit."""

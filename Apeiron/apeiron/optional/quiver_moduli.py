@@ -1,6 +1,6 @@
 ﻿"""
-QUIVER MODULI – ULTIMATE IMPLEMENTATION
-========================================
+QUIVER MODULI
+=============
 This module provides tools for studying moduli spaces of quiver representations,
 following King's construction using stability conditions.
 
@@ -9,7 +9,7 @@ Features:
 - Check stability and semistability of a representation (with slope correction)
 - Harder–Narasimhan filtrations (for a given stability condition)
 - Simple computation of the King moduli space as a quotient by the group action
-- Integration with the quiver classes from `relations.py`
+- Integration with the quiver classes from `quiver.`
 - Factory function to convert UltimateRelation to QuiverRepresentation
 
 All calculations are exact for small quivers; for larger ones, the algorithms
@@ -23,9 +23,10 @@ from typing import Dict, List, Optional, Set, Any, Tuple, Union
 from itertools import combinations, product
 from collections import defaultdict
 
-# Relative import of quiver classes (assumes relations.py is in same package)
-from . import relations
-from .relations import UltimateRelation
+# Relative import of quiver classes (assumes quiver.py is in same package)
+from apeiron.layers.layer02_relational import quiver
+from apeiron.layers.layer02_relational import category
+from apeiron.layers.layer02_relational import UltimateRelation
 
 # Optional linear algebra for stability checks
 try:
@@ -97,7 +98,7 @@ class StabilityCondition:
 # UTILITIES FOR QUIVER REPRESENTATIONS
 # ============================================================================
 
-def dimension_vector(rep: relations.QuiverRepresentation) -> Dict[str, int]:
+def dimension_vector(rep: quiver.QuiverRepresentation) -> Dict[str, int]:
     """Return the dimension vector of a representation."""
     return rep.dimension_vector
 
@@ -117,7 +118,7 @@ def _enumerate_coordinate_subspaces(dim: int, max_dim: Optional[int] = None) -> 
     return subspaces
 
 
-def _is_invariant_subspace(rep: relations.QuiverRepresentation, subspaces: Dict[str, List[int]]) -> bool:
+def _is_invariant_subspace(rep: quiver.QuiverRepresentation, subspaces: Dict[str, List[int]]) -> bool:
     """
     Check if the choice of coordinate subspaces (given by lists of basis indices)
     defines a subrepresentation. For each arrow a: i -> j, we need f_a(U_i) ⊆ U_j.
@@ -146,7 +147,7 @@ def _is_invariant_subspace(rep: relations.QuiverRepresentation, subspaces: Dict[
     return True
 
 
-def subrepresentations(rep: relations.QuiverRepresentation) -> List[relations.QuiverRepresentation]:
+def subrepresentations(rep: quiver.QuiverRepresentation) -> List[quiver.QuiverRepresentation]:
     """
     Compute all non‑zero proper subrepresentations of a quiver representation.
     This implementation is limited to small dimensions (≤ 3) and only considers
@@ -201,7 +202,7 @@ def subrepresentations(rep: relations.QuiverRepresentation) -> List[relations.Qu
                     sub_mat = mat[np.ix_(tgt_idxs, src_idxs)]
                     new_maps[arrow] = sub_mat
             # Create the subrepresentation object
-            sub_rep = relations.QuiverRepresentation(
+            sub_rep = quiver.QuiverRepresentation(
                 quiver=rep.quiver,
                 vector_spaces=new_dims,
                 linear_maps=new_maps
@@ -210,8 +211,8 @@ def subrepresentations(rep: relations.QuiverRepresentation) -> List[relations.Qu
     return valid_subs
 
 
-def quotient_representation(rep: relations.QuiverRepresentation,
-                            sub: relations.QuiverRepresentation) -> relations.QuiverRepresentation:
+def quotient_representation(rep: quiver.QuiverRepresentation,
+                            sub: quiver.QuiverRepresentation) -> quiver.QuiverRepresentation:
     """
     Given a representation and a subrepresentation (with compatible inclusion),
     return the quotient representation. This assumes that sub is a subrepresentation
@@ -235,14 +236,14 @@ def quotient_representation(rep: relations.QuiverRepresentation,
     # inclusion map. For simplicity, we will not implement a general quotient here.
     # Instead, we return a placeholder.
     logger.warning("quotient_representation is not fully implemented – returning empty representation.")
-    return relations.QuiverRepresentation(
+    return quiver.QuiverRepresentation(
         quiver=rep.quiver,
         vector_spaces=quot_dims,
         linear_maps={}
     )
 
 
-def is_stable(rep: relations.QuiverRepresentation, theta: StabilityCondition) -> bool:
+def is_stable(rep: quiver.QuiverRepresentation, theta: StabilityCondition) -> bool:
     """
     Check if a representation is stable with respect to θ.
     If θ(d) = 0, uses the standard King stability (θ(e) < θ(d)).
@@ -271,7 +272,7 @@ def is_stable(rep: relations.QuiverRepresentation, theta: StabilityCondition) ->
     return True
 
 
-def is_semistable(rep: relations.QuiverRepresentation, theta: StabilityCondition) -> bool:
+def is_semistable(rep: quiver.QuiverRepresentation, theta: StabilityCondition) -> bool:
     """
     Check if a representation is semistable with respect to θ.
     If θ(d) = 0, uses the standard King semistability (θ(e) ≤ θ(d)).
@@ -304,8 +305,8 @@ def is_semistable(rep: relations.QuiverRepresentation, theta: StabilityCondition
 # HARDER–NARASIMHAN FILTRATION
 # ============================================================================
 
-def harder_narasimhan_filtration(rep: relations.QuiverRepresentation,
-                                 theta: StabilityCondition) -> List[Tuple[relations.QuiverRepresentation, float]]:
+def harder_narasimhan_filtration(rep: quiver.QuiverRepresentation,
+                                 theta: StabilityCondition) -> List[Tuple[quiver.QuiverRepresentation, float]]:
     """
     Compute the Harder–Narasimhan filtration of a representation with respect to θ.
     Returns a list of (subquotient, slope) where slopes are decreasing.
@@ -351,14 +352,14 @@ class ModuliSpace:
     In practice, this is a geometric object; here we only provide a placeholder
     that can store isomorphism classes (for finite fields) or sample random representations.
     """
-    def __init__(self, quiver: relations.Quiver, dim_vector: Dict[str, int],
+    def __init__(self, quiver: quiver.Quiver, dim_vector: Dict[str, int],
                  theta: StabilityCondition, field_size: Optional[int] = None):
         self.quiver = quiver
         self.dim_vector = dim_vector
         self.theta = theta
         self.field_size = field_size  # if None, treat as algebraically closed (complex)
 
-    def sample(self, n: int) -> List[relations.QuiverRepresentation]:
+    def sample(self, n: int) -> List[quiver.QuiverRepresentation]:
         """
         Generate n random representations (with given dimension vector) and
         return only those that are θ‑stable.
@@ -370,7 +371,7 @@ class ModuliSpace:
                 reps.append(rep)
         return reps
 
-    def _random_representation(self) -> relations.QuiverRepresentation:
+    def _random_representation(self) -> quiver.QuiverRepresentation:
         """Generate a random representation (linear maps with random matrices)."""
         # This requires field elements; for simplicity, we use random floats.
         # In practice, one would use finite field elements if field_size is given.
@@ -383,7 +384,7 @@ class ModuliSpace:
                 # Random matrix over reals
                 mat = np.random.randn(dim_tgt, dim_src)
                 linear_maps[arrow] = mat
-        rep = relations.QuiverRepresentation(
+        rep = quiver.QuiverRepresentation(
             quiver=self.quiver,
             vector_spaces=vector_spaces,
             linear_maps=linear_maps
@@ -403,7 +404,7 @@ class ModuliSpace:
 # ============================================================================
 
 def ultimate_relation_to_quiver_representation(rel: UltimateRelation,
-                                               representation_id: Optional[str] = None) -> relations.QuiverRepresentation:
+                                               representation_id: Optional[str] = None) -> quiver.QuiverRepresentation:
     """
     Extract a QuiverRepresentation from an UltimateRelation.
 
@@ -445,7 +446,7 @@ def demo():
     print("="*80)
 
     # Build a Kronecker quiver: two vertices, two arrows from 1 to 2
-    q = relations.Quiver()
+    q = quiver.Quiver()
     q.add_vertex(1)
     q.add_vertex(2)
     q.add_arrow(1, 2, 'a')
@@ -457,7 +458,7 @@ def demo():
     theta = StabilityCondition({1: 1, 2: -1})
 
     # Create a representation: matrices a and b (2x2)
-    rep = relations.QuiverRepresentation(
+    rep = quiver.QuiverRepresentation(
         quiver=q,
         vector_spaces=dim,
         linear_maps={

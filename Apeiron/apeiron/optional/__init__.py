@@ -34,7 +34,7 @@ except ImportError:
 
 # Quantum VQE
 try:
-    from .quantum_vqe import QuantumVQE
+    from .quantum_vqe import QuantumOntologyOptimizer
 except ImportError:
     pass
 

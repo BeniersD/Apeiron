@@ -371,8 +371,6 @@ class BioDigitalCompiler:
     """
 
     def __init__(self, hypergraph, output_type: str = 'gcode'):
-        if Hypergraph is None:
-            raise ImportError("Hypergraph module is required.")
         self.hypergraph = hypergraph
         self.output_type = output_type
         self.reaction_cat = ReactionCategory()

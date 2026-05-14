@@ -130,23 +130,19 @@ class HoTTCertificateGenerator:
         return "\n".join(lines)
 
     def compile_coq_script(self, timeout: int = 30) -> bool:
-        """Attempt to compile the generated Coq script with coqc."""
         script = self.generate_coq_script()
+        temp = None
         try:
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.v', delete=False) as f:
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.v', delete=False, encoding='utf-8') as f:
                 f.write(script)
                 temp = f.name
-            result = subprocess.run(
-                ['coqc', '-q', temp],
-                capture_output=True,
-                timeout=timeout
-            )
+            result = subprocess.run(['coqc', '-q', temp], capture_output=True, timeout=timeout)
             os.unlink(temp)
             return result.returncode == 0
         except FileNotFoundError:
             return False
         except Exception:
-            if os.path.exists(temp):
+            if temp and os.path.exists(temp):
                 os.unlink(temp)
             return False
 
@@ -194,10 +190,10 @@ class HoTTCertificateGenerator:
         return "\n".join(lines)
 
     def compile_lean_script(self, timeout: int = 30) -> bool:
-        """Attempt to compile the Lean script with lean."""
         script = self.generate_lean_script()
+        temp = None
         try:
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.lean', delete=False) as f:
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.lean', delete=False, encoding='utf-8') as f:
                 f.write(script)
                 temp = f.name
             result = subprocess.run(
@@ -210,7 +206,7 @@ class HoTTCertificateGenerator:
         except FileNotFoundError:
             return False
         except Exception:
-            if os.path.exists(temp):
+            if temp and os.path.exists(temp):
                 os.unlink(temp)
             return False
 

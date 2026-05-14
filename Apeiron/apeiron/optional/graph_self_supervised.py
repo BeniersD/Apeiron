@@ -786,8 +786,8 @@ def node_dropping(data: Data, drop_ratio: float = 0.2) -> Tuple[Data, Data]:
     edge_index2, _ = torch_geometric.utils.subgraph(keep2, data.edge_index, relabel_nodes=True)
     x2 = data.x[keep2]
     # Reuse batch if present
-    batch1 = data.batch[keep1] if hasattr(data, 'batch') else None
-    batch2 = data.batch[keep2] if hasattr(data, 'batch') else None
+    batch1 = data.batch[keep1] if hasattr(data, 'batch') and data.batch is not None else None
+    batch2 = data.batch[keep2] if hasattr(data, 'batch') and data.batch is not None else None
     return (Data(x=x1, edge_index=edge_index1, batch=batch1),
             Data(x=x2, edge_index=edge_index2, batch=batch2))
 

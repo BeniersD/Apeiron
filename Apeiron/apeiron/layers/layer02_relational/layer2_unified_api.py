@@ -274,7 +274,7 @@ class Layer2UnifiedAPI:
         report = {
             'hypergraph': {
                 'num_vertices': len(self.hypergraph.vertices),
-                'num_edges': len(self.hypergraph.edges),
+                'num_edges': len(self.hypergraph.hyperedges),
                 'timestamp': time.time(),
             },
             'coverage': self._compute_coverage(),
@@ -353,7 +353,7 @@ class Layer2UnifiedAPI:
             try:
                 vertices = [f"v_{v}" for v in self.hypergraph.vertices]
                 edges = []
-                for edge in self.hypergraph.edges:
+                for edge in self.hypergraph.hyperedges:
                     for v1, v2 in combinations(edge, 2):
                         edges.append((f"v_{v1}", f"v_{v2}"))
                 cat = RelationalCategory(vertices, edges)
@@ -367,7 +367,7 @@ class Layer2UnifiedAPI:
             try:
                 vertices = [f"v_{v}" for v in self.hypergraph.vertices]
                 one_morphisms = {}
-                for i, edge in enumerate(self.hypergraph.edges):
+                for i, edge in enumerate(self.hypergraph.hyperedges):
                     for v1, v2 in combinations(edge, 2):
                         one_morphisms[f"e_{i}_{v1}_{v2}"] = (f"v_{v1}", f"v_{v2}")
                 bicat = Bicategory(vertices, one_morphisms, {})
@@ -397,7 +397,7 @@ class Layer2UnifiedAPI:
         if SheafHypergraph is not None:
             try:
                 vertices = [f"v_{v}" for v in self.hypergraph.vertices]
-                hyperedges = [{f"v_{v}" for v in edge} for edge in self.hypergraph.edges]
+                hyperedges = [{f"v_{v}" for v in edge} for edge in self.hypergraph.hyperedges]
                 shg = SheafHypergraph(vertices, hyperedges)
                 cohom = shg.compute_cohomology()
                 result = {
@@ -445,7 +445,7 @@ class Layer2UnifiedAPI:
         if EndogenousTimeGenerator is not None:
             try:
                 edges_list = []
-                for edge in self.hypergraph.edges:
+                for edge in self.hypergraph.hyperedges:
                     edge_list = sorted(edge)
                     for i in range(len(edge_list) - 1):
                         edges_list.append((edge_list[i], edge_list[i+1]))
@@ -503,7 +503,7 @@ class Layer2UnifiedAPI:
         if SheafDiffusionDynamics is not None and SheafHypergraph is not None:
             try:
                 vertices = [f"v_{v}" for v in self.hypergraph.vertices]
-                hyperedges = [{f"v_{v}" for v in edge} for edge in self.hypergraph.edges]
+                hyperedges = [{f"v_{v}" for v in edge} for edge in self.hypergraph.hyperedges]
                 shg = SheafHypergraph(vertices, hyperedges)
                 sdd = SheafDiffusionDynamics(shg)
                 _, final = sdd.evolve(store_trajectory=False)

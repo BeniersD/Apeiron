@@ -28,8 +28,9 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 # Relative imports from layer2
-from . import relations
-from . import derived_categories
+from apeiron.layers.layer02_relational import quiver
+from apeiron.layers.layer02_relational import category as relations
+from .derived_categories import ChainMap, ChainComplex
 
 logger = logging.getLogger(__name__)
 
@@ -208,7 +209,7 @@ class ChainComplexesModelCategory(ModelCategory):
     # Classifying maps
     # ------------------------------------------------------------------------
 
-    def is_weak_equivalence(self, f: derived_categories.ChainMap, tol: float = 1e-10) -> bool:
+    def is_weak_equivalence(self, f: ChainMap, tol: float = 1e-10) -> bool:
         """
         Check if f induces isomorphisms on all homology groups.
         Uses homology computation from derived_categories.
@@ -228,7 +229,7 @@ class ChainComplexesModelCategory(ModelCategory):
             # A full implementation would compute the map on homology and check invertibility.
         return True
 
-    def is_fibration(self, f: derived_categories.ChainMap, tol: float = 1e-10) -> bool:
+    def is_fibration(self, f: ChainMap, tol: float = 1e-10) -> bool:
         """
         Check if f is degreewise surjective.
         For linear maps, surjectivity means rank = dimension of target.
@@ -244,7 +245,7 @@ class ChainComplexesModelCategory(ModelCategory):
                     return False
         return True
 
-    def is_cofibration(self, f: derived_categories.ChainMap, tol: float = 1e-10) -> bool:
+    def is_cofibration(self, f: ChainMap, tol: float = 1e-10) -> bool:
         """
         Check if f is degreewise injective with projective cokernel.
         Over a field, injective suffices (cokernel is free).
@@ -263,7 +264,7 @@ class ChainComplexesModelCategory(ModelCategory):
     # Factorizations
     # ------------------------------------------------------------------------
 
-    def factor_as_cofib_fibration(self, f: derived_categories.ChainMap) -> Tuple[derived_categories.ChainMap, derived_categories.ChainMap]:
+    def factor_as_cofib_fibration(self, f: ChainMap) -> Tuple[ChainMap, ChainMap]:
         """
         Factor f: X → Y as X → Cyl(f) → Y, where Cyl(f) is the mapping cylinder.
         The first map is a cofibration (inclusion), the second is an acyclic fibration
@@ -281,10 +282,10 @@ class ChainComplexesModelCategory(ModelCategory):
         # In a full implementation, we would build the complex and the maps.
         logger.warning("factor_as_cofib_fibration not fully implemented – returning identity factorizations.")
         # As a trivial factorization, use identity on X and f itself.
-        id_X = derived_categories.ChainMap(X, X, [np.eye(X.dim(n)) for n in range(X.degree_max+1)])
+        id_X = ChainMap(X, X, [np.eye(X.dim(n)) for n in range(X.degree_max+1)])
         return (id_X, f)
 
-    def factor_as_acyclic_cofib_fibration(self, f: derived_categories.ChainMap) -> Tuple[derived_categories.ChainMap, derived_categories.ChainMap]:
+    def factor_as_acyclic_cofib_fibration(self, f: ChainMap) -> Tuple[ChainMap, ChainMap]:
         """
         Factor f: X → Y as X → Path(f) → Y, where Path(f) is the mapping path space.
         The first map is an acyclic cofibration, the second a fibration.
@@ -292,11 +293,11 @@ class ChainComplexesModelCategory(ModelCategory):
         # Path object construction: Path(f)_n = X_n ⊕ Y_n ⊕ Y_{n+1} with appropriate differential.
         # Again, complicated; we return a placeholder.
         logger.warning("factor_as_acyclic_cofib_fibration not fully implemented – returning identity factorizations.")
-        id_X = derived_categories.ChainMap(X, X, [np.eye(X.dim(n)) for n in range(X.degree_max+1)])
+        id_X = ChainMap(X, X, [np.eye(X.dim(n)) for n in range(X.degree_max+1)])
         return (id_X, f)
 
-    def lift(self, square: Tuple[derived_categories.ChainMap, derived_categories.ChainMap,
-                                 derived_categories.ChainMap, derived_categories.ChainMap]) -> Optional[derived_categories.ChainMap]:
+    def lift(self, square: Tuple[ChainMap, ChainMap,
+                                 ChainMap, ChainMap]) -> Optional[ChainMap]:
         """
         Given a square:
             A -> X
@@ -431,11 +432,11 @@ def demo():
 
     # Create a simple complex (two-term)
     d1 = np.array([[1, 0], [0, 1]])  # identity 2x2
-    C = derived_categories.ChainComplex([d1])  # d1: C1→C0
+    C = ChainComplex([d1])  # d1: C1→C0
     print("Chain complex C with dims:", C.dimensions)
 
     # Check if a chain map is a fibration (should be surjective)
-    id_map = derived_categories.ChainMap(C, C,
+    id_map = ChainMap(C, C,
                                          [np.eye(2), np.eye(2)])  # f0 and f1
     is_fib = chain_model.is_fibration(id_map)
     print("Is identity a fibration?", is_fib)  # Should be True

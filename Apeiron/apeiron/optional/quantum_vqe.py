@@ -29,53 +29,83 @@ import json
 from typing import Dict, List, Any, Optional, Tuple, Callable, Union
 from dataclasses import dataclass, field
 from enum import Enum
-from datetime import datetime
 import pickle
 
 logger = logging.getLogger(__name__)
 
-# ====================================================================
-# OPTIONELE QUANTUM IMPORTS
-# ====================================================================
+# -------------------------------------------------------------------------
+# OPTIONELE QUANTUM IMPORTS (aangepast voor Qiskit 2.4.0)
+# -------------------------------------------------------------------------
+QISKIT_AVAILABLE = False
+PauliSumOp = None
+NoiseModel = None
 
 try:
     from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute, Aer
     from qiskit.providers.aer import QasmSimulator, StatevectorSimulator
-    from qiskit.opflow import I, Z, X, Y, PauliSumOp, PauliOp, ListOp
-    from qiskit.opflow.primitive_ops import PauliSumOp
-    from qiskit.utils import algorithm_globals
     from qiskit.algorithms import VQE
-    from qiskit.algorithms.optimizers import (
-        COBYLA, SPSA, ADAM, NFT, L_BFGS_B, P_BFGS, SLSQP
-    )
-    from qiskit.circuit.library import (
-        TwoLocal, RealAmplitudes, EfficientSU2, 
-        PauliTwoDesign, NLocal, ExcitationPreserving
-    )
-    from qiskit.quantum_info import SparsePauliOp, Statevector
-    from qiskit.providers.aer.noise import NoiseModel
-    from qiskit.providers.aer.noise.errors import pauli_error, depolarizing_error
+    from qiskit.algorithms.optimizers import COBYLA, SPSA
+    from qiskit.circuit.library import TwoLocal, RealAmplitudes
+    from qiskit.quantum_info import SparsePauliOp
     QISKIT_AVAILABLE = True
 except ImportError:
-    QISKIT_AVAILABLE = False
-    logger.warning("⚠️ Qiskit niet beschikbaar - quantum VQE zal fallback gebruiken")
+    pass
 
-# Optionele visualisatie
+if QISKIT_AVAILABLE:
+    # PauliSumOp is in Qiskit 2.x vervangen door SparsePauliOp
+    PauliSumOp = SparsePauliOp
+    # NoiseModel halen we uit qiskit_aer of aer noise
+    try:
+        from qiskit_aer.noise import NoiseModel
+    except ImportError:
+        try:
+            from qiskit.providers.aer.noise import NoiseModel
+        except ImportError:
+            NoiseModel = None
+
+    # Optionele ansatz / optimizer imports
+    try:
+        from qiskit.circuit.library import EfficientSU2
+    except ImportError:
+        EfficientSU2 = None
+    try:
+        from qiskit.circuit.library import PauliTwoDesign
+    except ImportError:
+        PauliTwoDesign = None
+    try:
+        from qiskit.circuit.library import ExcitationPreserving
+    except ImportError:
+        ExcitationPreserving = None
+    try:
+        from qiskit.algorithms.optimizers import ADAM
+    except ImportError:
+        ADAM = None
+    try:
+        from qiskit.algorithms.optimizers import L_BFGS_B
+    except ImportError:
+        L_BFGS_B = None
+    try:
+        from qiskit.algorithms.optimizers import SLSQP
+    except ImportError:
+        SLSQP = None
+    try:
+        from qiskit.algorithms.optimizers import NFT
+    except ImportError:
+        NFT = None
+
+# Overige optionele imports
 try:
     import matplotlib.pyplot as plt
-    from matplotlib.figure import Figure
     VISUALIZATION_AVAILABLE = True
 except ImportError:
     VISUALIZATION_AVAILABLE = False
 
-# Optionele parallelle verwerking
 try:
     from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
     PARALLEL_AVAILABLE = True
 except ImportError:
     PARALLEL_AVAILABLE = False
 
-# Optionele caching
 try:
     import redis
     REDIS_AVAILABLE = True
@@ -84,37 +114,33 @@ except ImportError:
 
 
 class AnsatzType(Enum):
-    """Type van quantum ansatz circuit."""
-    TWOLOCAL = "twolocal"               # TwoLocal met ry en cz
-    REAL_AMPLITUDES = "real_amplitudes" # RealAmplitudes
-    EFFICIENT_SU2 = "efficient_su2"      # EfficientSU2
-    PAULI_TWO_DESIGN = "pauli_two_design" # PauliTwoDesign
-    EXCITATION_PRESERVING = "excitation"  # ExcitationPreserving
-    CUSTOM = "custom"                     # Custom circuit
+    TWOLOCAL = "twolocal"
+    REAL_AMPLITUDES = "real_amplitudes"
+    EFFICIENT_SU2 = "efficient_su2"
+    PAULI_TWO_DESIGN = "pauli_two_design"
+    EXCITATION_PRESERVING = "excitation"
+    CUSTOM = "custom"
 
 
 class OptimizerType(Enum):
-    """Type van klassieke optimizer."""
-    COBYLA = "cobyla"      # Constrained Optimization BY Linear Approximation
-    SPSA = "spsa"          # Simultaneous Perturbation Stochastic Approximation
-    ADAM = "adam"          # Adaptive Moment Estimation
-    L_BFGS_B = "l_bfgs_b"  # Limited-memory BFGS with bounds
-    SLSQP = "slsqp"        # Sequential Least Squares Programming
-    NFT = "nft"            # Nakanishi-Fujii-Todo
+    COBYLA = "cobyla"
+    SPSA = "spsa"
+    ADAM = "adam"
+    L_BFGS_B = "l_bfgs_b"
+    SLSQP = "slsqp"
+    NFT = "nft"
 
 
 class NoiseModelType(Enum):
-    """Type van ruismodel voor simulatie."""
-    NONE = "none"                    # Geen ruis
-    DEPOLARIZING = "depolarizing"    # Depolarizing noise
-    BITFLIP = "bitflip"              # Bit-flip noise
-    THERMAL = "thermal"              # Thermische ruis
-    REALISTIC = "realistic"          # Realistisch (T1/T2)
+    NONE = "none"
+    DEPOLARIZING = "depolarizing"
+    BITFLIP = "bitflip"
+    THERMAL = "thermal"
+    REALISTIC = "realistic"
 
 
 @dataclass
 class VQEResult:
-    """Resultaat van een VQE berekening."""
     id: str
     timestamp: float
     ontology_id: str
@@ -133,25 +159,7 @@ class VQEResult:
 
 
 class QuantumOntologyOptimizer:
-    """
-    Vind de meest stabiele 'grondtoestand' van een nieuwe ontologie.
-    
-    Core functionaliteit:
-    - Converteer ontologie naar Hamiltoniaan
-    - Voer VQE uit om energie te minimaliseren
-    - Converteer energie naar stabiliteitsscore
-    
-    Optionele uitbreidingen:
-    - Meerdere ansatz types
-    - Verschillende optimizers
-    - Error mitigation
-    - Noise modeling
-    - Parallelle VQE runs
-    - Resultaat caching
-    - Visualisatie
-    """
-    
-    def __init__(self, 
+    def __init__(self,
                  quantum_backend=None,
                  n_qubits: int = 10,
                  ansatz_type: AnsatzType = AnsatzType.TWOLOCAL,
@@ -167,26 +175,6 @@ class QuantumOntologyOptimizer:
                  visualization: bool = False,
                  save_convergence: bool = True,
                  config_path: Optional[str] = None):
-        """
-        Initialiseer quantum ontologie optimizer.
-        
-        Args:
-            quantum_backend: Quantum backend instance
-            n_qubits: Maximum aantal qubits
-            ansatz_type: Type ansatz circuit
-            optimizer_type: Type optimizer
-            max_iterations: Maximum iteraties
-            shots: Aantal shots voor metingen
-            use_noise_model: Gebruik ruismodel
-            noise_model_type: Type ruismodel
-            error_mitigation: Pas error mitigation toe
-            parallel_runs: Aantal parallelle runs
-            cache_results: Cache resultaten
-            cache_ttl: Cache TTL in seconden
-            visualization: Genereer visualisaties
-            save_convergence: Bewaar convergentiegeschiedenis
-            config_path: Pad naar configuratie bestand
-        """
         self.qb = quantum_backend
         self.n_qubits = n_qubits
         self.ansatz_type = ansatz_type
@@ -201,407 +189,178 @@ class QuantumOntologyOptimizer:
         self.cache_ttl = cache_ttl
         self.visualization = visualization and VISUALIZATION_AVAILABLE
         self.save_convergence = save_convergence
-        
-        # Resultaten
+
         self.results: List[VQEResult] = []
         self.best_result: Optional[VQEResult] = None
-        
-        # Cache
         self.cache: Dict[str, Tuple[VQEResult, float]] = {}
         if REDIS_AVAILABLE and cache_results:
             try:
                 self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
-                logger.info("✅ Redis cache geactiveerd")
-            except:
+            except Exception:
                 self.redis_client = None
-                logger.warning("⚠️ Redis niet beschikbaar - gebruik memory cache")
         else:
             self.redis_client = None
-        
-        # Stats
+
         self.stats = {
-            'vqe_runs': 0,
-            'cache_hits': 0,
-            'cache_misses': 0,
-            'avg_execution_time': 0.0,
-            'avg_energy': 0.0,
-            'avg_stability': 0.0,
+            'vqe_runs': 0, 'cache_hits': 0, 'cache_misses': 0,
+            'avg_execution_time': 0.0, 'avg_energy': 0.0, 'avg_stability': 0.0,
             'start_time': time.time()
         }
-        
-        # Laad configuratie
         if config_path:
             self._load_config(config_path)
-        
-        # Setup noise model
         self.noise_model = self._create_noise_model() if use_noise_model else None
-        
-        logger.info("="*80)
-        logger.info("⚛️ QUANTUM VQE V13 GEÏNITIALISEERD")
-        logger.info("="*80)
-        logger.info(f"Qubits: {n_qubits}")
-        logger.info(f"Ansatz: {ansatz_type.value}")
-        logger.info(f"Optimizer: {optimizer_type.value}")
-        logger.info(f"Max iteraties: {max_iterations}")
-        logger.info(f"Noise model: {noise_model_type.value if use_noise_model else 'none'}")
-        logger.info(f"Error mitigation: {'✅' if error_mitigation else '❌'}")
-        logger.info(f"Parallel runs: {parallel_runs}")
-        logger.info(f"Caching: {'✅' if cache_results else '❌'}")
-        logger.info(f"Visualization: {'✅' if self.visualization else '❌'}")
-        logger.info(f"Qiskit beschikbaar: {'✅' if QISKIT_AVAILABLE else '❌'}")
-        logger.info("="*80)
-    
-    # ====================================================================
-    # KERN FUNCTIONALITEIT
-    # ====================================================================
-    
-    async def find_ground_state(self, 
-                                ontology: Dict[str, Any],
+
+    async def find_ground_state(self, ontology: Dict[str, Any],
                                 ontology_id: Optional[str] = None,
                                 force_rerun: bool = False) -> VQEResult:
-        """
-        Vind de grondtoestand van een ontologie via VQE.
-        
-        Args:
-            ontology: Ontologie dictionary met entities en relations
-            ontology_id: Optionele ID (anders hash van ontologie)
-            force_rerun: Negeer cache en forceer herberekening
-        
-        Returns:
-            VQE resultaat met energie en stabiliteit
-        """
         self.stats['vqe_runs'] += 1
         start_time = time.time()
-        
-        # Genereer ID indien niet gegeven
+
         if ontology_id is None:
             ontology_id = self._hash_ontology(ontology)
-        
-        # Check cache
+
         if self.cache_results and not force_rerun:
             cached = self._get_cached(ontology_id)
             if cached:
                 self.stats['cache_hits'] += 1
-                logger.debug(f"⚡ Cache hit voor ontologie {ontology_id[:8]}")
                 return cached
-        
+
         self.stats['cache_misses'] += 1
-        
-        # Fallback als Qiskit niet beschikbaar is
+
         if not QISKIT_AVAILABLE or not self.qb or not self.qb.is_available:
             return self._fallback_result(ontology, ontology_id)
-        
+
         try:
-            # Converteer ontologie naar Hamiltoniaan
             hamiltonian = await self._ontology_to_hamiltonian(ontology)
-            
-            # Maak ansatz circuit
             ansatz = self._create_ansatz(hamiltonian.num_qubits)
-            
-            # Configureer optimizer
             optimizer = self._create_optimizer()
-            
-            # Configureer quantum instance
             quantum_instance = self._create_quantum_instance()
-            
-            # Parallelle runs indien gewenst
+
             if self.parallel_runs > 1 and PARALLEL_AVAILABLE:
-                results = await self._parallel_vqe_runs(
-                    hamiltonian, ansatz, optimizer, quantum_instance
-                )
+                results = await self._parallel_vqe_runs(hamiltonian, ansatz, optimizer, quantum_instance)
                 best_result = min(results, key=lambda x: x['energy'])
-                result = self._process_vqe_result(
-                    best_result, ontology_id, ansatz, optimizer
-                )
+                result = self._process_vqe_result(best_result, ontology_id, ansatz, optimizer)
             else:
-                # Enkele VQE run
-                vqe = VQE(
-                    ansatz=ansatz,
-                    optimizer=optimizer,
-                    quantum_instance=quantum_instance,
-                    callback=self._vqe_callback if self.save_convergence else None
-                )
-                
+                vqe = VQE(ansatz=ansatz, optimizer=optimizer, quantum_instance=quantum_instance,
+                          callback=self._vqe_callback if self.save_convergence else None)
                 vqe_result = vqe.compute_minimum_eigenvalue(hamiltonian)
-                
-                result = self._process_vqe_result(
-                    vqe_result, ontology_id, ansatz, optimizer
-                )
-            
+                result = self._process_vqe_result(vqe_result, ontology_id, ansatz, optimizer)
+
             result.execution_time = time.time() - start_time
-            
-            # Sla op in cache
             if self.cache_results:
                 self._cache_result(ontology_id, result)
-            
-            # Update stats
             self.results.append(result)
             self._update_stats(result)
-            
-            # Update beste resultaat
+
             if self.best_result is None or result.energy < self.best_result.energy:
                 self.best_result = result
-                logger.info(f"🏆 Nieuwe beste energie: {result.energy:.6f}")
-            
-            # Visualiseer indien gewenst
+
             if self.visualization and self.save_convergence:
                 self._visualize_convergence(result)
-            
+
             return result
-            
         except Exception as e:
-            logger.error(f"❌ VQE fout: {e}")
+            logger.error(f"VQE fout: {e}")
             return self._fallback_result(ontology, ontology_id, error=str(e))
-    
-    async def _ontology_to_hamiltonian(self, ontology: Dict) -> PauliSumOp:
-        """
-        Converteer ontologie naar Ising Hamiltoniaan.
-        
-        Args:
-            ontology: Ontologie met entities en relations
-        
-        Returns:
-            PauliSumOp representatie van Hamiltoniaan
-        """
+
+    async def _ontology_to_hamiltonian(self, ontology: Dict) -> 'PauliSumOp':
         entities = list(ontology.get('entities', []))
         relations = ontology.get('relations', {})
-        
-        n = len(entities)
-        if n > self.n_qubits:
-            logger.warning(f"⚠️ Te veel entities ({n}), truncate to {self.n_qubits}")
-            n = self.n_qubits
-        
-        # Bouw Hamiltoniaan: H = -∑ J_ij Z_i Z_j - ∑ h_i Z_i
-        # Negatief teken omdat we energie willen minimaliseren voor stabiele toestanden
-        
-        pauli_list = []
-        
-        # Entity indices voor snelle lookup
+        n = min(len(entities), self.n_qubits)
         entity_indices = {e: i for i, e in enumerate(entities[:n])}
-        
-        # Voeg ZZ interacties toe voor relaties
+
+        pauli_list = []
         for (e1, e2), strength in relations.items():
             if e1 in entity_indices and e2 in entity_indices:
                 i, j = entity_indices[e1], entity_indices[e2]
-                
-                # Maak ZZ term: -J_ij * Z_i * Z_j
-                zz_term = self._pauli_zz(i, j, n)
-                pauli_list.append((-strength, zz_term))
-                
-                logger.debug(f"   ZZ term: {e1}-{e2}: {strength}")
-        
-        # Voeg Z termen toe voor entity weights (indien aanwezig)
+                zz = ['I'] * n
+                zz[i] = 'Z'
+                zz[j] = 'Z'
+                pauli_list.append((-strength, ''.join(zz)))
+
         weights = ontology.get('weights', {})
         for entity, weight in weights.items():
             if entity in entity_indices:
                 i = entity_indices[entity]
-                
-                # Maak Z term: -h_i * Z_i
-                z_term = self._pauli_z(i, n)
-                pauli_list.append((-weight, z_term))
-        
-        # Als er geen termen zijn, voeg een kleine identity toe
+                z = ['I'] * n
+                z[i] = 'Z'
+                pauli_list.append((-weight, ''.join(z)))
+
         if not pauli_list:
-            logger.debug("   Geen termen, voeg identity toe")
-            identity = self._pauli_identity(n)
-            pauli_list.append((0.0, identity))
-        
-        # Converteer naar PauliSumOp
-        if QISKIT_AVAILABLE:
-            # Bouw SparsePauliOp
-            paulis = []
-            coeffs = []
-            
-            for coeff, pauli in pauli_list:
-                if abs(coeff) > 1e-10:  # Negeer verwaarloosbare termen
-                    paulis.append(pauli)
-                    coeffs.append(coeff)
-            
-            if paulis:
-                # Combineer alle Pauli strings
-                sparse_pauli = SparsePauliOp(paulis[0], coeffs=[coeffs[0]])
-                for i in range(1, len(paulis)):
-                    sparse_pauli += SparsePauliOp(paulis[i], coeffs=[coeffs[i]])
-                
-                return PauliSumOp(sparse_pauli)
-            else:
-                # Return null operator
-                return PauliSumOp(SparsePauliOp.from_list([('I'*n, 0.0)]))
-        else:
-            # Fallback voor zonder Qiskit
-            return None
-    
-    def _pauli_zz(self, i: int, j: int, n: int) -> str:
-        """Genereer Pauli string voor Z_i Z_j."""
-        pauli = ['I'] * n
-        pauli[i] = 'Z'
-        pauli[j] = 'Z'
-        return ''.join(pauli)
-    
-    def _pauli_z(self, i: int, n: int) -> str:
-        """Genereer Pauli string voor Z_i."""
-        pauli = ['I'] * n
-        pauli[i] = 'Z'
-        return ''.join(pauli)
-    
-    def _pauli_identity(self, n: int) -> str:
-        """Genereer identity Pauli string."""
-        return 'I' * n
-    
-    def _create_ansatz(self, num_qubits: int) -> QuantumCircuit:
-        """Creëer ansatz circuit van gekozen type."""
+            return PauliSumOp(SparsePauliOp.from_list([('I' * n, 0.0)]))
+
+        sparse_pauli = SparsePauliOp.from_list(pauli_list)
+        return PauliSumOp(sparse_pauli)
+
+    def _create_ansatz(self, num_qubits: int) -> 'QuantumCircuit':
         if not QISKIT_AVAILABLE:
             return None
-        
         if self.ansatz_type == AnsatzType.TWOLOCAL:
-            # TwoLocal met ry en cz
-            return TwoLocal(
-                num_qubits,
-                ['ry', 'rz'],
-                'cz',
-                reps=3,
-                entanglement='full',
-                skip_unentangled_qubits=False
-            )
-        
-        elif self.ansatz_type == AnsatzType.REAL_AMPLITUDES:
-            # RealAmplitudes
-            return RealAmplitudes(
-                num_qubits,
-                reps=3,
-                entanglement='full'
-            )
-        
-        elif self.ansatz_type == AnsatzType.EFFICIENT_SU2:
-            # EfficientSU2
-            return EfficientSU2(
-                num_qubits,
-                su2_gates=['ry', 'rz'],
-                entanglement='full',
-                reps=3
-            )
-        
-        elif self.ansatz_type == AnsatzType.PAULI_TWO_DESIGN:
-            # PauliTwoDesign
-            return PauliTwoDesign(
-                num_qubits,
-                reps=3,
-                seed=42
-            )
-        
-        elif self.ansatz_type == AnsatzType.EXCITATION_PRESERVING:
-            # ExcitationPreserving
-            return ExcitationPreserving(
-                num_qubits,
-                reps=3,
-                entanglement='full'
-            )
-        
+            return TwoLocal(num_qubits, ['ry', 'rz'], 'cz', reps=3, entanglement='full')
+        elif self.ansatz_type == AnsatzType.EFFICIENT_SU2 and EfficientSU2 is not None:
+            return EfficientSU2(num_qubits, su2_gates=['ry', 'rz'], entanglement='full', reps=3)
+        elif self.ansatz_type == AnsatzType.PAULI_TWO_DESIGN and PauliTwoDesign is not None:
+            return PauliTwoDesign(num_qubits, reps=3, seed=42)
+        elif self.ansatz_type == AnsatzType.EXCITATION_PRESERVING and ExcitationPreserving is not None:
+            return ExcitationPreserving(num_qubits, reps=3, entanglement='full')
         else:
-            # Default TwoLocal
             return TwoLocal(num_qubits, 'ry', 'cz', reps=3)
-    
+
     def _create_optimizer(self):
-        """Creëer optimizer van gekozen type."""
         if not QISKIT_AVAILABLE:
             return None
-        
         if self.optimizer_type == OptimizerType.COBYLA:
-            return COBYLA(maxiter=self.max_iterations, tol=1e-6)
-        
+            return COBYLA(maxiter=self.max_iterations)
         elif self.optimizer_type == OptimizerType.SPSA:
-            return SPSA(maxiter=self.max_iterations, 
-                        learning_rate=0.01,
-                        perturbation=0.01)
-        
-        elif self.optimizer_type == OptimizerType.ADAM:
-            return ADAM(maxiter=self.max_iterations, 
-                       lr=0.01,
-                       beta_1=0.9,
-                       beta_2=0.999,
-                       noise_factor=1e-8)
-        
-        elif self.optimizer_type == OptimizerType.L_BFGS_B:
-            return L_BFGS_B(maxiter=self.max_iterations, 
-                           ftol=1e-6,
-                           gtol=1e-5)
-        
-        elif self.optimizer_type == OptimizerType.SLSQP:
-            return SLSQP(maxiter=self.max_iterations, 
-                        ftol=1e-6)
-        
-        elif self.optimizer_type == OptimizerType.NFT:
+            return SPSA(maxiter=self.max_iterations)
+        elif self.optimizer_type == OptimizerType.ADAM and ADAM is not None:
+            return ADAM(maxiter=self.max_iterations)
+        elif self.optimizer_type == OptimizerType.L_BFGS_B and L_BFGS_B is not None:
+            return L_BFGS_B(maxiter=self.max_iterations)
+        elif self.optimizer_type == OptimizerType.SLSQP and SLSQP is not None:
+            return SLSQP(maxiter=self.max_iterations)
+        elif self.optimizer_type == OptimizerType.NFT and NFT is not None:
             return NFT(maxiter=self.max_iterations)
-        
         else:
             return COBYLA(maxiter=self.max_iterations)
-    
+
     def _create_quantum_instance(self):
-        """Creëer quantum instance met optionele noise modeling."""
         if not QISKIT_AVAILABLE:
             return None
-        
         from qiskit.utils import QuantumInstance
-        
         backend = Aer.get_backend('qasm_simulator')
-        
-        quantum_instance = QuantumInstance(
-            backend=backend,
-            shots=self.shots,
-            noise_model=self.noise_model,
-            measurement_error_mitigation_cls=self._get_error_mitigation() if self.error_mitigation else None,
-            cals_matrix_refresh_period=30,
-            seed_simulator=42,
-            seed_transpiler=42
-        )
-        
-        return quantum_instance
-    
-    def _create_noise_model(self) -> Optional[NoiseModel]:
-        """Creëer ruismodel voor realistische simulatie."""
-        if not QISKIT_AVAILABLE:
+        return QuantumInstance(backend=backend, shots=self.shots,
+                               noise_model=self.noise_model,
+                               seed_simulator=42, seed_transpiler=42)
+
+    def _create_noise_model(self) -> 'Optional[NoiseModel]':
+        if not QISKIT_AVAILABLE or NoiseModel is None:
             return None
-        
         noise_model = NoiseModel()
-        
+
         if self.noise_model_type == NoiseModelType.DEPOLARIZING:
-            # Depolarizing noise
+            from qiskit_aer.noise import depolarizing_error
             error = depolarizing_error(0.01, 1)
             noise_model.add_all_qubit_quantum_error(error, ['u1', 'u2', 'u3'])
-        
         elif self.noise_model_type == NoiseModelType.BITFLIP:
-            # Bit-flip noise
+            from qiskit_aer.noise import pauli_error
             error = pauli_error([('X', 0.01), ('I', 0.99)])
             noise_model.add_all_qubit_quantum_error(error, ['u1', 'u2', 'u3'])
-        
         elif self.noise_model_type == NoiseModelType.THERMAL:
-            # Thermische ruis (T1/T2)
-            # Simuleer T1 = 50μs, T2 = 70μs, gate time = 100ns
-            from qiskit.providers.aer.noise import thermal_relaxation_error
-            
-            t1 = 50e-6
-            t2 = 70e-6
-            gate_time = 0.1e-6
-            
+            from qiskit_aer.noise import thermal_relaxation_error
+            t1, t2, gate_time = 50e-6, 70e-6, 0.1e-6
             error1 = thermal_relaxation_error(t1, t2, gate_time)
             error2 = thermal_relaxation_error(t1, t2, gate_time).tensordot(
-                thermal_relaxation_error(t1, t2, gate_time)
-            )
-            
+                thermal_relaxation_error(t1, t2, gate_time))
             noise_model.add_all_qubit_quantum_error(error1, ['u1', 'u2'])
             noise_model.add_all_qubit_quantum_error(error2, ['cx'])
-        
         elif self.noise_model_type == NoiseModelType.REALISTIC:
-            # Realistisch model gebaseerd op IBMQ achtergrond
-            # Depolarizing + thermal noise
+            from qiskit_aer.noise import depolarizing_error, ReadoutError
             dep_error = depolarizing_error(0.001, 1)
             noise_model.add_all_qubit_quantum_error(dep_error, ['u1', 'u2', 'u3'])
-            
-            # Readout error
-            from qiskit.providers.aer.noise import ReadoutError
             readout_error = ReadoutError([[0.98, 0.02], [0.03, 0.97]])
             noise_model.add_all_qubit_readout_error(readout_error)
-        
+
         return noise_model
     
     def _get_error_mitigation(self):
@@ -621,7 +380,7 @@ class QuantumOntologyOptimizer:
     def _process_vqe_result(self, 
                            vqe_result, 
                            ontology_id: str,
-                           ansatz: QuantumCircuit,
+                           ansatz: 'QuantumCircuit',
                            optimizer) -> VQEResult:
         """Verwerk VQE resultaat naar VQEResult object."""
         energy = float(vqe_result.eigenvalue.real)

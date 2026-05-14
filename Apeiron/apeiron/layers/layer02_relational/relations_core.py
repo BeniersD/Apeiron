@@ -326,7 +326,7 @@ class UltimateRelation:
         if SheafHypergraph is not None and self.hypergraph is not None:
             try:
                 vertices = [f"v_{v}" for v in self.hypergraph.vertices]
-                hyperedges = [{f"v_{v}" for v in e} for e in self.hypergraph.edges]
+                hyperedges = [{f"v_{v}" for v in e} for e in self.hypergraph.hyperedges]
                 shg = SheafHypergraph(vertices, hyperedges)
                 self.sheaf_hypergraph = shg
                 cohom = shg.compute_cohomology()
@@ -592,7 +592,7 @@ class Layer2_Relational_Ultimate:
         if self._sheaf_hypergraph is None and SheafHypergraph is not None:
             try:
                 vertices = [f"v_{v}" for v in self.global_hypergraph.vertices]
-                hyperedges = [{f"v_{v}" for v in e} for e in self.global_hypergraph.edges]
+                hyperedges = [{f"v_{v}" for v in e} for e in self.global_hypergraph.hyperedges.values()]
                 self._sheaf_hypergraph = SheafHypergraph(vertices, hyperedges)
             except Exception as e:
                 logger.warning(f"Sheaf hypergraph build failed: {e}")
