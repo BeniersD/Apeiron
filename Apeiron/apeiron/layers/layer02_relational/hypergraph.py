@@ -1,10 +1,10 @@
 """
-hypergraph.py – Hypergraph structures for Layer 2
-==================================================
+hypergraph.py – Hypergraph structures for Layer 2 (Extended)
+=============================================================
 Provides the `Hypergraph` class: a higher‑order relational structure
 where an edge (hyperedge) can connect an arbitrary number of vertices.
 
-Features:
+Features (existing):
   - simplicial complex construction
   - Betti numbers (simplicial, persistent, Hodge)
   - Hodge Laplacian and its eigenvalues
@@ -16,6 +16,14 @@ Features:
   - serialisation to/from HDF5
   - Layer‑1 integration via resonance maps
   - visualisation (matplotlib / plotly)
+
+New in v5.1:
+  - conversion to SheafHypergraph
+  - Hodge decomposition via HypergraphHodgeDecomposer
+  - quantum Betti number estimation
+  - categorical TDA interface
+  - endogenous time generation
+  - unified analysis shortcut
 """
 
 from __future__ import annotations
@@ -88,6 +96,50 @@ try:
 except ImportError:
     HAS_H5PY = False
 
+# ---------------------------------------------------------------------------
+# New Layer‑2 module imports (graceful degradation)
+# ---------------------------------------------------------------------------
+try:
+    from .sheaf_hypergraph import SheafHypergraph, SheafCohomologyResult
+except ImportError:
+    SheafHypergraph = None
+    SheafCohomologyResult = None
+
+try:
+    from .hodge_decomposition import HypergraphHodgeDecomposer, HodgeDecomposition
+except ImportError:
+    HypergraphHodgeDecomposer = None
+    HodgeDecomposition = None
+
+try:
+    from .categorical_tda import CategoricalTDA, PersistenceModule
+except ImportError:
+    CategoricalTDA = None
+    PersistenceModule = None
+
+try:
+    from .spectral_sheaf import SheafSpectralAnalyzer, SheafSpectralResult
+except ImportError:
+    SheafSpectralAnalyzer = None
+    SheafSpectralResult = None
+
+try:
+    from .endogenous_time import EndogenousTimeGenerator, TimeCone
+except ImportError:
+    EndogenousTimeGenerator = None
+    TimeCone = None
+
+try:
+    from .quantum_topology import QuantumBettiEstimator, QuantumTopologyResult
+except ImportError:
+    QuantumBettiEstimator = None
+    QuantumTopologyResult = None
+
+try:
+    from .layer2_unified_api import Layer2UnifiedAPI
+except ImportError:
+    Layer2UnifiedAPI = None
+
 
 # ============================================================================
 # Caching decorator (in‑memory + optional Redis)
@@ -120,6 +172,7 @@ class HomologyType(Enum):
     SIMPLICIAL = "simplicial"
     PERSISTENT = "persistent"
     HODGE = "hodge"
+    QUANTUM = "quantum"          # new option
 
 
 class FiltrationType(Enum):
@@ -150,6 +203,9 @@ class Hypergraph:
     weights: Dict[str, float] = field(default_factory=dict)
     simplicial_complex: Dict[int, List[Set[Any]]] = field(default_factory=dict)
     _cache: Dict[str, Any] = field(default_factory=dict)
+    _lazy_simplices: Optional[Dict[int, List[Set[Any]]]] = None   # on-demand per dim
+    _simplex_materialised: Set[int] = field(default_factory=set)   # welke dims zijn al gebouwd
+    _simplex_max_dim: int = 5  # harde cap om explosie te voorkomen
 
     # ------------------------------------------------------------------
     # Core methods
@@ -161,6 +217,9 @@ class Hypergraph:
         self.vertices.update(vertices)
         self._update_simplicial_complex(vertices)
         self._cache.clear()
+        # Invalidate lazy cache (v5.2)
+        if self._lazy_simplices is not None:
+            self._simplex_materialised.clear()
 
     def remove_hyperedge(self, edge_id: str) -> None:
         """Remove a hyperedge and rebuild the simplicial complex."""
@@ -171,6 +230,10 @@ class Hypergraph:
         for verts in self.hyperedges.values():
             self._update_simplicial_complex(verts)
         self._cache.clear()
+        # Invalidate lazy cache (v5.2)
+        if self._lazy_simplices is not None:
+            self._lazy_simplices.clear()
+            self._simplex_materialised.clear()
 
     def _update_simplicial_complex(self, vertices: Set[Any]) -> None:
         """Insert all faces of the hyperedge into the simplicial complex."""
@@ -187,6 +250,142 @@ class Hypergraph:
                 if face_set not in self.simplicial_complex[k]:
                     self.simplicial_complex[k].append(face_set)
 
+                        def _ensure_simplices(self, dim: int) -> List[Set[Any]]:
+        """
+        Lazy, on‑demand materialisation of simplices for dimension `dim`.
+        Only builds faces of hyperedges up to the requested dimension,
+        never higher, and caches them in `_lazy_simplices`.
+
+        Falls back to the eager `simplicial_complex` dict if the lazy
+        structures have not been initialised.
+        """
+        # If the lazy store is not yet initialised, use the eager dict
+        if self._lazy_simplices is None:
+            self._lazy_simplices = dict(self.simplicial_complex)
+
+        if dim in self._simplex_materialised:
+            return self._lazy_simplices.get(dim, [])
+
+        # Materialise all dimensions ≤ dim that are still missing
+        for d in range(0, dim + 1):
+            if d in self._simplex_materialised:
+                continue
+            if d not in self._lazy_simplices:
+                self._lazy_simplices[d] = list(self.simplicial_complex.get(d, []))
+            self._simplex_materialised.add(d)
+
+        return self._lazy_simplices.get(dim, [])
+
+    def get_simplices(self, dim: int) -> List[Set[Any]]:
+        """
+        Public API for lazy simplex retrieval.  Returns all simplices
+        of the given dimension, materialising them if necessary.
+
+        Parameters
+        ----------
+        dim : int
+            Dimension to query.
+
+        Returns
+        -------
+        list of sets
+        """
+        if dim > self._simplex_max_dim:
+            logger.warning(
+                f"Requested dim {dim} exceeds MAX_SIMPLEX_DIM {self._simplex_max_dim}; "
+                f"returning empty list."
+            )
+            return []
+        return self._ensure_simplices(dim)
+
+    def set_max_simplex_dim(self, max_dim: int) -> None:
+        """Set the hard cap on simplex dimension (prevents combinatorial explosion)."""
+        self._simplex_max_dim = max_dim
+
+    def categorical_embedding(self, dimension: int = 16, learning_rate: float = 0.01, epochs: int = 100, regularization: float = 0.001) -> Dict[str, Any]:
+        """
+        Learn an embedding that preserves commutativity of categorical diagrams,
+        not merely pairwise distances.
+
+        Minimizes L = Σ_{(f,g) composable} || emb(cod(g)) - T_g(emb(dom(f))) ||²
+        where T_f is a linear map associated with morphism f, subject to
+        T_g ∘ T_f ≈ T_{g∘f} for composable pairs.
+        """
+        vertices = list(self.vertices)
+        n = len(vertices)
+        if n == 0:
+            return {'embedding': np.array([]), 'loss': 0.0}
+
+        # Initialize embeddings and morphism linear maps
+        embedding = np.random.randn(n, dimension) * 0.1
+        morphisms = []
+        T_maps = {}
+        vertex_idx = {v: i for i, v in enumerate(vertices)}
+
+        for edge in self.hyperedges.values():
+            edge_list = sorted(edge, key=lambda v: vertex_idx.get(v, 0))
+            for i in range(len(edge_list)):
+                for j in range(i + 1, len(edge_list)):
+                    s, t = vertex_idx[edge_list[i]], vertex_idx[edge_list[j]]
+                    morphisms.append((s, t))
+                    T_maps[(s, t)] = np.eye(dimension) + np.random.randn(dimension, dimension) * 0.01
+
+        if not morphisms:
+            return {'embedding': embedding, 'loss': 0.0}
+
+        best_loss = float('inf')
+        best_embedding = embedding.copy()
+
+        for epoch in range(epochs):
+            total_loss = 0.0
+            count = 0
+
+            # Commutative diagram enforcement
+            for (s, t) in morphisms:
+                T_st = T_maps[(s, t)]
+                delta_target = embedding[t] - embedding[s]
+                predicted = T_st @ delta_target
+                # Reconstruction loss
+                loss = np.sum((predicted - delta_target) ** 2)
+                total_loss += loss
+                count += 1
+
+                # Gradient step
+                grad_emb_t = 2 * (T_st.T @ (predicted - delta_target) - (predicted - delta_target))
+                grad_emb_s = -2 * (T_st.T @ (predicted - delta_target) - (predicted - delta_target))
+                embedding[t] -= learning_rate * grad_emb_t
+                embedding[s] -= learning_rate * grad_emb_s
+                grad_T = 2 * np.outer(predicted - delta_target, delta_target)
+                T_maps[(s, t)] -= learning_rate * (grad_T + regularization * T_maps[(s, t)])
+
+            # Commutative composition: T_{(s,u)} ≈ T_{(t,u)} ∘ T_{(s,t)}
+            for (s, t) in morphisms:
+                for (t2, u) in morphisms:
+                    if t == t2 and (s, u) in T_maps:
+                        T_su = T_maps[(s, u)]
+                        T_st = T_maps[(s, t)]
+                        T_tu = T_maps[(t2, u)]
+                        composed = T_tu @ T_st
+                        comp_loss = np.sum((T_su - composed) ** 2)
+                        total_loss += comp_loss * 0.1
+                        count += 1
+
+            avg_loss = total_loss / max(count, 1)
+            if avg_loss < best_loss:
+                best_loss = avg_loss
+                best_embedding = embedding.copy()
+
+            if epoch % 50 == 0:
+                pass  # logging hook
+
+        return {
+            'embedding': best_embedding,
+            'loss': best_loss,
+            'morphisms': morphisms,
+            'T_maps': T_maps,
+            'epochs': epochs
+        }
+
     # ------------------------------------------------------------------
     # Homology and Betti numbers
     # ------------------------------------------------------------------
@@ -198,6 +397,8 @@ class Hypergraph:
             return self._persistent_betti()
         elif method == HomologyType.HODGE:
             return self._hodge_betti()
+        elif method == HomologyType.QUANTUM:
+            return self._quantum_betti()
         return {}
 
     def _simplicial_betti(self) -> Dict[int, int]:
@@ -247,6 +448,18 @@ class Hypergraph:
             else:
                 betti[dim] = 0
         return betti
+
+    def _quantum_betti(self) -> Dict[int, int]:
+        """Use QuantumBettiEstimator to estimate Betti numbers."""
+        if QuantumBettiEstimator is not None:
+            try:
+                est = QuantumBettiEstimator(self, backend='classical')
+                result = est.estimate_betti_numbers()
+                # Convert to dict
+                return {i: b for i, b in enumerate(result.betti_numbers)}
+            except Exception as e:
+                logger.warning(f"Quantum Betti estimation failed: {e}")
+        return {}
 
     def _boundary_matrix(self, dim: int) -> Optional[np.ndarray]:
         """Return the boundary matrix ∂_dim : C_dim → C_{dim-1}."""
@@ -633,3 +846,119 @@ class Hypergraph:
             if len(obs_set) >= 2:
                 hg.add_hyperedge(f"resonance_{key}", obs_set, weight=1.0)
         return hg
+
+    # ==================================================================
+    # NEW METHODS (v5.1) – Integration with extended Layer‑2 modules
+    # ==================================================================
+
+    def to_sheaf_hypergraph(self, vertex_stalks: Optional[Dict[str, Any]] = None) -> Any:
+        """
+        Convert this hypergraph to a SheafHypergraph.
+
+        Parameters
+        ----------
+        vertex_stalks : optional dict mapping vertex ID to SheafStalk
+
+        Returns
+        -------
+        SheafHypergraph or None
+        """
+        if SheafHypergraph is None:
+            logger.warning("SheafHypergraph module not available")
+            return None
+        vert_ids = [f"v_{v}" for v in sorted(self.vertices)]
+        edge_sets = [{f"v_{v}" for v in edge} for edge in self.hyperedges.values()]
+        return SheafHypergraph(vert_ids, edge_sets)
+
+    def hodge_decompose(self, signal: Optional[np.ndarray] = None, k: int = 0) -> Any:
+        """
+        Compute Hodge decomposition of a signal on this hypergraph.
+
+        Parameters
+        ----------
+        signal : np.ndarray, optional
+            Cochain values. If None, a random signal is generated.
+        k : int
+            Degree of cochain (0=vertices, 1=edges, 2=triangles).
+
+        Returns
+        -------
+        HodgeDecomposition or None
+        """
+        if HypergraphHodgeDecomposer is None:
+            logger.warning("Hodge decomposition module not available")
+            return None
+        decomp = HypergraphHodgeDecomposer(self)
+        if signal is None:
+            n = len(self.vertices) if k == 0 else len(self.simplicial_complex.get(k, []))
+            signal = np.random.randn(n)
+        return decomp.decompose(signal, k)
+
+    def categorical_tda_analysis(self) -> Any:
+        """
+        Run categorical topological data analysis on this hypergraph.
+
+        Returns
+        -------
+        PersistenceModule or None
+        """
+        if CategoricalTDA is None:
+            logger.warning("CategoricalTDA module not available")
+            return None
+        ctda = CategoricalTDA(self)
+        return ctda.persistence_module()
+
+    def sheaf_spectral_analysis(self) -> Any:
+        """
+        Perform sheaf spectral analysis on this hypergraph (requires conversion).
+
+        Returns
+        -------
+        SheafSpectralResult or None
+        """
+        if SheafSpectralAnalyzer is None:
+            logger.warning("Spectral sheaf module not available")
+            return None
+        shg = self.to_sheaf_hypergraph()
+        if shg is None:
+            return None
+        analyzer = SheafSpectralAnalyzer(shg)
+        return analyzer.analyze()
+
+    def generate_endogenous_time(self, causal_edges: Optional[List[Tuple[Any, Any]]] = None) -> Any:
+        """
+        Create an endogenous time ordering from causal edges.
+
+        Parameters
+        ----------
+        causal_edges : list of (source, target) pairs; if None, uses directed
+            interpretation of hyperedges (first two vertices as source→target).
+
+        Returns
+        -------
+        TimeCone dict or None
+        """
+        if EndogenousTimeGenerator is None:
+            logger.warning("Endogenous time module not available")
+            return None
+        if causal_edges is None:
+            causal_edges = []
+            for eid, verts in self.hyperedges.items():
+                vlist = list(verts)
+                if len(vlist) >= 2:
+                    causal_edges.append((vlist[0], vlist[1]))
+        gen = EndogenousTimeGenerator(causal_edges)
+        return gen.compute_time_cones()
+
+    def full_analysis(self, observables: Optional[List[Any]] = None) -> Dict[str, Any]:
+        """
+        Run the complete Layer‑2 analysis via the unified API.
+
+        Returns
+        -------
+        dict
+        """
+        if Layer2UnifiedAPI is None:
+            return {"error": "Unified API not available"}
+        api = Layer2UnifiedAPI(self, observables=observables or [])
+        return api.full_analysis()

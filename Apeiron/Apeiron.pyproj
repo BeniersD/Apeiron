@@ -27,6 +27,39 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="apeiron\experiment\case_study_cifar10.py" />
+    <Compile Include="apeiron\layers\layer02_relational\categorical_tda.py" />
+    <Compile Include="apeiron\layers\layer02_relational\derived_learning.py" />
+    <Compile Include="apeiron\layers\layer02_relational\diachronic_sheaf.py" />
+    <Compile Include="apeiron\layers\layer02_relational\endogenous_time.py" />
+    <Compile Include="apeiron\layers\layer02_relational\epistemic_horizon.py" />
+    <Compile Include="apeiron\layers\layer02_relational\formal_layer2_verification.py" />
+    <Compile Include="apeiron\layers\layer02_relational\higher_category.py" />
+    <Compile Include="apeiron\layers\layer02_relational\hodge_decomposition.py" />
+    <Compile Include="apeiron\layers\layer02_relational\hott_category.py" />
+    <Compile Include="apeiron\layers\layer02_relational\layer2_unified_api.py" />
+    <Compile Include="apeiron\layers\layer02_relational\ontogenesis_engine.py" />
+    <Compile Include="apeiron\layers\layer02_relational\quantum_topology.py" />
+    <Compile Include="apeiron\layers\layer02_relational\reaction_functor.py" />
+    <Compile Include="apeiron\layers\layer02_relational\retrocausal_dynamics.py" />
+    <Compile Include="apeiron\layers\layer02_relational\sheaf_diffusion_dynamics.py" />
+    <Compile Include="apeiron\layers\layer02_relational\sheaf_hypergraph.py" />
+    <Compile Include="apeiron\layers\layer02_relational\spectral_sheaf.py" />
+    <Compile Include="apeiron\layers\layer02_relational\spectral_triple.py" />
+    <Compile Include="apeiron\layers\layer02_relational\topos_layer2.py" />
+    <Compile Include="apeiron\optional\consciousness_interface.py" />
+    <Compile Include="apeiron\optional\cosmological_bridge.py" />
+    <Compile Include="apeiron\optional\entropy_flux_analyzer.py" />
+    <Compile Include="apeiron\optional\functorial_learning.py" />
+    <Compile Include="apeiron\optional\hott_certificates.py" />
+    <Compile Include="apeiron\optional\hott_relations.py" />
+    <Compile Include="apeiron\optional\kan_imagination_engine.py" />
+    <Compile Include="apeiron\optional\quantum_sheaf_cohomology.py" />
+    <Compile Include="apeiron\optional\reflexive_engine.py" />
+    <Compile Include="apeiron\optional\scale_invariant_monitor.py" />
+    <Compile Include="apeiron\optional\topological_fault_tolerance.py" />
+    <Compile Include="apeiron\optional\topological_generation.py" />
+    <Compile Include="apeiron\optional\topological_quantum_correction.py" />
+    <Compile Include="apeiron\optional\von_neumann_algebra.py" />
     <Compile Include="apeiron\profile_cluster1_full.py" />
     <Compile Include="apeiron\benchmark\__init__.py" />
     <Compile Include="apeiron\core\adaptive_thresholds.py" />
@@ -38,6 +71,7 @@
     <Compile Include="apeiron\tests\infrastructure\test_graphql.py" />
     <Compile Include="apeiron\tests\infrastructure\__init__.py" />
     <Compile Include="apeiron\tests\optional\test_derived_categories.py" />
+    <Compile Include="apeiron\tests\optional\test_optional.py" />
     <Compile Include="apeiron\tests\optional\test_quantum_error_correction.py" />
     <Compile Include="apeiron\tests\optional\test_quantum_ml.py" />
     <Compile Include="apeiron\tests\optional\__init__.py" />

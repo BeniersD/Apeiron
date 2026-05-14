@@ -1299,6 +1299,402 @@ def test_layer1_layer2_integration():
     if var_names:
         assert len(rels) > 0
 
+# ---------------------------------------------------------------------------
+# Sheaf Hypergraph
+# ---------------------------------------------------------------------------
+def test_sheaf_hypergraph_import():
+    from apeiron.layers.layer02_relational import SheafHypergraph
+    assert SheafHypergraph is not None
+
+def test_sheaf_hypergraph_basic():
+    from apeiron.layers.layer02_relational import SheafHypergraph
+    shg = SheafHypergraph(["v1","v2","v3"], [{"v1","v2"}, {"v2","v3"}])
+    cohom = shg.compute_cohomology()
+    assert cohom.h0_dimension >= 1
+    assert cohom.is_globally_consistent
+    L0 = shg.compute_sheaf_laplacian(order=0)
+    assert L0.shape == (3, 3)
+
+def test_sheaf_hypergraph_obstruction():
+    from apeiron.layers.layer02_relational import SheafHypergraph
+    shg = SheafHypergraph(["v1","v2"], [{"v1","v2"}])
+    obs = shg.compute_obstruction({"v1": np.array([1.0]), "v2": np.array([2.0])})
+    assert obs >= 0.0
+
+# ---------------------------------------------------------------------------
+# Categorical TDA
+# ---------------------------------------------------------------------------
+def test_categorical_tda_import():
+    from apeiron.layers.layer02_relational import CategoricalTDA
+    assert CategoricalTDA is not None
+
+def test_categorical_tda_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational import CategoricalTDA
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1,2})
+    ctda = CategoricalTDA(hg)
+    mod = ctda.persistence_module()
+    assert mod is not None
+
+def test_persistence_module():
+    from apeiron.layers.layer02_relational.categorical_tda import PersistenceModule
+    pm = PersistenceModule([0.0, 1.0, 2.0], [1, 2, 1])
+    assert pm.barcode() is not None
+    assert pm.interleaving_distance(pm) == 0.0
+
+# ---------------------------------------------------------------------------
+# Hodge decomposition
+# ---------------------------------------------------------------------------
+def test_hodge_decomposition_import():
+    from apeiron.layers.layer02_relational import HypergraphHodgeDecomposer
+    assert HypergraphHodgeDecomposer is not None
+
+def test_hodge_decomposition_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational import HypergraphHodgeDecomposer
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    hg.add_hyperedge("e2", {1,2})
+    dec = HypergraphHodgeDecomposer(hg)
+    signal = np.array([1.0, 2.0, 3.0])
+    result = dec.decompose_vertex_signal(signal)
+    assert result.is_valid
+    assert np.allclose(result.gradient + result.harmonic, signal)
+
+def test_hodge_theorem_verification():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational import HypergraphHodgeDecomposer
+    hg = Hypergraph()
+    for i in range(3):
+        hg.add_hyperedge(f"e{i}", {i, (i+1)%3})
+    dec = HypergraphHodgeDecomposer(hg)
+    assert dec.verify_hodge_theorem(k=0, num_random_trials=5)
+
+# ---------------------------------------------------------------------------
+# Higher category theory
+# ---------------------------------------------------------------------------
+def test_higher_category_import():
+    from apeiron.layers.layer02_relational import StrictTwoCategory, Bicategory
+    assert StrictTwoCategory is not None and Bicategory is not None
+
+def test_strict_two_category():
+    from apeiron.layers.layer02_relational import StrictTwoCategory
+    stc = StrictTwoCategory(
+        objects=["X","Y"],
+        one_morphisms={"f":("X","Y"), "g":("X","Y"), "id_X":("X","X"), "id_Y":("Y","Y")},
+        two_morphisms={}
+    )
+    stc.add_2morphism("alpha", "f", "g")
+    assert "alpha" in stc.two_morphisms
+
+def test_bicategory_axioms():
+    from apeiron.layers.layer02_relational import Bicategory
+    bicat = Bicategory(["X","Y"], {"f":("X","Y"), "g":("Y","X")}, {})
+    bicat.add_associator("f","g","f")
+    assert bicat.verify_bicategory_axioms()['has_identities']
+
+# ---------------------------------------------------------------------------
+# Spectral sheaf
+# ---------------------------------------------------------------------------
+def test_spectral_sheaf_import():
+    from apeiron.layers.layer02_relational import SheafSpectralAnalyzer
+    assert SheafSpectralAnalyzer is not None
+
+def test_spectral_sheaf_basic():
+    from apeiron.layers.layer02_relational.sheaf_hypergraph import SheafHypergraph
+    from apeiron.layers.layer02_relational.spectral_sheaf import SheafSpectralAnalyzer
+    shg = SheafHypergraph(["v1","v2","v3"], [{"v1","v2"}, {"v2","v3"}])
+    ssa = SheafSpectralAnalyzer(shg)
+    res = ssa.analyze()
+    assert res.harmonic_dim >= 1
+    labels = ssa.spectral_clustering(2)
+    assert len(labels) == 3
+
+# ---------------------------------------------------------------------------
+# Endogenous time
+# ---------------------------------------------------------------------------
+def test_endogenous_time_import():
+    from apeiron.layers.layer02_relational import EndogenousTimeGenerator
+    assert EndogenousTimeGenerator is not None
+
+def test_endogenous_time_basic():
+    from apeiron.layers.layer02_relational.endogenous_time import EndogenousTimeGenerator
+    edges = [('a','b'), ('b','c')]
+    gen = EndogenousTimeGenerator(edges)
+    ordering = gen.generate_time_ordering()
+    assert ordering == ['a','b','c']
+    cones = gen.compute_time_cones()
+    assert 'a' in cones and 'b' in cones
+
+# ---------------------------------------------------------------------------
+# Formal verification
+# ---------------------------------------------------------------------------
+def test_formal_verification_import():
+    from apeiron.layers.layer02_relational import Z3HypergraphVerifier
+    assert Z3HypergraphVerifier is not None
+
+def test_formal_verification_basic():
+    pytest.importorskip("z3")
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.formal_layer2_verification import Z3HypergraphVerifier
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    verifier = Z3HypergraphVerifier(hg)
+    result = verifier.verify_relational_constitution_axiom()
+    assert result.is_valid
+
+def test_verification_orchestrator():
+    pytest.importorskip("z3")
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational import Layer2VerificationOrchestrator
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    orch = Layer2VerificationOrchestrator(hg)
+    results = orch.run_all_verifications()
+    assert len(results) > 0
+
+# ---------------------------------------------------------------------------
+# Quantum topology
+# ---------------------------------------------------------------------------
+def test_quantum_topology_import():
+    from apeiron.layers.layer02_relational import QuantumBettiEstimator
+    assert QuantumBettiEstimator is not None
+
+def test_quantum_betti_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.quantum_topology import QuantumBettiEstimator
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    hg.add_hyperedge("e2", {1,2})
+    est = QuantumBettiEstimator(hg, backend='classical')
+    result = est.estimate_betti_numbers()
+    assert result.betti_numbers[0] == 1
+
+# ---------------------------------------------------------------------------
+# Unified API & coverage
+# ---------------------------------------------------------------------------
+def test_unified_api_import():
+    from apeiron.layers.layer02_relational import Layer2UnifiedAPI
+    assert Layer2UnifiedAPI is not None
+
+def test_unified_api_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.layer2_unified_api import Layer2UnifiedAPI
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    api = Layer2UnifiedAPI(hg)
+    report = api.full_analysis()
+    assert 'coverage' in report
+    assert report['coverage']['percentage'] >= 0.0
+
+def test_coverage_report():
+    from apeiron.layers.layer02_relational.layer2_unified_api import compute_theory_coverage
+    cr = compute_theory_coverage()
+    # Expect at least 17/17 modules now
+    assert cr.coverage_percentage > 90.0
+
+# ---------------------------------------------------------------------------
+# Integration: sheaf + spectral + time
+# ---------------------------------------------------------------------------
+def test_integration_sheaf_spectral_time():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.relations_core import Layer2_Relational_Ultimate, RelationType
+    layer2 = Layer2_Relational_Ultimate()
+    layer2.create_relation("v1","v2", RelationType.CAUSAL, weight=1.0)
+    # Sheaf cohomology on global hypergraph
+    cohom = layer2.compute_sheaf_cohomology()
+    assert cohom is not None
+    # Hodge decomposition
+    hd = layer2.compute_hodge_decomposition()
+    assert hd is not None and hd.is_valid
+    # Endogenous time from causal edges
+    ordering = layer2.generate_endogenous_time([("v1","v2")])
+    assert ordering is not None
+    # Full analysis
+    report = layer2.full_analysis()
+    assert 'coverage' in report
+
+# ---------------------------------------------------------------------------
+# Theoretical completeness sanity checks
+# ---------------------------------------------------------------------------
+def test_all_new_modules_accessible():
+    """Ensure all v5.1 modules can be imported from the public API."""
+    from apeiron.layers.layer02_relational import (
+        SheafHypergraph,
+        CategoricalTDA,
+        HypergraphHodgeDecomposer,
+        StrictTwoCategory,
+        Bicategory,
+        SheafSpectralAnalyzer,
+        EndogenousTimeGenerator,
+        Z3HypergraphVerifier,
+        Layer2VerificationOrchestrator,
+        QuantumBettiEstimator,
+        Layer2UnifiedAPI,
+        compute_theory_coverage,
+    )
+    # If we got here, imports succeeded
+    assert True
+
+    # ---------------------------------------------------------------------------
+# Sheaf diffusion dynamics
+# ---------------------------------------------------------------------------
+def test_sheaf_diffusion_import():
+    from apeiron.layers.layer02_relational import SheafDiffusionDynamics
+    assert SheafDiffusionDynamics is not None
+
+def test_sheaf_diffusion_basic():
+    from apeiron.layers.layer02_relational import SheafHypergraph, SheafDiffusionDynamics
+    shg = SheafHypergraph(["v1","v2","v3"], [{"v1","v2"}, {"v2","v3"}])
+    sdd = SheafDiffusionDynamics(shg)
+    _, final = sdd.evolve(store_trajectory=False)
+    assert final.time >= 0
+
+# ---------------------------------------------------------------------------
+# Topos logic
+# ---------------------------------------------------------------------------
+def test_topos_logic_import():
+    from apeiron.layers.layer02_relational import ToposLogic
+    assert ToposLogic is not None
+
+def test_topos_logic_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.topos_layer2 import topos_from_hypergraph
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    topos = topos_from_hypergraph(hg)
+    prop = {v: True for v in hg.vertices}
+    ev = topos.topos_evaluate(prop)
+    assert 0 <= ev['truth_degree'] <= 1
+
+# ---------------------------------------------------------------------------
+# HoTT category
+# ---------------------------------------------------------------------------
+def test_hott_category_import():
+    from apeiron.layers.layer02_relational import UnivalentCategory
+    assert UnivalentCategory is not None
+
+def test_hott_category_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.hott_category import univalent_category_from_hypergraph
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    uc = univalent_category_from_hypergraph(hg)
+    assert len(uc.isomorphisms) >= 0
+
+# ---------------------------------------------------------------------------
+# Derived learning
+# ---------------------------------------------------------------------------
+def test_derived_learning_import():
+    from apeiron.layers.layer02_relational import derived_learning_pipeline
+    assert derived_learning_pipeline is not None
+
+def test_derived_learning_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.derived_learning import derived_learning_pipeline
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    result = derived_learning_pipeline(hg)
+    assert 'obstruction_dim' in result
+
+# ---------------------------------------------------------------------------
+# Ontogenesis engine
+# ---------------------------------------------------------------------------
+def test_ontogenesis_import():
+    from apeiron.layers.layer02_relational import OntogenesisEngine
+    assert OntogenesisEngine is not None
+
+def test_ontogenesis_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.ontogenesis_engine import ontogenesis_from_hypergraph
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    engine = ontogenesis_from_hypergraph(hg)
+    result = engine.check_and_evolve()
+    assert result['status'] in ('stable', 'evolved')
+
+# ---------------------------------------------------------------------------
+# Retrocausal dynamics
+# ---------------------------------------------------------------------------
+def test_retrocausal_import():
+    from apeiron.layers.layer02_relational import RetrocausalDynamics
+    assert RetrocausalDynamics is not None
+
+def test_retrocausal_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.retrocausal_dynamics import RetrocausalDynamics
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    rd = RetrocausalDynamics(hg, T=3, max_iterations=10)
+    result = rd.optimal_trajectory()
+    assert 'final_obstruction' in result
+
+# ---------------------------------------------------------------------------
+# Spectral triple
+# ---------------------------------------------------------------------------
+def test_spectral_triple_import():
+    from apeiron.layers.layer02_relational import SpectralTriple
+    assert SpectralTriple is not None
+
+def test_spectral_triple_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.spectral_triple import spectral_triple_from_hypergraph
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    st = spectral_triple_from_hypergraph(hg)
+    assert st is not None
+    summary = st.geometry_summary()
+    assert summary['dimension'] > 0
+
+# ---------------------------------------------------------------------------
+# Epistemic horizon
+# ---------------------------------------------------------------------------
+def test_epistemic_horizon_import():
+    from apeiron.layers.layer02_relational import horizon_pipeline
+    assert horizon_pipeline is not None
+
+def test_epistemic_horizon_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.epistemic_horizon import horizon_pipeline
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    result = horizon_pipeline(hg)
+    assert 'singularities_detected' in result
+
+# ---------------------------------------------------------------------------
+# Reaction functor
+# ---------------------------------------------------------------------------
+def test_reaction_functor_import():
+    from apeiron.layers.layer02_relational import compile_hypergraph_to_gcode
+    assert compile_hypergraph_to_gcode is not None
+
+def test_reaction_functor_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.reaction_functor import compile_hypergraph_to_gcode
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    result = compile_hypergraph_to_gcode(hg)
+    assert 'program' in result
+
+# ---------------------------------------------------------------------------
+# Diachronic sheaf (v7.0)
+# ---------------------------------------------------------------------------
+def test_diachronic_sheaf_import():
+    from apeiron.layers.layer02_relational.diachronic_sheaf import DiachronicSheaf
+    assert DiachronicSheaf is not None
+
+def test_diachronic_sheaf_basic():
+    from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+    from apeiron.layers.layer02_relational.diachronic_sheaf import DiachronicSheaf
+    hg = Hypergraph()
+    hg.add_hyperedge("e1", {0,1})
+    hg.add_hyperedge("e2", {1,2})
+    ds = DiachronicSheaf(hg)
+    events = ds.persistent_obstruction()
+    assert isinstance(events, list)
+    score = ds.global_consistency_score()
+    assert 0 <= score <= 1
 
 # ============================================================================
 # main

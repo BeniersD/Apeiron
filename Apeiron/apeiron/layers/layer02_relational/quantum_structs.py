@@ -16,6 +16,12 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
+try:
+    import opt_einsum as oe
+    HAS_OPT_EINSUM = True
+except ImportError:
+    HAS_OPT_EINSUM = False
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------

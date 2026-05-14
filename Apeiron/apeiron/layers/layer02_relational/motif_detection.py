@@ -554,6 +554,83 @@ def zigzag_persistence(graph_sequence: List, max_dim: int = 1) -> Dict[str, Any]
         logger.error(f"Zigzag persistence failed: {e}")
         return {}
 
+def zigzag_persistence_full( hypergraph, window_size: int = 5, stride: int = 1, max_dim: int = 2) -> Dict[str, Any]:
+    """
+    Full zigzag persistence over a sliding window of hyperedges.
+    Tracks topological features as they appear, persist, and disappear
+    across overlapping windows. Returns barcodes per window and the
+    zigzag diagram connecting consecutive windows via intersection.
+
+    Parameters
+    ----------
+    hypergraph : Hypergraph
+        The hypergraph whose edges are ordered.
+    window_size : int
+        Number of consecutive hyperedges per window.
+    stride : int
+        Step size between windows.
+    max_dim : int
+        Maximum homology dimension.
+
+    Returns
+    -------
+    dict with keys:
+        - 'barcodes': list of per-window betti dicts
+        - 'zigzag': list of inter-window connections
+        - 'window_size', 'stride', 'num_windows'
+    """
+    edges = list(hypergraph.hyperedges.values())
+    n = len(edges)
+    if n == 0:
+        return {'barcodes': [], 'zigzag': [], 'window_size': window_size, 'stride': stride, 'num_windows': 0}
+
+    windows = []
+    for start in range(0, max(1, n - window_size + 1), stride):
+        window_edges = edges[start:start + window_size]
+        windows.append((start, window_edges))
+
+    barcodes_per_window = []
+    zigzag = []
+
+    from .hypergraph import Hypergraph as HG
+
+    for i, (start, window) in enumerate(windows):
+        temp_hg = HG()
+        for j, edge in enumerate(window):
+            temp_hg.add_hyperedge(f"w{i}_e{j}", edge)
+        try:
+            betti = temp_hg.betti_numbers()
+            barcodes_per_window.append({
+                'window': i,
+                'start_edge': start,
+                'end_edge': start + window_size - 1,
+                'betti': {str(k): v for k, v in betti.items()}
+            })
+        except Exception as e:
+            barcodes_per_window.append({'window': i, 'error': str(e)})
+
+        if i > 0:
+            prev_edges = windows[i-1][1]
+            curr_edges = window
+            prev_set = set(frozenset(e) for e in prev_edges)
+            curr_set = set(frozenset(e) for e in curr_edges)
+            intersection = prev_set & curr_set
+            zigzag.append({
+                'from_window': i - 1,
+                'to_window': i,
+                'intersection_size': len(intersection),
+                'prev_size': len(prev_set),
+                'curr_size': len(curr_set),
+                'jaccard': len(intersection) / max(len(prev_set | curr_set), 1)
+            })
+
+    return {
+        'barcodes': barcodes_per_window,
+        'zigzag': zigzag,
+        'window_size': window_size,
+        'stride': stride,
+        'num_windows': len(windows)
+    }
 
 # ============================================================================
 # TopologicalNetworkAnalysis (aggregates all of the above)

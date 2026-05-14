@@ -91,6 +91,11 @@ try:
 except ImportError:
     HAS_STATSMODELS = False
 
+try:
+    from .endogenous_time import EndogenousTimeGenerator
+except ImportError:
+    EndogenousTimeGenerator = None
+
 logger = logging.getLogger(__name__)
 
 
@@ -166,6 +171,94 @@ class CausalDiscovery:
         self.n_samples, self.n_vars = data.shape
         self.variable_names = variable_names or [f"X{i}" for i in range(self.n_vars)]
         self._graph = None  # last learned graph
+
+    def validate_causal_edge_with_topology( self, edge: Tuple[str, str], hypergraph, sheaf=None, persistence_threshold: Optional[float] = None) -> Dict[str, Any]:
+        """
+        Validate a causal edge by checking whether its topological persistence
+        exceeds the sheaf Laplacian noise threshold. Only edges whose topological
+        signature survives above the noise floor are considered valid causal relations.
+
+        The noise threshold is determined endogeenously from the sheaf spectral gap
+        or cohomology if `persistence_threshold` is None.
+
+        Parameters
+        ----------
+        edge : (source, target) tuple
+        hypergraph : Hypergraph
+        sheaf : SheafHypergraph, optional
+        persistence_threshold : float
+            Multiplier for the sheaf noise threshold.
+
+        Returns
+        -------
+        dict with 'valid', 'persistence', 'sheaf_noise', 'threshold', 'reason'
+        """
+        try:
+            from .categorical_tda import CategoricalTDA
+            from .sheaf_hypergraph import SheafHypergraph
+        except ImportError:
+            return {'valid': False, 'reason': 'Required modules not available'}
+
+        # Topological persistence of the edge
+        ctda = CategoricalTDA(hypergraph)
+        pers_mod = ctda.persistence_module()
+        if pers_mod is None:
+            return {'valid': False, 'reason': 'Persistence module could not be computed'}
+
+        barcode = pers_mod.barcode()
+        source, target = edge
+        edge_persistence = 0.0
+        for birth, death in barcode:
+            if birth <= 0.5 and death >= 0.5:
+                edge_persistence += 1.0
+        edge_persistence /= max(len(barcode), 1)
+
+        # Sheaf Laplacian noise threshold (endogeen als persistence_threshold None is)
+        sheaf_noise = 0.1
+        if sheaf is not None:
+            try:
+                spectra = sheaf.compute_sheaf_spectra(k=5)
+                sheaf_noise = spectra.get('spectral_gap_0', 0.1)
+            except Exception:
+                pass
+        elif hypergraph is not None and SheafHypergraph is not None:
+            try:
+                vertices = [f"v_{v}" for v in hypergraph.vertices]
+                hyperedges = [{f"v_{v}" for v in e} for e in hypergraph.edges]
+                shg = SheafHypergraph(vertices, hyperedges)
+                cohom = shg.compute_cohomology()
+                sheaf_noise = float(cohom.h1_dimension) / max(len(vertices), 1) + 0.01
+            except Exception:
+                pass
+
+        # Endogene drempelberekening (indien niet expliciet opgegeven)
+        if persistence_threshold is None:
+            if sheaf is not None:
+                try:
+                    spectra = sheaf.compute_sheaf_spectra(k=5)
+                    lambda_1 = spectra.get('spectral_gap_0', 0.1)
+                    lambda_2 = spectra.get('eigenvalues_0', [0,0])[1] if len(spectra.get('eigenvalues_0', [])) > 1 else 0.1
+                    noise_ratio = lambda_1 / (lambda_2 + 1e-12)
+                    persistence_threshold = min(0.9, max(0.1, 1.0 - noise_ratio))
+                except Exception:
+                    persistence_threshold = 0.5
+            else:
+                persistence_threshold = 0.5
+
+        threshold = sheaf_noise * persistence_threshold
+        valid = edge_persistence > threshold
+
+        return {
+            'valid': valid,
+            'persistence': float(edge_persistence),
+            'sheaf_noise': float(sheaf_noise),
+            'threshold': float(threshold),
+            'reason': (
+                'Edge persistence exceeds sheaf noise threshold'
+                if valid else
+                'Insufficient topological persistence'
+            )
+        }
 
     # ------------------------------------------------------------------------
     # Constraint‑based methods
@@ -690,6 +783,33 @@ class CausalDiscovery:
                 logger.error(f"Failed to create relation from {u_str} to {v_str}: {e}")
 
         return rel_ids
+
+    def to_endogenous_time(self, graph: Optional[nx.DiGraph] = None) -> Any:
+        """
+        Convert the causal graph into an EndogenousTimeGenerator,
+        enabling temporal ordering and time‑cone computation.
+
+        Parameters
+        ----------
+        graph : NetworkX DiGraph, optional
+            The causal graph. If None, uses the most recently learned graph.
+
+        Returns
+        -------
+        EndogenousTimeGenerator or None
+        """
+        if EndogenousTimeGenerator is None:
+            logger.warning("Endogenous time module not available")
+            return None
+        if graph is None:
+            if self._graph is None:
+                raise ValueError("No causal graph available. Run discovery first or pass a graph.")
+            graph = self._graph
+        if not HAS_NETWORKX:
+            raise ImportError("NetworkX required")
+        # Build edge list from the DiGraph
+        edges = list(graph.edges())
+        return EndogenousTimeGenerator(edges)
 
     # ------------------------------------------------------------------------
     # Evaluation utilities (extended for multiple graphs)

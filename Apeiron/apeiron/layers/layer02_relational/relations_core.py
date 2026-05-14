@@ -9,6 +9,9 @@ Provides the two central classes of the relational layer:
 
 Everything else (category theory, quivers, metrics, spectral analysis, …)
 is imported from the sibling modules created during the Layer‑2 refactoring.
+
+Version 5.1 – Enriched with sheaf, Hodge, higher category, spectral sheaf,
+endogenous time, formal verification, and quantum topology modules.
 """
 
 from __future__ import annotations
@@ -68,6 +71,55 @@ try:
 except ImportError:
     TemporalNetwork = None
 
+# ---------------------------------------------------------------------------
+# New modules (graceful degradation)
+# ---------------------------------------------------------------------------
+try:
+    from .sheaf_hypergraph import SheafHypergraph, SheafCohomologyResult
+except ImportError:
+    SheafHypergraph, SheafCohomologyResult = None, None
+
+try:
+    from .categorical_tda import CategoricalTDA, PersistenceModule
+except ImportError:
+    CategoricalTDA, PersistenceModule = None, None
+
+try:
+    from .hodge_decomposition import HypergraphHodgeDecomposer, HodgeDecomposition
+except ImportError:
+    HypergraphHodgeDecomposer, HodgeDecomposition = None, None
+
+try:
+    from .higher_category import StrictTwoCategory, Bicategory, SimplicialSet
+except ImportError:
+    StrictTwoCategory, Bicategory, SimplicialSet = None, None, None
+
+try:
+    from .spectral_sheaf import SheafSpectralAnalyzer, SheafSpectralResult
+except ImportError:
+    SheafSpectralAnalyzer, SheafSpectralResult = None, None
+
+try:
+    from .endogenous_time import EndogenousTimeGenerator, CausalPartialOrder, TimeCone
+except ImportError:
+    EndogenousTimeGenerator, CausalPartialOrder, TimeCone = None, None, None
+
+try:
+    from .formal_layer2_verification import Layer2VerificationOrchestrator, VerificationResult
+except ImportError:
+    Layer2VerificationOrchestrator, VerificationResult = None, None
+
+try:
+    from .quantum_topology import QuantumBettiEstimator, QuantumTopologyResult
+except ImportError:
+    QuantumBettiEstimator, QuantumTopologyResult = None, None
+
+try:
+    from .layer2_unified_api import Layer2UnifiedAPI, compute_theory_coverage
+except ImportError:
+    Layer2UnifiedAPI, compute_theory_coverage = None, None
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -123,7 +175,9 @@ class UltimateRelation:
     relation_type: RelationType
     weight: float = 1.0
     created_at: float = field(default_factory=time.time)
-    version: str = "5.0"
+    version: str = "5.1"
+    non_commutative_flag: bool = False          # True als [A,B] ≠ 0
+    commutator_norm: Optional[float] = None     # || [A, B] ||
 
     # Temporal information from Layer 1
     temporal_order: Optional[float] = None
@@ -164,9 +218,44 @@ class UltimateRelation:
     # Causal / probabilistic
     probability: float = 1.0
 
+    # -----------------------------------------------------------------
+    # New mathematical structures (v5.1)
+    # -----------------------------------------------------------------
+    sheaf_hypergraph: Optional[Any] = None          # SheafHypergraph instance
+    categorical_tda: Optional[Any] = None           # CategoricalTDA instance
+    hodge_decomposition: Optional[Any] = None       # HodgeDecomposition result
+    higher_category: Optional[Any] = None           # Bicategory or StrictTwoCategory
+    sheaf_spectral: Optional[Any] = None            # SheafSpectralResult
+    endogenous_time_generator: Optional[Any] = None # EndogenousTimeGenerator
+    verification_result: Optional[Any] = None       # VerificationResult
+    quantum_topology_result: Optional[Any] = None   # QuantumTopologyResult
+
     # Metadata and provenance
     metadata: Dict[str, Any] = field(default_factory=dict)
     provenance: List[Dict] = field(default_factory=list)
+
+    def compute_commutator(self, obs1_repr: np.ndarray, obs2_repr: np.ndarray) -> float:
+        """
+        Berekent de commutator [A, B] tussen twee observeerbaren,
+        gebruik makend van hun vectorrepresentaties. Geeft de Frobenius-norm
+        terug. Als deze significant > 0 is, worden de observeerbaren
+        als niet-commutatief gemarkeerd.
+        """
+        if obs1_repr.shape != obs2_repr.shape:
+            # Voor het gemak aannemen dat ze vierkant zijn; anders vector hervormen
+            n = int(np.sqrt(len(obs1_repr)))
+            if n * n != len(obs1_repr):
+                return 0.0
+            A = obs1_repr.reshape(n, n)
+            B = obs2_repr.reshape(n, n)
+        else:
+            A, B = obs1_repr, obs2_repr
+        comm = A @ B - B @ A
+        norm = float(np.linalg.norm(comm, 'fro'))
+        if norm > 1e-10:
+            self.non_commutative_flag = True
+            self.commutator_norm = norm
+        return norm
 
     # -----------------------------------------------------------------
     # Initialisation helpers
@@ -212,6 +301,7 @@ class UltimateRelation:
             'temporal_order': self.temporal_order,
             'metadata': self.metadata,
         }
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> UltimateRelation:
         """Reconstruct an UltimateRelation from a dictionary created by to_dict()."""
@@ -228,6 +318,75 @@ class UltimateRelation:
     def to_json(self) -> str:
         return json.dumps(self.to_dict(), indent=2)
 
+    # -----------------------------------------------------------------
+    # New analysis methods (v5.1)
+    # -----------------------------------------------------------------
+    def compute_sheaf_cohomology(self) -> Optional[Dict]:
+        """Compute sheaf cohomology on this relation's hypergraph."""
+        if SheafHypergraph is not None and self.hypergraph is not None:
+            try:
+                vertices = [f"v_{v}" for v in self.hypergraph.vertices]
+                hyperedges = [{f"v_{v}" for v in e} for e in self.hypergraph.edges]
+                shg = SheafHypergraph(vertices, hyperedges)
+                self.sheaf_hypergraph = shg
+                cohom = shg.compute_cohomology()
+                return {
+                    'h0': cohom.h0_dimension,
+                    'h1': cohom.h1_dimension,
+                    'is_consistent': cohom.is_globally_consistent,
+                }
+            except Exception as e:
+                logger.debug(f"Sheaf cohomology failed: {e}")
+        return None
+
+    def compute_hodge(self, signal: np.ndarray = None, k: int = 0) -> Optional[Any]:
+        """Compute Hodge decomposition on the hypergraph."""
+        if HypergraphHodgeDecomposer is not None and self.hypergraph is not None:
+            try:
+                decomposer = HypergraphHodgeDecomposer(self.hypergraph)
+                if signal is None:
+                    n = len(self.hypergraph.vertices)
+                    signal = np.random.randn(n) if n > 0 else np.array([])
+                self.hodge_decomposition = decomposer.decompose(signal, k)
+                return self.hodge_decomposition
+            except Exception as e:
+                logger.debug(f"Hodge decomposition failed: {e}")
+        return None
+
+    def generate_time_cone(self) -> Optional[Any]:
+        """Generate endogenous time cone from this relation's causal order."""
+        if EndogenousTimeGenerator is not None:
+            try:
+                edges = [(self.source_id, self.target_id)] if self.temporal_order is not None else []
+                gen = EndogenousTimeGenerator(edges)
+                self.endogenous_time_generator = gen
+                return gen.compute_time_cones()
+            except Exception as e:
+                logger.debug(f"Endogenous time failed: {e}")
+        return None
+
+    def verify(self) -> Optional[Any]:
+        """Run formal verification on this relation's hypergraph."""
+        if Layer2VerificationOrchestrator is not None and self.hypergraph is not None:
+            try:
+                orchestrator = Layer2VerificationOrchestrator(self.hypergraph)
+                self.verification_result = orchestrator.run_all_verifications()
+                return self.verification_result
+            except Exception as e:
+                logger.debug(f"Verification failed: {e}")
+        return None
+
+    def quantum_betti(self) -> Optional[Any]:
+        """Estimate Betti numbers via quantum algorithm."""
+        if QuantumBettiEstimator is not None and self.hypergraph is not None:
+            try:
+                est = QuantumBettiEstimator(self.hypergraph, backend='classical')
+                self.quantum_topology_result = est.estimate_betti_numbers()
+                return self.quantum_topology_result
+            except Exception as e:
+                logger.debug(f"Quantum topology failed: {e}")
+        return None
+
 
 # ============================================================================
 # Layer2_Relational_Ultimate – manager for all relations
@@ -240,6 +399,8 @@ class Layer2_Relational_Ultimate:
 
     It typically receives a reference to the Layer 1 observables registry,
     which allows automatic similarity‑based relation generation.
+
+    Version 5.1 – enriched with orchestrated access to all new Layer 2 modules.
     """
 
     def __init__(
@@ -276,6 +437,19 @@ class Layer2_Relational_Ultimate:
         self.global_hypergraph = Hypergraph()
         self.quantum_network = QuantumGraph()
 
+        # -----------------------------------------------------------------
+        # New global structures (v5.1)
+        # -----------------------------------------------------------------
+        self._sheaf_hypergraph: Optional[Any] = None
+        self._categorical_tda: Optional[Any] = None
+        self._hodge_decomposer: Optional[Any] = None
+        self._bicategory: Optional[Any] = None
+        self._sheaf_spectral_analyzer: Optional[Any] = None
+        self._endogenous_time_gen: Optional[Any] = None
+        self._verification_orchestrator: Optional[Any] = None
+        self._quantum_betti_estimator: Optional[Any] = None
+        self._unified_api: Optional[Any] = None
+
         # Minimum similarity for automatic relation generation
         self.min_similarity_threshold = 0.1
         self.max_relation_weight = 1.0
@@ -289,7 +463,7 @@ class Layer2_Relational_Ultimate:
             except Exception as e:
                 logger.warning(f"Redis init failed: {e}")
 
-        logger.info("Layer2_Relational_Ultimate initialised (v5.0 refactored).")
+        logger.info("Layer2_Relational_Ultimate initialised (v5.1 enriched).")
 
     # -----------------------------------------------------------------
     # Relation creation
@@ -411,15 +585,97 @@ class Layer2_Relational_Ultimate:
         return sim / count
 
     # -----------------------------------------------------------------
+    # New global analysis methods (v5.1)
+    # -----------------------------------------------------------------
+    def get_sheaf_hypergraph(self) -> Optional[Any]:
+        """Build or retrieve the global sheaf hypergraph."""
+        if self._sheaf_hypergraph is None and SheafHypergraph is not None:
+            try:
+                vertices = [f"v_{v}" for v in self.global_hypergraph.vertices]
+                hyperedges = [{f"v_{v}" for v in e} for e in self.global_hypergraph.edges]
+                self._sheaf_hypergraph = SheafHypergraph(vertices, hyperedges)
+            except Exception as e:
+                logger.warning(f"Sheaf hypergraph build failed: {e}")
+        return self._sheaf_hypergraph
+
+    def compute_sheaf_cohomology(self) -> Optional[Dict]:
+        """Compute sheaf cohomology of the global hypergraph."""
+        shg = self.get_sheaf_hypergraph()
+        if shg is not None:
+            cohom = shg.compute_cohomology()
+            return {'h0': cohom.h0_dimension, 'h1': cohom.h1_dimension, 'consistent': cohom.is_globally_consistent}
+        return None
+
+    def compute_hodge_decomposition(self, signal: np.ndarray = None, k: int = 0) -> Optional[Any]:
+        """Compute Hodge decomposition on the global hypergraph."""
+        if HypergraphHodgeDecomposer is not None:
+            decomposer = HypergraphHodgeDecomposer(self.global_hypergraph)
+            if signal is None:
+                n = len(self.global_hypergraph.vertices)
+                signal = np.random.randn(n) if n > 0 else np.array([])
+            return decomposer.decompose(signal, k)
+        return None
+
+    def compute_categorical_tda(self) -> Optional[Any]:
+        """Run categorical TDA on the global hypergraph."""
+        if CategoricalTDA is not None:
+            ctda = CategoricalTDA(self.global_hypergraph)
+            return ctda.persistence_module()
+        return None
+
+    def generate_endogenous_time(self, causal_edges: List = None) -> Optional[Any]:
+        """Generate endogenous time ordering from causal edges."""
+        if EndogenousTimeGenerator is not None:
+            if causal_edges is None:
+                causal_edges = [(r.source_id, r.target_id) for r in self.relations.values()
+                                if r.temporal_order is not None]
+            gen = EndogenousTimeGenerator(causal_edges)
+            return gen.generate_time_ordering()
+        return None
+
+    def run_formal_verification(self) -> Optional[List]:
+        """Run formal verification on the global hypergraph."""
+        if Layer2VerificationOrchestrator is not None:
+            orchestrator = Layer2VerificationOrchestrator(self.global_hypergraph)
+            return orchestrator.run_all_verifications()
+        return None
+
+    def estimate_quantum_betti(self) -> Optional[Any]:
+        """Estimate Betti numbers via quantum algorithm."""
+        if QuantumBettiEstimator is not None:
+            est = QuantumBettiEstimator(self.global_hypergraph, backend='classical')
+            return est.estimate_betti_numbers()
+        return None
+
+    def theory_coverage(self) -> float:
+        """Return the percentage of theoretical modules available."""
+        if compute_theory_coverage is not None:
+            return compute_theory_coverage().coverage_percentage
+        return 0.0
+
+    def full_analysis(self) -> Dict[str, Any]:
+        """Run the complete Layer 2 analysis via the unified API."""
+        if Layer2UnifiedAPI is not None:
+            api = Layer2UnifiedAPI(self.global_hypergraph, observables=list(self.layer1_registry.values()) if self.layer1_registry else [])
+            return api.full_analysis()
+        return {"error": "Layer2UnifiedAPI not available"}
+
+    # -----------------------------------------------------------------
     # Statistics
     # -----------------------------------------------------------------
     def get_stats(self) -> Dict[str, Any]:
-        return {
+        base = {
             'relations': len(self.relations),
             'by_type': {t.value: len(ids) for t, ids in self.by_type.items()},
             'by_source': {s: len(ids) for s, ids in self.by_source.items()},
             'by_target': {t: len(ids) for t, ids in self.by_target.items()},
         }
+        # Add coverage if available
+        try:
+            base['theory_coverage'] = self.theory_coverage()
+        except Exception:
+            pass
+        return base
 
     # -----------------------------------------------------------------
     # Reset
@@ -437,4 +693,14 @@ class Layer2_Relational_Ultimate:
         self.quantum_network = QuantumGraph()
         self._global_spectral = None
         self._global_topology = None
+        # Reset new structures
+        self._sheaf_hypergraph = None
+        self._categorical_tda = None
+        self._hodge_decomposer = None
+        self._bicategory = None
+        self._sheaf_spectral_analyzer = None
+        self._endogenous_time_gen = None
+        self._verification_orchestrator = None
+        self._quantum_betti_estimator = None
+        self._unified_api = None
         logger.info("Layer2_Relational_Ultimate reset.")

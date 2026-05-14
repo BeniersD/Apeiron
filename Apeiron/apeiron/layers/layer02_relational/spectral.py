@@ -73,6 +73,30 @@ try:
 except ImportError:
     REDIS_AVAILABLE = False
 
+# ---------------------------------------------------------------------------
+# New Layer‑2 module imports (graceful degradation)
+# ---------------------------------------------------------------------------
+try:
+    from .sheaf_hypergraph import SheafHypergraph
+except ImportError:
+    SheafHypergraph = None
+
+try:
+    from .spectral_sheaf import SheafSpectralAnalyzer, SheafSpectralResult
+except ImportError:
+    SheafSpectralAnalyzer, SheafSpectralResult = None, None
+
+try:
+    from .quantum_topology import QuantumBettiEstimator
+except ImportError:
+    QuantumBettiEstimator = None
+
+try:
+    from .endogenous_time import EndogenousTimeGenerator
+except ImportError:
+    EndogenousTimeGenerator = None
+
+
 # Lazy import for Layer‑1 integration
 def _get_ultimate_observable():
     """Lazy import of UltimateObservable to avoid circular dependencies."""
@@ -356,6 +380,136 @@ class SpectralGraphAnalysis:
 
         self._eigen[matrix_type.value] = (eigvals, eigvecs)
         return eigvals, eigvecs
+
+    # ======================================================================
+    # Integration with extended Layer‑2 modules
+    # ======================================================================
+    def to_sheaf_spectral_analyzer(self) -> Any:
+        """
+        Convert this graph's adjacency structure into a SheafHypergraph
+        and return a SheafSpectralAnalyzer for further analysis.
+
+        Returns
+        -------
+        SheafSpectralAnalyzer or None
+        """
+        if SheafHypergraph is None or SheafSpectralAnalyzer is None:
+            logger.warning("Sheaf modules not available")
+            return None
+        # Build vertices and edges from adjacency
+        A = self._get_adjacency()
+        n = A.shape[0]
+        vertices = [f"v_{i}" for i in range(n)]
+        edges = []
+        for i in range(n):
+            for j in range(i+1, n):
+                if A[i, j] != 0:
+                    edges.append({f"v_{i}", f"v_{j}"})
+        if not edges:
+            edges = [set(vertices)]  # fallback
+        shg = SheafHypergraph(vertices, edges)
+        return SheafSpectralAnalyzer(shg)
+
+    def sheaf_spectral_invariants(self) -> Dict[str, Any]:
+        """
+        Compute spectral invariants using the sheaf Laplacian.
+
+        Returns
+        -------
+        dict
+        """
+        analyzer = self.to_sheaf_spectral_analyzer()
+        if analyzer is None:
+            return {}
+        return analyzer.compute_sheaf_spectral_invariants()
+
+    def sheaf_spectral_clustering(self, n_clusters: int) -> Any:
+        """
+        Perform spectral clustering based on the sheaf Laplacian.
+
+        Parameters
+        ----------
+        n_clusters : int
+
+        Returns
+        -------
+        labels array or None
+        """
+        analyzer = self.to_sheaf_spectral_analyzer()
+        if analyzer is None:
+            return None
+        return analyzer.spectral_clustering(n_clusters, use_harmonic=True)
+
+    def quantum_eigenvalue_estimate(self, k: int = 5) -> Any:
+        """
+        Use quantum topology module to estimate low‑lying eigenvalues
+        of the Hodge Laplacian.
+
+        Returns
+        -------
+        QuantumTopologyResult or None
+        """
+        if QuantumBettiEstimator is None:
+            logger.warning("Quantum topology module not available")
+            return None
+        # Create a hypergraph from this graph's adjacency
+        try:
+            from .hypergraph import Hypergraph
+        except ImportError:
+            return None
+        hg = Hypergraph()
+        hg.vertices = set(range(self._get_adjacency().shape[0]))
+        A = self._get_adjacency()
+        for i in range(A.shape[0]):
+            for j in range(i+1, A.shape[1]):
+                if A[i, j] != 0:
+                    hg.add_hyperedge(f"e_{i}_{j}", {i, j})
+        est = QuantumBettiEstimator(hg, backend='classical')
+        return est.estimate_betti_numbers()
+
+    def track_endogenous_time_spectrum(
+        self,
+        causal_edges: Optional[List[Tuple[Any, Any]]] = None
+    ) -> Any:
+        """
+        Build endogenous time from causal edges (or default to directed
+        interpretation of the adjacency) and compute spectral evolution
+        along that time ordering.
+
+        Returns
+        -------
+        list of eigenvalues per time step or None
+        """
+        if EndogenousTimeGenerator is None:
+            logger.warning("Endogenous time module not available")
+            return None
+        A = self._get_adjacency()
+        n = A.shape[0]
+        if causal_edges is None:
+            # treat every non-zero entry as directed (if graph is directed)
+            if self.directed:
+                causal_edges = [(i, j) for i in range(n) for j in range(n) if A[i, j] != 0]
+            else:
+                causal_edges = [(i, j) for i in range(n) for j in range(i+1, n) if A[i, j] != 0]
+        gen = EndogenousTimeGenerator(causal_edges)
+        ordering = gen.generate_time_ordering()
+        if ordering is None:
+            return None
+        # Build a sequence of graphs: after each event in the ordering,
+        # take the subgraph induced by vertices up to that point
+        # and compute the spectrum.
+        spectra = []
+        for step in range(1, len(ordering) + 1):
+            sub_vertices = ordering[:step]
+            idx = [i for i, v in enumerate(range(n)) if v in sub_vertices]
+            if len(idx) < 2:
+                spectra.append(np.array([]))
+                continue
+            sub_A = A[idx][:, idx]
+            sa = SpectralGraphAnalysis(sub_A, directed=self.directed, weighted=self.weighted)
+            eigvals, _ = sa.compute_eigensystem(SpectralType.LAPLACIAN)
+            spectra.append(eigvals)
+        return spectra
 
     # ------------------------------------------------------------------------
     # Invariants (lazy, cached)
@@ -799,6 +953,24 @@ class DynamicSpectralAnalysis:
             if abs(curr - prev) / (abs(prev) + 1e-12) > threshold:
                 changes.append(i)
         return changes
+
+    def compute_sheaf_spectral_evolution(
+        self,
+        matrix_type: SpectralType = SpectralType.LAPLACIAN,
+        k: int = 5,
+    ) -> List[Dict]:
+        """
+        For each snapshot, build a sheaf hypergraph and compute its
+        sheaf spectral invariants.
+        """
+        results = []
+        for sa in self.spectral_objects:
+            try:
+                inv = sa.sheaf_spectral_invariants()
+            except Exception:
+                inv = {}
+            results.append(inv)
+        return results
 
     def forecast_eigenvalues(
         self,
