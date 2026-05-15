@@ -128,6 +128,10 @@ try:
 except ImportError:
     PKG_RESOURCES_AVAILABLE = False
 
+class LLMBackend(Enum):
+    OPENAI = "openai"
+    DEEPSEEK = "deepseek"
+    CUSTOM = "custom"
 
 class CodeGenStrategy(Enum):
     """Strategie voor code-generatie."""
@@ -249,6 +253,9 @@ class CodeGenesis:
                  auto_rollback: bool = True,
                  use_git: bool = False,
                  use_llm: bool = False,
+                 llm_backend: LLMBackend = LLMBackend.OPENAI,
+                 llm_api_key: Optional[str] = None, 
+                 llm_base_url: Optional[str] = None,
                  llm_model: str = "gpt-4",
                  parallel_generation: bool = False,
                  max_workers: int = 4,
@@ -256,6 +263,8 @@ class CodeGenesis:
                  generate_docs: bool = False,
                  profile_performance: bool = False,
                  config_path: Optional[str] = None):
+
+        
         """
         Initialiseer code genesis systeem.
         
@@ -331,7 +340,7 @@ class CodeGenesis:
         if self.use_llm:
             try:
                 import openai
-                self.llm_client = openai
+                self._setup_llm()
                 logger.info(f"✅ LLM client geïnitialiseerd ({llm_model})")
             except:
                 logger.warning("⚠️ LLM client niet beschikbaar")
@@ -368,7 +377,31 @@ class CodeGenesis:
         logger.info(f"Parallelle generatie: {'✅' if self.parallel_generation else '❌'}")
         logger.info(f"Python bestanden gevonden: {len(self.watched_files)}")
         logger.info("="*80)
-    
+
+    def _setup_llm(self):
+        try:
+            import openai
+            if self.llm_backend == LLMBackend.DEEPSEEK:
+                base_url = self.llm_base_url or "https://api.deepseek.com/v1"
+                api_key = self.llm_api_key or os.environ.get("DEEPSEEK_API_KEY")
+                self.llm_client = openai.AsyncOpenAI(api_key=api_key, base_url=base_url)
+            elif self.llm_backend == LLMBackend.OPENAI:
+                api_key = self.llm_api_key or os.environ.get("OPENAI_API_KEY")
+                self.llm_client = openai.AsyncOpenAI(api_key=api_key)
+            else:
+                # custom
+                self.llm_client = openai.AsyncOpenAI(
+                    api_key=self.llm_api_key or "none",
+                    base_url=self.llm_base_url or "http://localhost:8000/v1"
+                )
+            logger.info(f"LLM client geïnitialiseerd: {self.llm_backend.value}")
+        except ImportError:
+            self.llm_client = None
+            logger.warning("openai package niet beschikbaar – LLM uitgeschakeld")
+        except Exception as e:
+            self.llm_client = None
+            logger.error(f"LLM setup mislukt: {e}")
+
     def _discover_python_files(self):
         """Ontdek alle Python bestanden in het project."""
         for root, dirs, files in os.walk(self.root_dir):
@@ -1155,13 +1188,10 @@ def test_{test_name}():
             Gegenereerde code of None
         """
         if not self.use_llm or not self.llm_client:
-            logger.warning("⚠️ LLM niet beschikbaar")
             return None
-        
         try:
             self.stats['llm_calls'] += 1
-            
-            response = await self.llm_client.ChatCompletion.acreate(
+            response = await self.llm_client.chat.completions.create(
                 model=self.llm_model,
                 messages=[
                     {"role": "system", "content": "You are an expert Python developer. Generate clean, efficient, well-documented code."},
@@ -1170,18 +1200,12 @@ def test_{test_name}():
                 max_tokens=max_tokens,
                 temperature=0.7
             )
-            
             code = response.choices[0].message.content
-            
             # Extract code block if present
             code_match = re.search(r'```python\n(.*?)```', code, re.DOTALL)
             if code_match:
                 code = code_match.group(1)
-            
-            logger.info(f"🤖 LLM code gegenereerd ({len(code)} chars)")
-            
             return code
-            
         except Exception as e:
             logger.error(f"❌ LLM generatie mislukt: {e}")
             return None

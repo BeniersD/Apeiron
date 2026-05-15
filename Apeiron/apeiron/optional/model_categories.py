@@ -322,7 +322,183 @@ class ChainComplexesModelCategory(ModelCategory):
         logger.warning("lift not fully implemented – returning None.")
         return None
 
+    def factor_as_cofib_fibration(self, f: ChainMap) -> Tuple[ChainMap, ChainMap]:
+        """
+        Factor f: X → Y as X → Cyl(f) → Y where Cyl(f) is the mapping cylinder.
+        The first map is a cofibration, the second an acyclic fibration.
+        """
+        X = f.source
+        Y = f.target
+        # Determine max degree present
+        max_deg = max(X.degree_max, Y.degree_max)
+        # Build Cyl(f)_n = X_n ⊕ X_{n-1} ⊕ Y_n
+        cyl = ChainComplex([], degree_min=min(X.degree_min, Y.degree_min))
+        cyl.degree_max = max_deg
+        for n in range(X.degree_min, max_deg + 1):
+            dim_Xn = X.dim(n)
+            dim_Xn_1 = X.dim(n - 1) if n > X.degree_min else 0
+            dim_Yn = Y.dim(n)
+            cyl.set_dim(n, dim_Xn + dim_Xn_1 + dim_Yn)
+        # Build differentials for Cyl(f)
+        for n in range(cyl.degree_min, cyl.degree_max + 1):
+            if n == cyl.degree_min:
+                continue
+            # Build d_n^cyl: Cyl_n → Cyl_{n-1}
+            d_n = np.zeros((cyl.dim(n - 1), cyl.dim(n)))
+            # Block structure:
+            # [ d_X_n       id_{X_{n-1}}   0        ]
+            # [ 0          -d_X_{n-1}      0        ]
+            # [ 0           f_{n-1}        d_Y_n   ]
+            offset_in = 0
+            # First block column: X_n
+            if X.dim(n) > 0 and X.dim(n-1) > 0:
+                d_n[0:X.dim(n-1), 0:X.dim(n)] = X.differential(n) if X.differential(n) is not None else np.zeros((X.dim(n-1), X.dim(n)))
+            offset_in += X.dim(n)
+            # Second block column: X_{n-1}
+            if X.dim(n-1) > 0:
+                # Upper block: identity
+                d_n[0:X.dim(n-1), offset_in:offset_in + X.dim(n-1)] = np.eye(X.dim(n-1))
+                # Middle block: -d_X_{n-1}
+                if X.dim(n-2) > 0 and X.dim(n-1) > 0:
+                    d_n[X.dim(n-2):X.dim(n-2)+X.dim(n-1), offset_in:offset_in + X.dim(n-1)] = -X.differential(n-1)
+            offset_in += X.dim(n-1)
+            # Third block column: Y_n
+            if Y.dim(n) > 0:
+                # Lower block: f_{n-1} (size Y_{n-1} × X_{n-1}) but only if dimensions match
+                if X.dim(n-1) > 0 and Y.dim(n-1) > 0:
+                    f_map = f.maps.get(n-1)
+                    if f_map is not None:
+                        start_row = X.dim(n-2) + X.dim(n-1) if n-1 > X.degree_min else 0
+                        d_n[start_row:start_row + Y.dim(n-1), offset_in:offset_in + X.dim(n-1)] = f_map
+                # Lower-right: d_Y_n
+                if Y.dim(n) > 0 and Y.dim(n-1) > 0:
+                    start_row = X.dim(n-2) + X.dim(n-1) if n-1 > X.degree_min else 0
+                    d_n[start_row + Y.dim(n-1):start_row + Y.dim(n-1) + Y.dim(n-1), offset_in + X.dim(n-1):offset_in + X.dim(n-1) + Y.dim(n)] = Y.differential(n) if Y.differential(n) is not None else np.zeros((Y.dim(n-1), Y.dim(n)))
+            cyl.add_differential(n, d_n)
+        # Map i: X → Cyl(f)
+        i_maps = []
+        for n in range(cyl.degree_min, max_deg + 1):
+            mat = np.zeros((cyl.dim(n), X.dim(n) if X.dim(n) > 0 else 0))
+            if X.dim(n) > 0:
+                mat[0:X.dim(n), 0:X.dim(n)] = np.eye(X.dim(n))
+            i_maps.append(mat)
+        i = ChainMap(X, cyl, i_maps)
+        # Map p: Cyl(f) → Y
+        p_maps = []
+        for n in range(cyl.degree_min, max_deg + 1):
+            if Y.dim(n) == 0:
+                p_maps.append(np.zeros((0, cyl.dim(n))))
+                continue
+            mat = np.zeros((Y.dim(n), cyl.dim(n)))
+            # The Y_n block is after X_n and X_{n-1}
+            offset = X.dim(n) + X.dim(n-1)
+            mat[0:Y.dim(n), offset:offset + Y.dim(n)] = np.eye(Y.dim(n))
+            p_maps.append(mat)
+        p = ChainMap(cyl, Y, p_maps)
+        return i, p
 
+    def factor_as_acyclic_cofib_fibration(self, f: ChainMap) -> Tuple[ChainMap, ChainMap]:
+        X = f.source
+        Y = f.target
+        max_deg = max(X.degree_max, Y.degree_max)
+        min_deg = min(X.degree_min, Y.degree_min)
+        # Build Path(f)
+        path = ChainComplex([], degree_min=min_deg)
+        path.degree_max = max_deg
+        for n in range(min_deg, max_deg + 1):
+            dim_Xn = X.dim(n)
+            dim_Yn1 = Y.dim(n + 1) if n + 1 <= max_deg else 0
+            dim_Yn = Y.dim(n)
+            path.set_dim(n, dim_Xn + dim_Yn1 + dim_Yn)
+        # Differential
+        for n in range(min_deg + 1, max_deg + 1):
+            d_n = np.zeros((path.dim(n-1), path.dim(n)))
+            # Blocks:
+            # [ d_X_n     0       0     ]
+            # [ f_n       -d_Y_{n+1}  id_Y_n ]
+            # [ 0         0       d_Y_n ]
+            # This is for the standard path object; we simplify.
+            offset_prev = 0
+            # X block
+            if X.dim(n) > 0 and X.dim(n-1) > 0:
+                d_n[0:X.dim(n-1), 0:X.dim(n)] = X.differential(n) if X.differential(n) is not None else np.zeros((X.dim(n-1), X.dim(n)))
+            offset_prev += X.dim(n-1)
+            # Y_{n+1} block
+            if Y.dim(n+1) > 0 and Y.dim(n) > 0:
+                d_n[offset_prev:offset_prev + Y.dim(n), X.dim(n):X.dim(n) + Y.dim(n+1)] = -Y.differential(n+1) if Y.differential(n+1) is not None else np.zeros((Y.dim(n), Y.dim(n+1)))
+                # Identity on Y_n
+                d_n[offset_prev:offset_prev + Y.dim(n), X.dim(n) + Y.dim(n+1):X.dim(n) + Y.dim(n+1) + Y.dim(n)] = np.eye(Y.dim(n))
+            # f block
+            if X.dim(n) > 0 and Y.dim(n-1) > 0:
+                f_map = f.maps.get(n)
+                if f_map is not None:
+                    d_n[offset_prev:offset_prev + Y.dim(n-1), 0:X.dim(n)] = f_map
+            path.add_differential(n, d_n)
+        # i: X → Path(f)
+        i_maps = []
+        for n in range(min_deg, max_deg + 1):
+            mat = np.zeros((path.dim(n), X.dim(n) if X.dim(n) > 0 else 0))
+            if X.dim(n) > 0:
+                mat[0:X.dim(n), 0:X.dim(n)] = np.eye(X.dim(n))
+            i_maps.append(mat)
+        i = ChainMap(X, path, i_maps)
+        # p: Path(f) → Y
+        p_maps = []
+        for n in range(min_deg, max_deg + 1):
+            mat = np.zeros((Y.dim(n), path.dim(n)))
+            if Y.dim(n) > 0:
+                # Project onto the last Y_n component
+                offset = X.dim(n) + Y.dim(n+1)
+                mat[0:Y.dim(n), offset:offset + Y.dim(n)] = np.eye(Y.dim(n))
+            p_maps.append(mat)
+        p = ChainMap(path, Y, p_maps)
+        return i, p
+
+    def lift(self, square: Tuple[ChainMap, ChainMap, ChainMap, ChainMap]) -> Optional[ChainMap]:
+        """
+        Given a commutative square:
+            A → X
+            ↓   ↓
+            B → Y
+        with i: A → B a cofibration and p: X → Y a fibration,
+        find a diagonal filler h: B → X such that h∘i = f and p∘h = g.
+        Over a field, we can solve degreewise using the fact that i is injective
+        and p is surjective, so there exists a linear map h_n for each degree n.
+        """
+        i, f, g, p = square
+        A, B = i.source, i.target
+        X, Y = p.source, p.target
+        min_deg = min(A.degree_min, B.degree_min, X.degree_min, Y.degree_min)
+        max_deg = max(A.degree_max, B.degree_max, X.degree_max, Y.degree_max)
+        h_maps = []
+        for n in range(min_deg, max_deg + 1):
+            dim_A = A.dim(n)
+            dim_B = B.dim(n)
+            dim_X = X.dim(n)
+            dim_Y = Y.dim(n)
+            if dim_B == 0 or dim_X == 0:
+                h_maps.append(np.zeros((dim_X, dim_B)))
+                continue
+            # We need to solve: h_n ∘ i_n = f_n  and  p_n ∘ h_n = g_n
+            i_n = i.maps.get(n)
+            p_n = p.maps.get(n)
+            f_n = f.maps.get(n)
+            g_n = g.maps.get(n)
+            if i_n is None or p_n is None or f_n is None or g_n is None:
+                h_maps.append(np.zeros((dim_X, dim_B)))
+                continue
+            # i_n is injective, p_n surjective. We can construct h_n as:
+            # h_n = f_n ∘ i_n^+ + (I - p_n^+ ∘ p_n) ∘ g_n ∘ (some extension)
+            # where i_n^+ is left inverse of i_n, p_n^+ is right inverse of p_n.
+            # Use pseudo-inverses.
+            i_pinv = np.linalg.pinv(i_n)  # left inverse because injective
+            p_pinv = np.linalg.pinv(p_n)  # right inverse because surjective
+            h_n = f_n @ i_pinv + (np.eye(dim_X) - p_pinv @ p_n) @ g_n @ np.linalg.pinv(i_n)
+            h_maps.append(h_n)
+        h = ChainMap(B, X, h_maps)
+        return h
+
+    
 # ============================================================================
 # QUILLEN ADJUNCTIONS
 # ============================================================================

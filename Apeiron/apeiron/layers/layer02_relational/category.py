@@ -589,7 +589,50 @@ class Limit:
     universal_property: bool = False
 
     def is_limit(self, category: RelationalCategory) -> bool:
-        logger.warning("Limit.is_limit not fully implemented – always returns True.")
+        """Verify the universal property: for any other cone (vertex, morphisms),
+        there exists a unique mediating morphism to the limit."""
+        if not self.cone or 'vertex' not in self.cone or 'projections' not in self.cone:
+            return False
+        limit_vertex = self.cone['vertex']
+        projections = self.cone['projections']  # dict object -> morphism
+        # Iterate over all objects that have morphisms to all diagram objects
+        for candidate in category.objects:
+            if candidate == limit_vertex:
+                continue
+            # Check if candidate has morphisms to each object in the diagram
+            candidate_morphisms = {}
+            for obj in self.diagram:
+                # Look up a morphism from candidate to obj
+                found = None
+                for (s, t), morphs in category.hom_sets.items():
+                    if s == candidate and t == obj:
+                        if morphs:
+                            found = next(iter(morphs))
+                            break
+                if found is None:
+                    candidate_morphisms = None
+                    break
+                candidate_morphisms[obj] = found
+            if candidate_morphisms is None:
+                continue
+            # Check if there is exactly one morphism u: candidate → limit_vertex
+            # such that projection[obj] ∘ u = candidate_morphisms[obj] for all obj
+            count_valid = 0
+            for (s, t), morphs in category.hom_sets.items():
+                if s == candidate and t == limit_vertex:
+                    for u in morphs:
+                        ok = True
+                        for obj in self.diagram:
+                            proj = projections.get(obj)
+                            cand = candidate_morphisms[obj]
+                            comp = category.compose(u, proj, candidate, limit_vertex, obj)
+                            if not _morphisms_equal(category, comp, cand):
+                                ok = False
+                                break
+                        if ok:
+                            count_valid += 1
+            if count_valid != 1:
+                return False
         return True
 
 
@@ -600,7 +643,64 @@ class Colimit:
     universal_property: bool = False
 
     def is_colimit(self, category: RelationalCategory) -> bool:
-        logger.warning("Colimit.is_colimit not fully implemented – always returns True.")
+        """
+        Verify the universal property of a colimit.
+
+        A cocone (vertex, injections) is a colimit if for every other cocone
+        (candidate_vertex, candidate_morphisms) there exists exactly one
+        morphism u: colimit_vertex → candidate_vertex such that for all
+        diagram objects X the triangle commutes:
+            injection[X] ∘ u = candidate_morphisms[X].
+        """
+        if not self.cocone or 'vertex' not in self.cocone or 'injections' not in self.cocone:
+            return False
+
+        colimit_vertex = self.cocone['vertex']
+        injections = self.cocone['injections']   # dict: diagram object → morphism from diagram object to colimit_vertex
+
+        # Iterate over all possible candidate vertices in the category
+        for candidate in category.objects:
+            # Build a candidate cocone: for each diagram object, find a morphism to candidate
+            candidate_morphisms = {}
+            for obj in self.diagram:
+                # Look for any morphism from obj to candidate
+                found = None
+                for (s, t), morphs in category.hom_sets.items():
+                    if s == obj and t == candidate and morphs:
+                        found = next(iter(morphs))
+                        break
+                if found is None:
+                    candidate_morphisms = None
+                    break
+                candidate_morphisms[obj] = found
+
+            if candidate_morphisms is None:
+                continue   # this candidate does not form a cocone
+
+            # Count the number of mediating morphisms u: colimit_vertex → candidate
+            mediating_count = 0
+            for (s, t), morphs in category.hom_sets.items():
+                if s == colimit_vertex and t == candidate:
+                    for u in morphs:
+                        # Check the commutativity condition for every diagram object
+                        ok = True
+                        for obj in self.diagram:
+                            inj = injections.get(obj)
+                            cand = candidate_morphisms[obj]
+                            if inj is None or cand is None:
+                                ok = False
+                                break
+                            # Compose injection[obj] (which goes obj → colimit_vertex) with u (colimit_vertex → candidate)
+                            comp = category.compose(inj, u, obj, colimit_vertex, candidate)
+                            if not _morphisms_equal(category, comp, cand):
+                                ok = False
+                                break
+                        if ok:
+                            mediating_count += 1
+
+            if mediating_count != 1:
+                return False
+
         return True
 
 

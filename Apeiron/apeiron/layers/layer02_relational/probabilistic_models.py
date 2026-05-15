@@ -305,9 +305,49 @@ class ProbabilisticModel:
         """Compute log‑likelihood of data under the model."""
         raise NotImplementedError
 
-    def sample(self, n: int) -> np.ndarray:
-        """Generate n samples from the model."""
-        raise NotImplementedError
+    def sample(self, n: int = 1) -> List[List[str]]:
+        """
+        Generate a label sequence by iterative sampling from the conditional
+        distribution of each label given the previous label and the features.
+        This is an approximation of the full CRF distribution.
+        """
+        if not self.is_fitted:
+            raise RuntimeError("Model not fitted")
+        if self.label_set is None:
+            raise ValueError("Label set not initialised – fit the model first")
+
+        samples = []
+        for _ in range(n):
+            seq_labels = []
+            prev_label = None
+            # We need a sequence of features to condition on; we generate a "dummy" sequence
+            # by sampling a random label at each step and using the feature function.
+            # In practice, we'd use a given observation sequence, but for standalone
+            # sampling we generate synthetic observations.
+            for pos in range(5):  # default length 5
+                # Build feature dict for position (using previous label if any)
+                features = {}
+                features['bias'] = 1.0
+                if pos > 0 and prev_label is not None:
+                    features[f'transition'] = 1.0
+                # Emission scores
+                emit_scores = np.zeros(len(self.label_set))
+                for feat, val in features.items():
+                    if feat in self.feature_to_idx:
+                        f_idx = self.feature_to_idx[feat]
+                        emit_scores += self.emission_params[f_idx, :] * val
+                # Combine with transition from previous label
+                if prev_label is not None:
+                    prev_idx = self.label_to_idx[prev_label]
+                    scores = emit_scores + self.transition_params[prev_idx, :]
+                else:
+                    scores = emit_scores
+                probs = np.exp(scores) / (np.sum(np.exp(scores)) + 1e-100)
+                new_label = np.random.choice(len(self.label_set), p=probs)
+                prev_label = self.idx_to_label[new_label]
+                seq_labels.append(prev_label)
+            samples.append(seq_labels)
+        return samples
 
 
 # ============================================================================
@@ -413,7 +453,7 @@ class BayesianNetwork(ProbabilisticModel):
                 self.cpds[var] = (cpd, parents)
         self.is_fitted = True
         return self
-
+    
     def predict(self, data: np.ndarray, **kwargs) -> np.ndarray:
         """
         For each sample, compute the most probable state of all variables (or query variables).
@@ -421,7 +461,7 @@ class BayesianNetwork(ProbabilisticModel):
         Evidence: use NaN for missing values.
         """
         if self._use_pgmpy and self._inference:
-            # Use pgmpy's map_query
+            # pgmpy map_query
             import pandas as pd
             df = pd.DataFrame(data, columns=self.variable_names)
             results = []
@@ -431,49 +471,67 @@ class BayesianNetwork(ProbabilisticModel):
                 results.append([mpe[var] for var in self.variable_names])
             return np.array(results)
         else:
-            # Simple brute‑force enumeration (only feasible for small networks)
-            # Check if number of variables is manageable
-            if len(self.variable_names) > 10:
-                warnings.warn("Network too large for brute‑force MAP – returning original data (no prediction).")
-                return data.copy()
-            results = []
-            # Precompute all possible assignments (Cartesian product of variable domains)
-            domains = [range(self.cardinalities[v]) for v in self.variable_names]
-            all_assignments = list(itertools.product(*domains))
-            # For each data point (with possible NaNs as evidence)
-            for row in data:
-                evidence = {var: row[idx] for idx, var in enumerate(self.variable_names) if not np.isnan(row[idx])}
-                # Filter assignments consistent with evidence
-                valid_assignments = []
-                for assign in all_assignments:
-                    consistent = True
-                    for idx, var in enumerate(self.variable_names):
-                        if var in evidence and assign[idx] != evidence[var]:
-                            consistent = False
-                            break
-                    if consistent:
-                        valid_assignments.append(assign)
-                # Compute probability for each valid assignment using chain rule
-                best_assign = None
+            # Voor grote netwerken: gebruik simulated annealing of random sampling + kies beste
+            if len(self.variable_names) > 15:
+                # Simuleer 100 samples en kies degene met hoogste waarschijnlijkheid
+                best_sample = None
                 best_prob = -np.inf
-                for assign in valid_assignments:
+                for _ in range(100):
+                    sample = self.sample(1)[0]
+                    # Bereken log-kans
                     prob = 1.0
-                    # Compute P(assign) = ∏ P(var | parents)
                     for idx, var in enumerate(self.variable_names):
                         cpd, parents = self.cpds[var]
-                        child_val = assign[idx]
+                        child_val = int(sample[idx])
                         if not parents:
                             prob_val = cpd[child_val]
                         else:
-                            parent_vals = tuple(assign[self.variable_names.index(p)] for p in parents)
-                            # cpd shape: [child] + parent_dims
+                            parent_vals = tuple(int(sample[self.variable_names.index(p)]) for p in parents)
                             prob_val = cpd[(child_val,) + parent_vals]
                         prob *= prob_val
                     if prob > best_prob:
                         best_prob = prob
-                        best_assign = assign
-                results.append(list(best_assign))
-            return np.array(results)
+                        best_sample = sample
+                return np.array([best_sample])
+            else:
+                results = []
+                # Precompute all possible assignments (Cartesian product of variable domains)
+                domains = [range(self.cardinalities[v]) for v in self.variable_names]
+                all_assignments = list(itertools.product(*domains))
+                # For each data point (with possible NaNs as evidence)
+                for row in data:
+                    evidence = {var: row[idx] for idx, var in enumerate(self.variable_names) if not np.isnan(row[idx])}
+                    # Filter assignments consistent with evidence
+                    valid_assignments = []
+                    for assign in all_assignments:
+                        consistent = True
+                        for idx, var in enumerate(self.variable_names):
+                            if var in evidence and assign[idx] != evidence[var]:
+                                consistent = False
+                                break
+                        if consistent:
+                            valid_assignments.append(assign)
+                    # Compute probability for each valid assignment using chain rule
+                    best_assign = None
+                    best_prob = -np.inf
+                    for assign in valid_assignments:
+                        prob = 1.0
+                        # Compute P(assign) = ∏ P(var | parents)
+                        for idx, var in enumerate(self.variable_names):
+                            cpd, parents = self.cpds[var]
+                            child_val = assign[idx]
+                            if not parents:
+                                prob_val = cpd[child_val]
+                            else:
+                                parent_vals = tuple(assign[self.variable_names.index(p)] for p in parents)
+                                # cpd shape: [child] + parent_dims
+                                prob_val = cpd[(child_val,) + parent_vals]
+                            prob *= prob_val
+                        if prob > best_prob:
+                            best_prob = prob
+                            best_assign = assign
+                    results.append(list(best_assign))
+                    return np.array(results)
 
     def log_likelihood(self, data: np.ndarray) -> float:
         if self._use_pgmpy and self._model:

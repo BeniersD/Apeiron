@@ -340,18 +340,25 @@ class YonedaSelfReference:
         """
         return self.self_profile(a) == self.self_profile(b)
 
+
+        return float(unique) / total
     def self_awareness_measure(self) -> float:
         """
         Measure the degree of self‑awareness as the fraction of objects
         that have a unique Yoneda profile. A high value means most objects
         are distinguishable from within the system.
         """
+        if len(self.category.category.objects) > 1000:
+            logger.warning("Large category; using random sample for self‑awareness measure.")
+            objects = random.sample(list(self.category.category.objects), 1000)
+        else:
+            objects = list(self.category.category.objects)
         profiles = {}
-        for obj in self.category.category.objects:
+        for obj in objects:
             p = frozenset(self.self_profile(obj).items())
             profiles[obj] = p
         unique = len(set(profiles.values()))
-        total = max(len(self.category.category.objects), 1)
+        total = max(len(objects), 1)
         return float(unique) / total
 
 

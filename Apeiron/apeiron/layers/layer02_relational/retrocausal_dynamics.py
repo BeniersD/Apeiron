@@ -40,8 +40,9 @@ import numpy as np
 from typing import Dict, List, Tuple, Optional, Any, Set, Callable
 from dataclasses import dataclass, field
 from copy import deepcopy
-from apeiron.layers.layer02_relational.hypergraph import Hypergraph
+from .hypergraph import Hypergraph
 import warnings
+import ast
 
 try:
     from .sheaf_hypergraph import SheafHypergraph
@@ -155,8 +156,10 @@ class RetrocausalDynamics:
                 # eid encodes a vertex set as a string; reconstruct
                 try:
                     verts = set(eval(eid))
+                    verts = set(ast.literal_eval(eid))
+
                     new_hg.add_hyperedge(eid, verts, adj * 0.1)
-                except Exception:
+                except (ValueError, SyntaxError):
                     pass
         return new_hg
 

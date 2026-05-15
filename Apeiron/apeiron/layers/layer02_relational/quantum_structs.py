@@ -177,22 +177,44 @@ class QuantumChannel:
 
 @dataclass
 class TensorNetwork:
-    """
-    Simple tensor network representation (placeholder).
-
-    Attributes:
-        tensors: dict mapping tensor name to numpy array.
-        connections: list of (tensor1, tensor2, axis1, axis2) tuples that
-                     indicate which axes are contracted.
-    """
     tensors: Dict[str, np.ndarray] = field(default_factory=dict)
-    connections: List[Tuple[str, str, int, int]] = field(default_factory=list)
+    connections: List[Tuple[str, str, int, int]] = field(default_factory=list)  
+    # (name1, name2, axis_in_name1, axis_in_name2)
+
+    def add_tensor(self, name: str, tensor: np.ndarray):
+        self.tensors[name] = tensor
+
+    def connect(self, name1: str, name2: str, axis1: int, axis2: int):
+        self.connections.append((name1, name2, axis1, axis2))
 
     def contract(self) -> np.ndarray:
-        """
-        Perform the tensor network contraction (not implemented).
-
-        Returns an empty array.
-        """
-        logger.warning("TensorNetwork contraction not implemented.")
-        return np.array([])
+        if not self.tensors:
+            return np.array(1.0)
+        if len(self.tensors) == 1:
+            return list(self.tensors.values())[0]
+        try:
+            import opt_einsum as oe
+            # Build unique axis labels per tensor
+            labels = {}
+            counter = 0
+            for name in self.tensors:
+                labels[name] = [chr(ord('a') + (counter + i) % 26) for i in range(self.tensors[name].ndim)]
+                counter += self.tensors[name].ndim
+            # Apply connections: enforce shared labels for connected axes
+            for n1, n2, a1, a2 in self.connections:
+                shared = labels[n1][a1]
+                labels[n2][a2] = shared
+            # Build einsum string
+            operands = list(self.tensors.values())
+            input_str = ','.join(''.join(labels[name]) for name in self.tensors)
+            output_str = ''  # full contraction to scalar
+            einsum_str = f"{input_str}->{output_str}"
+            result = oe.contract(einsum_str, *operands)
+            return result
+        except ImportError:
+            # Fallback: sequential pairwise contraction (naive)
+            names = list(self.tensors.keys())
+            result = self.tensors[names[0]]
+            for name in names[1:]:
+                result = np.tensordot(result, self.tensors[name], axes=0)
+            return result
